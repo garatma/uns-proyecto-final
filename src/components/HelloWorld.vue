@@ -12,11 +12,9 @@ function increment() {
   count.value++;
 }
 
-function get() {
-  let xmlHttpReq = new XMLHttpRequest();
-  xmlHttpReq.open("GET", url, false);
-  xmlHttpReq.send(null);
-  clima.value = xmlHttpReq.responseText;
+async function get() {
+  let request = await fetch(url);
+  clima.value = await request.text();
 }
 
 onMounted(() => {
