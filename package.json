@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cross-fetch": "^3.1.5",
     "express": "^4.17.3"
   },
   "engines": {
@@ -10,7 +11,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
+    "start": "node src/backend/app.js & node index.js",
+    "build": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build",
+    "test": "cd src/admin && npm test && cd ../visualization && npm test"
   }
 }
