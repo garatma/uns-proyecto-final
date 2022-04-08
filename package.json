@@ -1,0 +1,16 @@
+{
+  "name": "main-web-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
+  }
+}
