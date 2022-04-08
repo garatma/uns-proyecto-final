@@ -24,8 +24,3 @@ app.listen(PORT, () => {
     console.log(`App listening on http://127.0.0.1:${PORT}`);
     console.log('Press Ctrl+C to quit.');
 });
-
-fetch("http://localhost:3000")
-    .then(response => response.text())
-    .then(texto => console.log(texto))
-    .catch(razon => console.log("no se pudo hacer el request: " + razon));
