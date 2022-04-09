@@ -18,26 +18,18 @@ app.get('visualization/*', (req, res) => {
     res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
 })
 
-
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
-})
-
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`App listening on http://127.0.0.1:${PORT}`);
-    console.log('Press Ctrl+C to quit.');
-});
-
-const app2 = express();
-
-app2.use(cors());
-
-app2.get('/backend/hello-world', (req, res) => {
+app.get('/backend/hello-world', (req, res) => {
     res.send('Hello World!')
 });
 
-app2.listen(55327, () => {
-    console.log(`App2 listening on http://127.0.0.1:${55327}`);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
+})
+
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`App listening on http://127.0.0.1:${PORT}`);
     console.log('Press Ctrl+C to quit.');
 });

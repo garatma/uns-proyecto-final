@@ -7,7 +7,7 @@ async function Get() {
   console.log("env: " + process.env);
   console.log("REACT_APP_PORT: " + PORT);
   console.log("PORT: " + PORT2);
-  const url = "http://localhost:" + 55327 + "/backend/hello-world"
+  const url = "/backend/hello-world"
   console.log(url);
   fetch(url)
     .then(response => response.text())

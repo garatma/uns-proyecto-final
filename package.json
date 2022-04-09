@@ -13,7 +13,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build",
-    "test": "cd src/admin && npm test && cd ../visualization && npm test"
+    "heroku-postbuild": "cd src/visualization && npm install && npm run build"
   }
 }
