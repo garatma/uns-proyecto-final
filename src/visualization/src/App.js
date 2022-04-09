@@ -3,7 +3,8 @@ import './App.css';
 
 async function Get() {
   const PORT = process.env.REACT_APP_PORT;
-  const url = "http://localhost:" + PORT + "/backend/hello-world"
+  console.log("PORT: " + PORT);
+  const url = "http://localhost:" + 5000 + "/backend/hello-world"
   console.log(url);
   fetch(url)
     .then(response => response.text())
