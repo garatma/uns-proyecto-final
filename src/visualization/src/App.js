@@ -2,7 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 
 async function Get() {
-  fetch("http://localhost:3000")
+  const PORT = process.env.REACT_APP_PORT;
+  const url = "http://localhost:" + PORT + "/backend/hello-world"
+  console.log(url);
+  fetch(url)
     .then(response => response.text())
     .then(texto => alert(texto))
     .catch(razon => alert("no se pudo hacer el request: " + razon));

@@ -1,8 +1,10 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const cors = require('cors')
 const fetch = require('cross-fetch');
 
+app.use(cors());
 app.use('/admin', express.static(path.join(__dirname, './src/admin/build')))
 app.use('/visualization', express.static(path.join(__dirname, './src/visualization/build')))
 app.use('/', express.static(path.join(__dirname, './src/visualization/build')))
@@ -14,6 +16,11 @@ app.get('admin/*', (req, res) => {
 app.get('visualization/*', (req, res) => {
     res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
 })
+
+app.get('/backend/hello-world', (req, res) => {
+    res.send('Hello World!')
+})
+
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
