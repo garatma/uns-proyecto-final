@@ -2,14 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 
 async function Get() {
-  const PORT = process.env.REACT_APP_PORT;
-  const PORT2 = process.env.PORT;
-  console.log("env: " + process.env);
-  console.log("REACT_APP_PORT: " + PORT);
-  console.log("PORT: " + PORT2);
-  const url = "/backend/hello-world"
-  console.log(url);
-  fetch(url)
+  // just a sample get fetch to show how to pass a url for the backend
+  fetch("/backend/hello-world")
     .then(response => response.text())
     .then(texto => alert(texto))
     .catch(razon => alert("no se pudo hacer el request: " + razon));

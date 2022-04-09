@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const cors = require('cors')
-const fetch = require('cross-fetch');
-
 
 app.use(cors());
 app.use('/admin', express.static(path.join(__dirname, './src/admin/build')))
@@ -18,15 +16,19 @@ app.get('visualization/*', (req, res) => {
     res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
 })
 
+// replace next endpoint with actual backend code
+
 app.get('/backend/hello-world', (req, res) => {
     res.send('Hello World!')
 });
 
+// map all other endpoints to visualization
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/src/visualization/build/index.html'))
 })
 
+// start listening
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
