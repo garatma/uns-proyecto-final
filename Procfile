@@ -1,1 +1,1 @@
-web: REACT_APP_PORT=$PORT npm start
+web: npm start
