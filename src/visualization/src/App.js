@@ -1,6 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 
+async function Get() {
+  // just a sample get fetch to show how to pass a url for the backend
+  fetch("/backend/hello-world")
+    .then(response => response.text())
+    .then(texto => alert(texto))
+    .catch(razon => alert("no se pudo hacer el request: " + razon));
+}
+
 function App() {
   return (
     <div className="App">
@@ -17,6 +25,7 @@ function App() {
         >
           Learn React for visualization
         </a>
+        <button onClick={Get}>Consultar backend</button>
       </header>
     </div>
   );

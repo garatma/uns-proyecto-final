@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3"
   },
   "engines": {
@@ -11,6 +12,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
+    "heroku-postbuild": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
   }
 }
