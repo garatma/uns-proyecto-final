@@ -95,7 +95,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React for visualization (testing)
+          Learn React for visualization (testing 2)
         </a>
         <button onClick={GetFromRoomEvent}>Obtener info de room-event</button>
         <button onClick={GetFromAnnouncement}>
