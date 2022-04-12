@@ -12,7 +12,6 @@
   },
   "main": "backend.js",
   "scripts": {
-    "start": "node backend.js",
-    "heroku-postbuild": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
+    "start": "node backend.js"
   }
 }
