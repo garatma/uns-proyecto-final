@@ -1,18 +1,17 @@
 {
-  "name": "main-web-server",
+  "name": "proyecto-final",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.3",
-    "sqlite3": "^5.0.2"
-  },
   "engines": {
     "node": "16.x"
   },
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "heroku-postbuild": "cd src/admin && npm install && npm run build && cd ../visualization && npm install && npm run build"
+    "start": "cd src/backend && npm start",
+    "start admin": "cd src/admin && npm start",
+    "start backend": "cd src/backend && npm start",
+    "start visualization": "cd src/visualization && npm start",
+    "build": "cd src/admin && npm run build && cd ../visualization && npm run build",
+    "install": "cd src/admin && npm install && cd ../backend && npm install && cd ../visualization && npm install",
+    "test": "cd src/admin && npm test && cd ../visualization && npm test "
   }
 }

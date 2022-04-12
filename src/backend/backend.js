@@ -10,21 +10,21 @@ var sqlite3 = require("sqlite3").verbose();
 
 app.use(cors());
 app.use(express.json());
-app.use("/admin", express.static(path.join(__dirname, "./src/admin/build")));
+app.use("/admin", express.static(path.join(__dirname, "../admin/build")));
 
 app.use(
   "/visualization",
-  express.static(path.join(__dirname, "./src/visualization/build"))
+  express.static(path.join(__dirname, "../visualization/build"))
 );
 
-app.use("/", express.static(path.join(__dirname, "./src/visualization/build")));
+app.use("/", express.static(path.join(__dirname, "../visualization/build")));
 
 app.get("/admin/*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/src/admin/build/index.html"));
+  res.sendFile(path.join(__dirname + "/../admin/build/index.html"));
 });
 
 app.get("/visualization/*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/src/visualization/build/index.html"));
+  res.sendFile(path.join(__dirname + "/../visualization/build/index.html"));
 });
 
 // replace next endpoint with actual backend code
@@ -35,7 +35,7 @@ app.get("/visualization/*", (req, res) => {
 
 // ------------------------------------------------ database connection ------------------------------------------------
 
-var db = new sqlite3.Database("db/dcic-schedule.db");
+var db = new sqlite3.Database("../../db/dcic-schedule.db");
 db.serialize();
 
 // ---------------------------------------------------- room-event -----------------------------------------------------
@@ -92,7 +92,7 @@ app.post("/backend/announcement", (req, res) => {
     },
     (err) => {
       if (err) res.status(400).json({ error: err.message });
-      else res.status(200).json({ result: "updated!" });
+      else res.status(200).json({ result: "created!" });
     }
   );
 });
@@ -112,7 +112,7 @@ app.put("/backend/announcement", (req, res) => {
     },
     (err) => {
       if (err) res.status(400).json({ error: err.message });
-      else res.status(200).json({ result: "created!" });
+      else res.status(200).json({ result: "updated!" });
     }
   );
 });
@@ -131,7 +131,7 @@ app.delete("/backend/announcement/:id", (req, res) => {
 // map all other endpoints to visualization
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/src/visualization/build/index.html"));
+  res.sendFile(path.join(__dirname + "/../visualization/build/index.html"));
 });
 
 // start listening
