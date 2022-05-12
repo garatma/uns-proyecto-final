@@ -31,15 +31,7 @@ db.serialize();
 
 app.get("/backend/room-event", (req, res) => {
     console.log("GET to " + req.url);
-    db.all("select * from room_event", [], (err, rows) => {
-        if (err) res.status(400).json({ error: err.message });
-        else res.status(200).json(rows);
-    });
-});
-
-app.get("/backend/room-event/:id", (req, res) => {
-    console.log("GET to " + req.url);
-    db.get("select * from room_event where id=" + req.params.id, [], (err, rows) => {
+    db.all("select * from event_room", [], (err, rows) => {
         if (err) res.status(400).json({ error: err.message });
         else res.status(200).json(rows);
     });
