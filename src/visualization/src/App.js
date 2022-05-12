@@ -2,6 +2,41 @@ import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+const dateFormat = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    timezone: "ART"
+};
+
+class Clock extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { date: new Date() };
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        this.setState({ date: new Date() });
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.date.toLocaleString("es-AR", dateFormat) + " — " + this.state.date.toLocaleTimeString()}
+            </div>
+        );
+    }
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -45,7 +80,7 @@ class App extends React.Component {
                     events_per_hour: this.getEventCountWithSameHour(json)
                 });
             })
-            .catch((razon) => alert("no se pudo hacer el request: " + razon));
+            .catch((razon) => console.log("no se pudo hacer el request: " + razon));
     }
 
     render() {
@@ -78,7 +113,9 @@ class App extends React.Component {
                     <table className="table table-dark">
                         <thead className="thead-primary">
                             <tr>
-                                <th colSpan="4">Hora actual</th>
+                                <th colSpan="4">
+                                    <Clock />
+                                </th>
                             </tr>
                             <tr>
                                 <th>hora</th>
