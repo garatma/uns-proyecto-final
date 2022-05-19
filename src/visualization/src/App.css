@@ -2,15 +2,20 @@
     text-align: center;
 }
 
-.App-logo {
-    height: 40vmin;
+.icon {
+    height: 5vmin;
     pointer-events: none;
+    padding-right: 3vmin;
+    /* filter: invert(100%);
+    -webkit-filter: invert(100%); */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.logo {
+    text-align: left;
+}
+
+.clock {
+    text-align: right;
 }
 
 .App-header {

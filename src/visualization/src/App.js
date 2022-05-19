@@ -1,6 +1,7 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import logo from "./icons/logo.png";
 
 const dateFormat = {
     year: "numeric",
@@ -113,7 +114,10 @@ class App extends React.Component {
                     <table className="table table-dark">
                         <thead className="thead-primary">
                             <tr>
-                                <th colSpan="4">
+                                <th className="logo">
+                                    <img src={logo} className="icon" alt="icon" />
+                                </th>
+                                <th colSpan="8" className="clock">
                                     <Clock />
                                 </th>
                             </tr>
