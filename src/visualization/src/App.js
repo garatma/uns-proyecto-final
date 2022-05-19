@@ -1,6 +1,11 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import projectorIcon from "./icons/projector.png";
+import soundIcon from "./icons/sound.png";
+import disabledAccessIcon from "./icons/disabledAccess.png";
+import wifiIcon from "./icons/wifi.png";
+import ethernetIcon from "./icons/ethernet.png";
 
 const dateFormat = {
     year: "numeric",
@@ -16,7 +21,21 @@ const timeFormat = {
 };
 
 function Resources(props) {
-    return null;
+    let projector = props.projector ? <img src={projectorIcon} className="icon" alt="icon" /> : null;
+    let sound = props.sound ? <img src={soundIcon} className="icon" alt="icon" /> : null;
+    let disabledAccess = props.disableAccess ? <img src={disabledAccessIcon} className="icon" alt="icon" /> : null;
+    let wifi = props.wifi ? <img src={wifiIcon} className="icon" alt="icon" /> : null;
+    let ethernet = props.ethernet ? <img src={ethernetIcon} className="icon" alt="icon" /> : null;
+
+    return (
+        <div>
+            {projector}
+            {sound}
+            {disabledAccess}
+            {wifi}
+            {ethernet}
+        </div>
+    );
 }
 
 class Clock extends React.Component {
@@ -96,19 +115,14 @@ class App extends React.Component {
         let now = new Date();
         let begin_date = new Date(timestamp_event_begin * 1000);
         let end_date = new Date(timestamp_event_end * 1000);
-        if (now > end_date)
-            return "Finalizado";
-        else if (now < begin_date)
-            return "No Empezó";
-        else
-            return "En Progreso";
+        if (now > end_date) return "Finalizado";
+        else if (now < begin_date) return "No Empezó";
+        else return "En Progreso";
     }
 
     fromNumberToHour(hourNumber) {
-        if (hourNumber < 12)
-            return hourNumber + ":00 AM";
-        else
-            return hourNumber + ":00 PM";
+        if (hourNumber < 12) return hourNumber + ":00 AM";
+        else return hourNumber + ":00 PM";
     }
 
     render() {
@@ -116,34 +130,47 @@ class App extends React.Component {
             this.state.events_per_hour == null
                 ? null
                 : this.state.events_per_hour.map((event, index) => {
-                    const records = Object.values(event.records);
-                    const eventRows = records.map((row, i) => {
-                        const eventHour = i === 0 ? <td rowSpan={records.length + 1}>{this.fromNumberToHour(event.hour)}</td> : null;
-                        return (
-                            <tr key={i}>
-                                {eventHour}
-                                <td> {row.event_name} </td>
-                                <td> {row.room_name} </td>
-                                <td> {new Date(row.event_timestamp_begin * 1000).toLocaleTimeString("en-US", timeFormat)} </td>
-                                <td> {new Date(row.event_timestamp_end * 1000).toLocaleTimeString("en-US", timeFormat)} </td>
-                                <td> {row.event_host} </td>
-                                <td> {row.event_attendance + "%"} </td>
-                                <td> {this.getEventState(row.event_timestamp_begin, row.event_timestamp_end)} </td>
-                                <td> <Resources
-                                    projector={row.room_has_projector}
-                                    sound={row.room_has_sound_equipment}
-                                    disableAccess={row.room_has_disabled_access}
-                                    wifi={row.room_has_wifi}
-                                    ethernet={row.room_has_ethernet} /> </td>
-                            </tr>
-                        );
-                    });
-                    return (
-                        <tbody key={index} className={event.hour}>
-                            {eventRows}
-                        </tbody>
-                    );
-                });
+                      const records = Object.values(event.records);
+                      const eventRows = records.map((row, i) => {
+                          const eventHour =
+                              i === 0 ? (
+                                  <td rowSpan={records.length + 1}>{this.fromNumberToHour(event.hour)}</td>
+                              ) : null;
+                          return (
+                              <tr key={i}>
+                                  {eventHour}
+                                  <td> {row.event_name} </td>
+                                  <td> {row.room_name} </td>
+                                  <td>
+                                      {new Date(row.event_timestamp_begin * 1000).toLocaleTimeString(
+                                          "en-US",
+                                          timeFormat
+                                      )}
+                                  </td>
+                                  <td>
+                                      {new Date(row.event_timestamp_end * 1000).toLocaleTimeString("en-US", timeFormat)}
+                                  </td>
+                                  <td> {row.event_host} </td>
+                                  <td> {row.event_attendance + "%"} </td>
+                                  <td> {this.getEventState(row.event_timestamp_begin, row.event_timestamp_end)} </td>
+                                  <td>
+                                      <Resources
+                                          projector={row.room_has_projector}
+                                          sound={row.room_has_sound_equipment}
+                                          disableAccess={row.room_has_disabled_access}
+                                          wifi={row.room_has_wifi}
+                                          ethernet={row.room_has_ethernet}
+                                      />
+                                  </td>
+                              </tr>
+                          );
+                      });
+                      return (
+                          <tbody key={index} className={event.hour}>
+                              {eventRows}
+                          </tbody>
+                      );
+                  });
 
         return (
             <div className="App">
@@ -151,7 +178,7 @@ class App extends React.Component {
                     <table className="table table-dark">
                         <thead className="thead-primary">
                             <tr>
-                                <th colSpan="8">
+                                <th colSpan="9">
                                     <Clock />
                                 </th>
                             </tr>
