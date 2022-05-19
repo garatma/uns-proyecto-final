@@ -6,6 +6,7 @@ import soundIcon from "./icons/sound.png";
 import disabledAccessIcon from "./icons/disabledAccess.png";
 import wifiIcon from "./icons/wifi.png";
 import ethernetIcon from "./icons/ethernet.png";
+import logo from "./icons/logo.png";
 
 const dateFormat = {
     year: "numeric",
@@ -178,9 +179,21 @@ class App extends React.Component {
                     <table className="table table-dark">
                         <thead className="thead-primary">
                             <tr>
-                                <th colSpan="9">
-                                    <Clock />
+                                <th className="logo" colSpan="3">
+                                    <img src={logo} className="icon" alt="icon" />
                                 </th>
+
+                                <th colSpan="5" className="date">
+                                    Mié 18 de mayo, 2022
+                                </th>
+
+                                <th colSpan="1" className="time">
+                                    11:45:40 PM
+                                </th>
+
+                                {/* <th colSpan="8" className="clock"> */}
+                                {/* <Clock /> */}
+                                {/* </th> */}
                             </tr>
                             <tr className="table-warning">
                                 <th></th>
