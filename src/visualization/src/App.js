@@ -58,11 +58,11 @@ class Clock extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                {this.state.date.toLocaleString("es-AR", dateFormat) + " — " + this.state.date.toLocaleTimeString()}
-            </div>
-        );
+        let text = null;
+        if (this.props.type === "date") text = this.state.date.toLocaleString("es-AR", dateFormat);
+        else if (this.props.type === "time") text = this.state.date.toLocaleTimeString();
+
+        return <div className={this.props.type}>{text}</div>;
     }
 }
 
@@ -182,18 +182,12 @@ class App extends React.Component {
                                 <th className="logo" colSpan="3">
                                     <img src={logo} className="icon" alt="icon" />
                                 </th>
-
                                 <th colSpan="5" className="date">
-                                    Mié 18 de mayo, 2022
+                                    <Clock type="date" />
                                 </th>
-
                                 <th colSpan="1" className="time">
-                                    11:45:40 PM
+                                    <Clock type="time" />
                                 </th>
-
-                                {/* <th colSpan="8" className="clock"> */}
-                                {/* <Clock /> */}
-                                {/* </th> */}
                             </tr>
                             <tr className="table-warning">
                                 <th></th>
