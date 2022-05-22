@@ -1,77 +1,21 @@
 import "./App.css";
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import projectorIcon from "./icons/projector.png";
-import soundIcon from "./icons/sound.png";
-import disabledAccessIcon from "./icons/disabledAccess.png";
-import wifiIcon from "./icons/wifi.png";
-import ethernetIcon from "./icons/ethernet.png";
 import logo from "./icons/logo.png";
-
-const dateFormat = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-    timezone: "ART"
-};
+import Clock from "./clock/Clock.js";
+import Row from "./Row.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const timeFormat = {
     hour: "numeric",
     minute: "numeric"
 };
 
-function Resources(props) {
-    let projector = props.projector ? <img src={projectorIcon} className="icon" alt="icon" /> : null;
-    let sound = props.sound ? <img src={soundIcon} className="icon" alt="icon" /> : null;
-    let disabledAccess = props.disableAccess ? <img src={disabledAccessIcon} className="icon" alt="icon" /> : null;
-    let wifi = props.wifi ? <img src={wifiIcon} className="icon" alt="icon" /> : null;
-    let ethernet = props.ethernet ? <img src={ethernetIcon} className="icon" alt="icon" /> : null;
-
-    return (
-        <div>
-            {projector}
-            {sound}
-            {disabledAccess}
-            {wifi}
-            {ethernet}
-        </div>
-    );
-}
-
-class Clock extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { date: new Date() };
-    }
-
-    componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        this.setState({ date: new Date() });
-    }
-
-    render() {
-        let text = null;
-        if (this.props.type === "date") text = this.state.date.toLocaleString("es-AR", dateFormat);
-        else if (this.props.type === "time") text = this.state.date.toLocaleTimeString();
-
-        return <div className={this.props.type}>{text}</div>;
-    }
-}
-
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            event_table: null,
-            events_per_hour: null
+            eventTable: null,
+            eventsPerHour: null
         };
     }
 
@@ -89,7 +33,7 @@ class App extends React.Component {
     getEventCountWithSameHour(json) {
         if (json == null) return null;
         let eventsPerHour = [];
-        for (let i = 0; i < 23; i++) {
+        for (let i = 0; i < 24; i++) {
             eventsPerHour.push({ hour: i, records: null });
         }
 
@@ -105,20 +49,11 @@ class App extends React.Component {
             .then((response) => response.json())
             .then((json) => {
                 this.setState({
-                    event_table: json,
-                    events_per_hour: this.getEventCountWithSameHour(json)
+                    eventTable: json,
+                    eventsPerHour: this.getEventCountWithSameHour(json)
                 });
             })
             .catch((razon) => console.log("no se pudo hacer el request: " + razon));
-    }
-
-    getEventState(timestamp_event_begin, timestamp_event_end) {
-        let now = new Date();
-        let begin_date = new Date(timestamp_event_begin * 1000);
-        let end_date = new Date(timestamp_event_end * 1000);
-        if (now > end_date) return "Finalizado";
-        else if (now < begin_date) return "No Empezó";
-        else return "En Progreso";
     }
 
     fromNumberToHour(hourNumber) {
@@ -126,57 +61,48 @@ class App extends React.Component {
         else return hourNumber + ":00 PM";
     }
 
+    setTimestamp(timestamp) {
+        return new Date(timestamp * 1000).toLocaleTimeString("en-US", timeFormat);
+    }
+
+    setRows() {
+        if (this.state.eventsPerHour == null) return null;
+
+        let rows = this.state.eventsPerHour.map((hourBlock, index) => {
+            const records = Object.values(hourBlock.records);
+            const events = records.map((event, index2) => {
+                return (
+                    <Row
+                        timeBlock={this.fromNumberToHour(hourBlock.hour)}
+                        eventsPerTimeBlock={records.length + 1}
+                        drawTimeBlock={index2 === 0 ? true : false}
+                        eventName={event.event_name}
+                        eventHost={event.event_host}
+                        eventAttendance={event.event_attendance + "%"}
+                        eventTimestampBegin={this.setTimestamp(event.event_timestamp_begin)}
+                        eventTimestampEnd={this.setTimestamp(event.event_timestamp_end)}
+                        roomName={event.room_name}
+                        hasProjector={event.room_has_projector}
+                        hasSoundEquipment={event.room_has_sound_equipment}
+                        hasDisabledAccess={event.room_has_disabled_access}
+                        hasWifi={event.room_has_wifi}
+                        hasEthernet={event.room_has_ethernet}
+                    />
+                );
+            });
+            return <tbody>{events}</tbody>;
+        });
+
+        return rows;
+    }
+
     render() {
-        let eventList =
-            this.state.events_per_hour == null
-                ? null
-                : this.state.events_per_hour.map((event, index) => {
-                      const records = Object.values(event.records);
-                      const eventRows = records.map((row, i) => {
-                          const eventHour =
-                              i === 0 ? (
-                                  <td rowSpan={records.length + 1}>{this.fromNumberToHour(event.hour)}</td>
-                              ) : null;
-                          return (
-                              <tr key={i}>
-                                  {eventHour}
-                                  <td> {row.event_name} </td>
-                                  <td> {row.room_name} </td>
-                                  <td>
-                                      {new Date(row.event_timestamp_begin * 1000).toLocaleTimeString(
-                                          "en-US",
-                                          timeFormat
-                                      )}
-                                  </td>
-                                  <td>
-                                      {new Date(row.event_timestamp_end * 1000).toLocaleTimeString("en-US", timeFormat)}
-                                  </td>
-                                  <td> {row.event_host} </td>
-                                  <td> {row.event_attendance + "%"} </td>
-                                  <td> {this.getEventState(row.event_timestamp_begin, row.event_timestamp_end)} </td>
-                                  <td>
-                                      <Resources
-                                          projector={row.room_has_projector}
-                                          sound={row.room_has_sound_equipment}
-                                          disableAccess={row.room_has_disabled_access}
-                                          wifi={row.room_has_wifi}
-                                          ethernet={row.room_has_ethernet}
-                                      />
-                                  </td>
-                              </tr>
-                          );
-                      });
-                      return (
-                          <tbody key={index} className={event.hour}>
-                              {eventRows}
-                          </tbody>
-                      );
-                  });
+        let rows = this.setRows();
 
         return (
             <div className="App">
                 <header className="App-header">
-                    <table className="table table-dark">
+                    <table className="table table-light">
                         <thead className="thead-primary">
                             <tr>
                                 <th className="logo" colSpan="3">
@@ -189,7 +115,7 @@ class App extends React.Component {
                                     <Clock type="time" />
                                 </th>
                             </tr>
-                            <tr className="table-warning">
+                            <tr>
                                 <th></th>
                                 <th>Evento</th>
                                 <th>Espacio</th>
@@ -201,7 +127,7 @@ class App extends React.Component {
                                 <th>Recursos</th>
                             </tr>
                         </thead>
-                        {eventList}
+                        {rows}
                     </table>
                 </header>
             </div>
