@@ -36,3 +36,18 @@
         transform: rotate(360deg);
     }
 }
+
+
+.heading{
+    color: rgb(17, 16, 16);
+    text-shadow: 5px 5px 10px black;
+    font-family: 'Smooch', cursive;
+    font-size: 1.7em;
+    text-decoration: underline;
+}
+
+
+
+
+
+

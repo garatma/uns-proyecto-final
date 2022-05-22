@@ -1,6 +1,11 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Alert from "react-bootstrap/Alert";
+import Carousel from "react-bootstrap/Carousel";
+import Table from 'react-bootstrap/Table';
+
+
 
 const dateFormat = {
     year: "numeric",
@@ -148,10 +153,10 @@ class App extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <table className="table table-dark">
+                    <Table className="table table-dark">
                         <thead className="thead-primary">
                             <tr>
-                                <th colSpan="8">
+                                <th colSpan="9">
                                     <Clock />
                                 </th>
                             </tr>
@@ -168,7 +173,48 @@ class App extends React.Component {
                             </tr>
                         </thead>
                         {eventList}
-                    </table>
+                    </Table>
+
+
+                    <Carousel variant="dark" autoPlay={true}
+                        interval={10000}  //null para desactivarlo
+                        controls={false}
+                        indicatorsLabels={true}>
+
+                        <Carousel.Item >
+                            <Alert variant="success">
+                                <Alert.Heading class="heading">Recordatorio 1</Alert.Heading>
+                                <p>
+                                    Aww yeah, you successfully read this important alert message. This example text is
+                                    going to run a bit longer so that you can see how spacing within an alert works with
+                                    this kind of content.
+                                </p>
+                            </Alert>
+                        </Carousel.Item>
+
+                        <Carousel.Item>
+                            <Alert variant="danger">
+                                <Alert.Heading class="heading">Recordatorio 2</Alert.Heading>
+                                <p>
+                                    Aww yeah, you successfully read this important alert message. This example text is
+                                    going to run a bit longer so that you can see how spacing within an alert works with
+                                    this kind of content.
+                                </p>
+                            </Alert>
+                        </Carousel.Item>
+
+                        <Carousel.Item>
+                            <Alert variant="warning">
+                                <Alert.Heading class="heading">Recordatorio 3</Alert.Heading>
+                                <p>
+                                    Aww yeah, you successfully read this important alert message. This example text is
+                                    going to run a bit longer so that you can see how spacing within an alert works with
+                                    this kind of content.
+                                </p>
+                            </Alert>
+                        </Carousel.Item>
+                    </Carousel>
+
                 </header>
             </div>
         );
