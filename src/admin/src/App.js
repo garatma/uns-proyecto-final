@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import React from "react";
 
 async function GetFromRoomEvent() {
     // just a sample get fetch to show how to pass a url for the backend
@@ -81,25 +82,78 @@ async function Delete() {
         .catch((razon) => alert("no se pudo hacer el request: " + razon));
 }
 
-function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                    Learn React for admin
-                </a>
-                <button onClick={GetFromRoomEvent}>Obtener info de room-event</button>
-                <button onClick={GetFromAnnouncement}>Obtener info de announcement</button>
-                <button onClick={Post}>Insertar en announcement</button>
-                <button onClick={Put}>Actualizar en announcement</button>
-                <button onClick={Delete}>Eliminar en announcement</button>
-            </header>
-        </div>
-    );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: ''
+        }
+    }
+
+
+
+    showHour = () => {
+        return (
+            < label >
+                Desde:
+                <input type="number" />
+                <input type="number" />
+                <select >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+                <input type="date"></input>
+            </label >
+        );
+    }
+
+    render() {
+        let hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        let minutes = [];
+
+        for (let i = 0; i < 60; i++) {
+            minutes.push(i);
+        }
+
+        const listHours = hours.map((hour) => <option>{hour}</option>);
+        const listMinutes = minutes.map((minute) => <option>{minute}</option>);
+
+        return (
+            <div div className="App" >
+                <header className="App-header">
+
+                    <form>
+                        <label>Título:</label>
+                        <input required type="text" placeholder="Escriba un título..." />
+                        <br />
+                        <label>Anuncio:</label>
+                        <textarea required placeholder="Escriba un anuncio..." ></textarea>
+                        <br />
+                        {this.showHour()}
+                        <label>
+                            Hasta:
+                            <select >
+                                {listHours}
+                            </select>
+                            <select >
+                                {listMinutes}
+                            </select>
+                            <select >
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                            <input type="date"></input>
+                        </label>
+                        <br />
+                        <label>Prioridad:</label>
+                        <br />
+                        <label>Autor/a:</label>
+                        <button>Publicar Anuncio</button>
+                    </form>
+                </header>
+            </div>
+        );
+    }
 }
 
 export default App;

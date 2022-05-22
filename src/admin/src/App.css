@@ -36,3 +36,53 @@
         transform: rotate(360deg);
     }
 }
+
+
+label {
+    text-align: left;
+    display: block;
+    color: rgb(202, 209, 223);
+    box-sizing: border-box;
+    font-size: large;
+    margin: 10px;
+
+}
+
+.showHour input {
+    width:fit-content;
+    height:fit-content;
+}
+
+input {
+    width: 500px;
+    height: 40px;
+    padding: 14px 20px;
+    margin: 10px;
+    border: 1px solid rgb(26, 25, 25);
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: block;
+    resize: none;
+}
+
+
+
+textarea {
+    width: 500px;
+    height: 150px;
+    padding: 14px 20px;
+    margin: 10px;
+    border: 1px solid rgb(26, 25, 25);
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: block;
+    resize: none;
+}
+
+button {
+    width: 200px;
+    height: 50px;
+    margin: 20px;
+    border-radius: 4px;
+    font-size: large;
+}
