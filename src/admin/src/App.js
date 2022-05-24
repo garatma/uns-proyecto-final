@@ -82,33 +82,60 @@ async function Delete() {
         .catch((razon) => alert("no se pudo hacer el request: " + razon));
 }
 
-class App extends React.Component {
+class Date extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
-        }
+            startDate: 0
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-
-
-    showHour = () => {
-        return (
-            < label >
-                Desde:
-                <input type="number" />
-                <input type="number" />
-                <select >
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                </select>
-                <input type="date"></input>
-            </label >
-        );
+    handleInputChange(event) {
+        this.setState({ startDate: event.target.value });
+        console.log(event.target.value);
     }
 
     render() {
-        let hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        return <input className="date" type="date" value={this.state.startDate} onChange={this.handleInputChange} />;
+    }
+}
+
+class Number extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            number: 0
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(event) {
+        let value = event.target.value;
+        if (value < this.props.min || value > this.props.max) return;
+        this.setState({
+            number: parseInt(value)
+        });
+    }
+    render() {
+        return (
+            <input
+                className="hourAndMinutes"
+                type="number"
+                min={this.props.min}
+                max={this.props.max}
+                value={this.state.number}
+                onChange={this.handleInputChange}
+            />
+        );
+    }
+}
+
+class App extends React.Component {
+    render() {
+        let hours = ["00", "01", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
         let minutes = [];
 
         for (let i = 0; i < 60; i++) {
@@ -119,30 +146,30 @@ class App extends React.Component {
         const listMinutes = minutes.map((minute) => <option>{minute}</option>);
 
         return (
-            <div div className="App" >
+            <div div className="App">
                 <header className="App-header">
-
                     <form>
                         <label>Título:</label>
                         <input required type="text" placeholder="Escriba un título..." />
                         <br />
                         <label>Anuncio:</label>
-                        <textarea required placeholder="Escriba un anuncio..." ></textarea>
+                        <textarea required placeholder="Escriba un anuncio..."></textarea>
                         <br />
-                        {this.showHour()}
+                        <label>
+                            Desde:
+                            <Date />
+                            <Number min={0} max={23} />
+                            :
+                            <Number min={0} max={59} />
+                            hs
+                        </label>
                         <label>
                             Hasta:
-                            <select >
-                                {listHours}
-                            </select>
-                            <select >
-                                {listMinutes}
-                            </select>
-                            <select >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                            <input type="date"></input>
+                            <Date />
+                            <Number min={0} max={23} />
+                            :
+                            <Number min={0} max={59} />
+                            hs
                         </label>
                         <br />
                         <label>Prioridad:</label>

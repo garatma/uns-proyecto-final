@@ -86,3 +86,19 @@ button {
     border-radius: 4px;
     font-size: large;
 }
+
+.hourAndMinutes{
+    display: inline-block;
+    width: 60px;
+    height: 0.2px;
+    padding: 10px 10px;
+    margin: .4rem 0;
+}
+
+.date{
+    display: inline-block;
+    width: 135px;
+    height: 25px;
+    text-align: center;
+    padding: 1px 0px;
+}
