@@ -135,16 +135,6 @@ class Number extends React.Component {
 
 class App extends React.Component {
     render() {
-        let hours = ["00", "01", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-        let minutes = [];
-
-        for (let i = 0; i < 60; i++) {
-            minutes.push(i);
-        }
-
-        const listHours = hours.map((hour) => <option>{hour}</option>);
-        const listMinutes = minutes.map((minute) => <option>{minute}</option>);
-
         return (
             <div div className="App">
                 <header className="App-header">
