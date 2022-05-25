@@ -102,6 +102,20 @@ class Date extends React.Component {
     }
 }
 
+class Time extends React.Component {
+    render() {
+        return (
+            <div>
+                <Date />
+                <Number min={0} max={23} />
+                :
+                <Number min={0} max={59} />
+                hs
+            </div>
+        );
+    }
+}
+
 class Number extends React.Component {
     constructor(props) {
         super(props);
@@ -133,42 +147,67 @@ class Number extends React.Component {
     }
 }
 
+
+class Announcement extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: "",
+            textAnnouncement: "",
+            author: ""
+        };
+
+        this.handleTextChange = this.handleTextChange.bind(this);
+    }
+
+    handleTextChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <form>
+                    <label>Título:</label>
+                    <input required name="title" type="text" value={this.state.title} onChange={this.handleTextChange} />
+                    <label>Anuncio:</label>
+                    <textarea required name="textAnnouncement" value={this.state.textAnnouncement} onChange={this.handleTextChange} ></textarea>
+                    <label>
+                        Desde:
+                        <Time />
+                    </label>
+                    <label>
+                        Hasta:
+                        <Time />
+                    </label>
+                    <label>Prioridad:</label>
+                    <label className="authorLabel">Autor/a:</label>
+                    <input required className="authorInput" name="author" type="text" value={this.state.author} onChange={this.handleTextChange} />
+                    <button onClick={() => {
+                        console.log(this.state.title);
+                        console.log(this.state.title);
+                        console.log(this.state.textAnnouncement);
+                        console.log(this.state.author);
+                    }}>Publicar Anuncio</button>
+                </form>
+            </div>
+        );
+    }
+}
+
 class App extends React.Component {
     render() {
         return (
-            <div div className="App">
+            <div className="App">
                 <header className="App-header">
-                    <form>
-                        <label>Título:</label>
-                        <input required type="text" placeholder="Escriba un título..." />
-                        <br />
-                        <label>Anuncio:</label>
-                        <textarea required placeholder="Escriba un anuncio..."></textarea>
-                        <br />
-                        <label>
-                            Desde:
-                            <Date />
-                            <Number min={0} max={23} />
-                            :
-                            <Number min={0} max={59} />
-                            hs
-                        </label>
-                        <label>
-                            Hasta:
-                            <Date />
-                            <Number min={0} max={23} />
-                            :
-                            <Number min={0} max={59} />
-                            hs
-                        </label>
-                        <br />
-                        <label>Prioridad:</label>
-                        <br />
-                        <label>Autor/a:</label>
-                        <button>Publicar Anuncio</button>
-                    </form>
+                    <Announcement></Announcement>
                 </header>
-            </div>
+            </div >
         );
     }
 }

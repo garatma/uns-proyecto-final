@@ -65,6 +65,19 @@ input {
     resize: none;
 }
 
+.authorLabel label{
+    width: 5px;
+        height: 40px;
+        display: inline-block;
+        background-color: transparent;
+}
+
+.authorInput{
+    width: 500px;
+    height: 40px;
+    display:inline-block;
+}
+
 
 
 textarea {
