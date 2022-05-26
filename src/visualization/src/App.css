@@ -39,16 +39,23 @@
 }
 
 
+
 .heading{
-    color: rgb(17, 16, 16);
-    text-shadow: 5px 5px 10px black;
-    font-family: 'Smooch', cursive;
-    font-size: 1.7em;
+    font-family: 'Smooch';
     text-decoration: underline;
 }
 
+.carousel .carouselItem{
+    height: 200px;
+    width: 100vw;
+}
 
-
-
+.alert {
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    min-height: 200px;
+}
 
 

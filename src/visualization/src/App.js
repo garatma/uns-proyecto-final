@@ -9,11 +9,69 @@ import Carousel from "react-bootstrap/Carousel";
 import Table from 'react-bootstrap/Table';
 
 
-
 const timeFormat = {
     hour: "numeric",
     minute: "numeric"
 };
+
+class AnnouncementsToShow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            announcements: null
+        }
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        fetch("/backend/announcement/")
+            .then(response => response.json())
+            .then(json => this.setState({ announcements: json }))
+            .catch(reason => console.log("no se pudo hacer el request: " + reason));
+    }
+
+    setAnnouncements() {
+        if (this.state.announcements == null) return null;
+
+        console.log(this.state.announcements);
+
+        let a = this.state.announcements.map((element) => {
+            //let startDate = element.timestamp_begin 
+            //let endDate = element.timestamp_end
+            return (
+                <Carousel.Item className="carouselItem">
+                    <Alert className="alert" variant="success">
+                        <Alert.Heading className="heading">{element.writer}</Alert.Heading>
+                        <p>
+                            {element.message}
+                        </p>
+                    </Alert>
+                </Carousel.Item>
+            );
+        });
+        return a;
+    }
+
+    render() {
+        let a = this.setAnnouncements();
+        return (
+            <Carousel className="carousel" variant="dark"
+                interval={10000}
+                controls={false}>
+                {a}
+            </Carousel>
+        );
+    }
+}
+
 
 class App extends React.Component {
     constructor(props) {
@@ -58,7 +116,7 @@ class App extends React.Component {
                     eventsPerHour: this.getEventCountWithSameHour(json)
                 });
             })
-            .catch((razon) => console.log("no se pudo hacer el request: " + razon));
+            .catch((reason) => console.log("no se pudo hacer el request: " + reason));
     }
 
     fromNumberToHour(hourNumber) {
@@ -134,49 +192,9 @@ class App extends React.Component {
                         </thead>
                         {rows}
                     </Table>
-
-
-                    <Carousel variant="dark" autoPlay={true}
-                        interval={10000}  //null para desactivarlo
-                        controls={false}
-                        indicatorsLabels={true}>
-
-                        <Carousel.Item >
-                            <Alert variant="success">
-                                <Alert.Heading class="heading">Recordatorio 1</Alert.Heading>
-                                <p>
-                                    Aww yeah, you successfully read this important alert message. This example text is
-                                    going to run a bit longer so that you can see how spacing within an alert works with
-                                    this kind of content.
-                                </p>
-                            </Alert>
-                        </Carousel.Item>
-
-                        <Carousel.Item>
-                            <Alert variant="danger">
-                                <Alert.Heading class="heading">Recordatorio 2</Alert.Heading>
-                                <p>
-                                    Aww yeah, you successfully read this important alert message. This example text is
-                                    going to run a bit longer so that you can see how spacing within an alert works with
-                                    this kind of content.
-                                </p>
-                            </Alert>
-                        </Carousel.Item>
-
-                        <Carousel.Item>
-                            <Alert variant="warning">
-                                <Alert.Heading class="heading">Recordatorio 3</Alert.Heading>
-                                <p>
-                                    Aww yeah, you successfully read this important alert message. This example text is
-                                    going to run a bit longer so that you can see how spacing within an alert works with
-                                    this kind of content.
-                                </p>
-                            </Alert>
-                        </Carousel.Item>
-                    </Carousel>
-
+                    <AnnouncementsToShow></AnnouncementsToShow>
                 </header>
-            </div>
+            </div >
         );
     }
 }

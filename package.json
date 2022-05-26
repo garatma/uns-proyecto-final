@@ -18,5 +18,9 @@
     "eslint": "^8.14.0",
     "eslint-plugin-react": "^7.29.4",
     "prettier": "^2.6.2"
+  },
+  "dependencies": {
+    "cron-time-generator": "^1.3.0",
+    "node-schedule": "^2.1.0"
   }
 }
