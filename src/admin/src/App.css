@@ -1,5 +1,5 @@
 .App {
-    text-align: center;
+    text-align: left;
 }
 
 .App-logo {
@@ -37,7 +37,6 @@
     }
 }
 
-
 label {
     text-align: left;
     display: block;
@@ -45,12 +44,11 @@ label {
     box-sizing: border-box;
     font-size: large;
     margin: 10px;
-
 }
 
 .showHour input {
-    width:fit-content;
-    height:fit-content;
+    width: fit-content;
+    height: fit-content;
 }
 
 input {
@@ -65,20 +63,18 @@ input {
     resize: none;
 }
 
-.authorLabel label{
+.authorLabel label {
     width: 5px;
-        height: 40px;
-        display: inline-block;
-        background-color: transparent;
+    height: 40px;
+    display: inline-block;
+    background-color: transparent;
 }
 
-.authorInput{
+.authorInput {
     width: 500px;
     height: 40px;
-    display:inline-block;
+    display: inline-block;
 }
-
-
 
 textarea {
     width: 500px;
@@ -100,18 +96,22 @@ button {
     font-size: large;
 }
 
-.hourAndMinutes{
+.hourAndMinutes {
     display: inline-block;
     width: 60px;
     height: 0.2px;
     padding: 10px 10px;
-    margin: .4rem 0;
+    margin: 0.4rem 0;
 }
 
-.date{
+.date {
     display: inline-block;
     width: 135px;
     height: 25px;
     text-align: center;
     padding: 1px 0px;
+}
+
+.priority {
+    margin-left: 10px;
 }
