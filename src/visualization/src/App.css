@@ -40,10 +40,7 @@
 
 
 
-.heading{
-    font-family: 'Smooch';
-    text-decoration: underline;
-}
+
 
 .carousel .carouselItem{
     height: 200px;
@@ -58,4 +55,20 @@
     min-height: 200px;
 }
 
+.heading {
+    font-family: 'Smooch';
+    text-decoration: underline;
+}
+
+p.message{
+    font-size: 24px;
+}
+
+p.writer{
+text-decoration: underline;
+position:absolute;
+right: 200px;
+bottom: 0px;
+font-size:medium;
+}
 

@@ -1,6 +1,35 @@
 import "./App.css";
 import React from "react";
 
+async function getFromAnnouncements() {
+    const insert = {
+        message: 'A blog post by Kingsley',
+        writer: 'Brilliant post on fetch API',
+        priority: "dsafa",
+        timestamp_begin: 0,
+        timestamp_end: 0,
+        timestamp_create: 0,
+        timestamp_update: 0,
+        title: 'Título'
+    };
+
+    const options = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(insert),
+
+    };
+    // just a sample get fetch to show how to pass a url for the backend
+    fetch("/backend/announcement/", options)
+        .then(response => response.text())
+        .then(texto => alert(texto))
+        .catch(razon => alert("no se pudo hacer el request: " + razon));
+
+}
+
+
 class Timestamp extends React.Component {
     constructor(props) {
         super(props);
@@ -107,7 +136,7 @@ class Announcement extends React.Component {
 
     handleSubmit(event) {
         console.log(this.state);
-        // TODO: fetch post to backend with this format:
+        // TODO: fetch to backend with this format:
         // {
         //     $message: req.body.message,
         //     $writer: req.body.writer,
@@ -118,6 +147,11 @@ class Announcement extends React.Component {
         //     $timestamp_update: req.body.timestamp_update
         // },
         // we have to transform the string timestamps to int (epoch) timestamps
+
+        getFromAnnouncements();
+        console.log("holaaaaaaaaaa");
+
+
         // TODO: the table should have a column for the title of the announcement
         event.preventDefault();
     }

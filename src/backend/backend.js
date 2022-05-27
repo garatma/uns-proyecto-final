@@ -58,7 +58,7 @@ app.get("/backend/announcement/:id", (req, res) => {
 app.post("/backend/announcement", (req, res) => {
     console.log("POST to " + req.url);
     db.run(
-        "insert into announcement (message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) values ($message,$writer,$priority,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update)",
+        "insert into announcement (message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update,title) values ($message,$writer,$priority,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update,$title)",
         {
             $message: req.body.message,
             $writer: req.body.writer,
@@ -66,7 +66,8 @@ app.post("/backend/announcement", (req, res) => {
             $timestamp_begin: req.body.timestamp_begin,
             $timestamp_end: req.body.timestamp_end,
             $timestamp_create: req.body.timestamp_create,
-            $timestamp_update: req.body.timestamp_update
+            $timestamp_update: req.body.timestamp_update,
+            $title: req.body.title
         },
         (err) => {
             if (err) res.status(400).json({ error: err.message });
@@ -78,7 +79,7 @@ app.post("/backend/announcement", (req, res) => {
 app.put("/backend/announcement", (req, res) => {
     console.log("PUT to " + req.url);
     db.run(
-        "update announcement set message=$message, writer=$writer,priority=$priority,timestamp_begin=$timestamp_begin,timestamp_end=$timestamp_end,timestamp_create=$timestamp_create,timestamp_update=$timestamp_update where id=$id",
+        "update announcement set message=$message, writer=$writer,priority=$priority,timestamp_begin=$timestamp_begin,timestamp_end=$timestamp_end,timestamp_create=$timestamp_create,timestamp_update=$timestamp_update,title=$title where id=$id",
         {
             $id: req.body.id,
             $message: req.body.message,
@@ -87,7 +88,8 @@ app.put("/backend/announcement", (req, res) => {
             $timestamp_begin: req.body.timestamp_begin,
             $timestamp_end: req.body.timestamp_end,
             $timestamp_create: req.body.timestamp_create,
-            $timestamp_update: req.body.timestamp_update
+            $timestamp_update: req.body.timestamp_update,
+            $title: req.body.title
         },
         (err) => {
             if (err) res.status(400).json({ error: err.message });

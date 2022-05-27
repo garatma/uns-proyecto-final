@@ -44,14 +44,15 @@ class AnnouncementsToShow extends React.Component {
         console.log(this.state.announcements);
 
         let a = this.state.announcements.map((element) => {
-            //let startDate = element.timestamp_begin 
-            //let endDate = element.timestamp_end
             return (
                 <Carousel.Item className="carouselItem">
                     <Alert className="alert" variant="success">
-                        <Alert.Heading className="heading">{element.writer}</Alert.Heading>
-                        <p>
+                        <Alert.Heading className="heading">{element.title}</Alert.Heading>
+                        <p className="message">
                             {element.message}
+                        </p>
+                        <p className="writer">
+                            {element.writer}
                         </p>
                     </Alert>
                 </Carousel.Item>
