@@ -1,39 +1,9 @@
 import "./App.css";
 import React from "react";
 
-async function getFromAnnouncements() {
-    const insert = {
-        message: 'A blog post by Kingsley',
-        writer: 'Brilliant post on fetch API',
-        priority: "dsafa",
-        timestamp_begin: 0,
-        timestamp_end: 0,
-        timestamp_create: 0,
-        timestamp_update: 0,
-        title: 'Título'
-    };
-
-    const options = {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(insert),
-
-    };
-    // just a sample get fetch to show how to pass a url for the backend
-    fetch("/backend/announcement/", options)
-        .then(response => response.text())
-        .then(texto => alert(texto))
-        .catch(razon => alert("no se pudo hacer el request: " + razon));
-
-}
-
-
 class Timestamp extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
@@ -87,8 +57,6 @@ class Announcement extends React.Component {
             author: ""
         };
 
-        console.log(this.state);
-
         this.handleTimestampChange = this.handleTimestampChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
@@ -99,7 +67,7 @@ class Announcement extends React.Component {
         let now = new Date();
 
         let year = now.getFullYear();
-        let month = now.getMonth() < 10 ? "0" + now.getMonth() : now.getMonth() + 1;
+        let month = now.getMonth() < 10 ? "0" + (now.getMonth() + 1) : now.getMonth() + 1;
         let day = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
         let hours = now.getHours() < 10 ? "0" + now.getHours() : now.getHours();
         let minutes = now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes();
@@ -134,25 +102,33 @@ class Announcement extends React.Component {
         });
     }
 
+    toEpoch() {}
+
     handleSubmit(event) {
-        console.log(this.state);
-        // TODO: fetch to backend with this format:
-        // {
-        //     $message: req.body.message,
-        //     $writer: req.body.writer,
-        //     $priority: req.body.priority,
-        //     $timestamp_begin: req.body.timestamp_begin,
-        //     $timestamp_end: req.body.timestamp_end,
-        //     $timestamp_create: req.body.timestamp_create,
-        //     $timestamp_update: req.body.timestamp_update
-        // },
-        // we have to transform the string timestamps to int (epoch) timestamps
+        const insert = {
+            title: this.state.title,
+            message: this.state.body,
+            writer: this.state.author,
+            priority: this.state.priority,
+            timestamp_begin: parseInt(Date.parse(this.state.fromTimestamp) / 1000),
+            timestamp_end: parseInt(Date.parse(this.state.toTimestamp) / 1000),
+            timestamp_create: parseInt(Date.now() / 1000),
+            timestamp_update: null
+        };
 
-        getFromAnnouncements();
-        console.log("holaaaaaaaaaa");
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(insert)
+        };
 
+        fetch("/backend/announcement/", options)
+            .then((response) => response.text())
+            .then((text) => console.log(text))
+            .catch((cause) => console.log("couldn't submit announcement form: " + cause));
 
-        // TODO: the table should have a column for the title of the announcement
         event.preventDefault();
     }
 
