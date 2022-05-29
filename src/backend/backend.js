@@ -58,8 +58,9 @@ app.get("/backend/announcement/:id", (req, res) => {
 app.post("/backend/announcement", (req, res) => {
     console.log("POST to " + req.url);
     db.run(
-        "insert into announcement (message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) values ($message,$writer,$priority,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update)",
+        "insert into announcement (title,message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) values ($title,$message,$writer,$priority,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update)",
         {
+            $title: req.body.title,
             $message: req.body.message,
             $writer: req.body.writer,
             $priority: req.body.priority,
@@ -78,9 +79,10 @@ app.post("/backend/announcement", (req, res) => {
 app.put("/backend/announcement", (req, res) => {
     console.log("PUT to " + req.url);
     db.run(
-        "update announcement set message=$message, writer=$writer,priority=$priority,timestamp_begin=$timestamp_begin,timestamp_end=$timestamp_end,timestamp_create=$timestamp_create,timestamp_update=$timestamp_update where id=$id",
+        "update announcement set title=$title, message=$message, writer=$writer,priority=$priority,timestamp_begin=$timestamp_begin,timestamp_end=$timestamp_end,timestamp_create=$timestamp_create,timestamp_update=$timestamp_update where id=$id",
         {
             $id: req.body.id,
+            $title: req.body.title,
             $message: req.body.message,
             $writer: req.body.writer,
             $priority: req.body.priority,
