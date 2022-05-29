@@ -16,11 +16,11 @@ app.use("/visualization", express.static(path.join(__dirname, "../visualization/
 
 app.use("/", express.static(path.join(__dirname, "../visualization/build")));
 
-app.get("/admin/*", (res) => {
+app.get("/admin/*", (req, res) => {
     res.sendFile(path.join(__dirname + "/../admin/build/index.html"));
 });
 
-app.get("/visualization/*", (res) => {
+app.get("/visualization/*", (req, res) => {
     res.sendFile(path.join(__dirname + "/../visualization/build/index.html"));
 });
 
@@ -37,7 +37,7 @@ db.serialize();
 
 // ---------------------------------------------------- room-event -----------------------------------------------------
 
-app.get("/backend/room-event", (res) => {
+app.get("/backend/room-event", (req, res) => {
     db.all("select * from room_event", [], (err, rows) => {
         if (err) res.status(400).json({ error: err.message });
         else res.status(200).json(rows);
@@ -53,7 +53,7 @@ app.get("/backend/room-event/:id", (req, res) => {
 
 // --------------------------------------------------- announcement ----------------------------------------------------
 
-app.get("/backend/announcement", (res) => {
+app.get("/backend/announcement", (req, res) => {
     db.all("select * from announcement", [], (err, rows) => {
         if (err) res.status(400).json({ error: err.message });
         else res.status(200).json(rows);
@@ -119,7 +119,7 @@ app.delete("/backend/announcement/:id", (req, res) => {
 
 // map all other endpoints to visualization
 
-app.get("*", (res) => {
+app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/../visualization/build/index.html"));
 });
 
