@@ -22,7 +22,7 @@ CREATE TABLE event (
     description TEXT,
     host TEXT NOT NULL,
     attendance INTEGER NOT NULL CHECK(0 <= attendance AND attendance <= 100),
-    room_id INTEGER NOT NULL UNIQUE,
+    room_id INTEGER NOT NULL,
     timestamp_begin INTEGER NOT NULL CHECK(timestamp_begin >= 0),
     timestamp_end INTEGER NOT NULL CHECK(timestamp_end >= 0),
     repeat INTEGER,
@@ -37,6 +37,24 @@ INSERT INTO event (id,name,host,attendance,room_id,timestamp_begin,timestamp_end
     (2,"evento 2","host 2",25,2,1652007600,1652014800),
     (3,"evento 3","host 3",50,3,1652014800,1652022000),
     (4,"evento 4","host 4",75,4,1652018400,1652022000);
+
+CREATE TABLE announcement (
+	id INTEGER NOT NULL UNIQUE,
+	title TEXT NOT NULL,
+	message TEXT NOT NULL,
+	writer TEXT,
+	priority TEXT NOT NULL,
+	timestamp_begin INTEGER NOT NULL,
+	timestamp_end INTEGER NOT NULL,
+	timestamp_create INTEGER NOT NULL,
+	timestamp_update INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+
+INSERT INTO announcement (id,title,message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) VALUES
+    (1,"titulo de anuncio 1","Primer anuncio","Autor 1","LOW",0,0,0,null),
+    (2,"titulo de anuncio 2","Segundo anuncio","Autor 2","MID",0,0,0,null),
+    (3,"titulo de anuncio 3","Tercer anuncio","Autor 3","HIGH",0,0,0,null);
 
 CREATE VIEW event_room AS
     SELECT
