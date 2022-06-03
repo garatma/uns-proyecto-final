@@ -1,12 +1,15 @@
 import React from "react";
 import Resources from "./resources/Resources.js";
 
+const timeFormat = {
+    hour: "numeric",
+    minute: "numeric"
+};
+
 function getEventState(timestampEventBegin, timestampEventEnd) {
     let now = new Date();
-    let beginDate = new Date(timestampEventBegin * 1000);
-    let endDate = new Date(timestampEventEnd * 1000);
-    if (now > endDate) return "Finalizado";
-    else if (now < beginDate) return "No Empezó";
+    if (now > timestampEventEnd) return "Finalizado";
+    else if (now < timestampEventBegin) return "No Empezó";
     else return "En Progreso";
 }
 
@@ -23,8 +26,8 @@ function Row(props) {
             {timeBlock}
             <td>{props.eventName}</td>
             <td>{props.roomName}</td>
-            <td>{props.eventTimestampBegin}</td>
-            <td>{props.eventTimestampEnd}</td>
+            <td>{props.eventTimestampBegin.toLocaleTimeString("en-US", timeFormat)}</td>
+            <td>{props.eventTimestampEnd.toLocaleTimeString("en-US", timeFormat)}</td>
             <td>{props.eventHost}</td>
             <td>{props.eventAttendance}</td>
             <td>{getEventState(props.eventTimestampBegin, props.eventTimestampEnd)}</td>
