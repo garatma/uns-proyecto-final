@@ -6,8 +6,7 @@ import Row from "./Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Alert from "react-bootstrap/Alert";
 import Carousel from "react-bootstrap/Carousel";
-import Table from 'react-bootstrap/Table';
-
+import Table from "react-bootstrap/Table";
 
 const timeFormat = {
     hour: "numeric",
@@ -19,12 +18,11 @@ class AnnouncementsToShow extends React.Component {
         super(props);
         this.state = {
             announcements: null
-        }
+        };
     }
 
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
-
     }
 
     componentWillUnmount() {
@@ -33,9 +31,9 @@ class AnnouncementsToShow extends React.Component {
 
     tick() {
         fetch("/backend/announcement/")
-            .then(response => response.json())
-            .then(json => this.setState({ announcements: json }))
-            .catch(reason => console.log("no se pudo hacer el request: " + reason));
+            .then((response) => response.json())
+            .then((json) => this.setState({ announcements: json }))
+            .catch((reason) => console.log("no se pudo hacer el request: " + reason));
     }
 
     setAnnouncements() {
@@ -48,12 +46,8 @@ class AnnouncementsToShow extends React.Component {
                 <Carousel.Item className="carouselItem">
                     <Alert className="alert" variant="success">
                         <Alert.Heading className="heading">{element.title}</Alert.Heading>
-                        <p className="message">
-                            {element.message}
-                        </p>
-                        <p className="writer">
-                            {element.writer}
-                        </p>
+                        <p className="message">{element.message}</p>
+                        <p className="writer">{element.writer}</p>
                     </Alert>
                 </Carousel.Item>
             );
@@ -64,15 +58,12 @@ class AnnouncementsToShow extends React.Component {
     render() {
         let a = this.setAnnouncements();
         return (
-            <Carousel className="carousel" variant="dark"
-                interval={10000}
-                controls={false}>
+            <Carousel className="carousel" variant="dark" interval={10000} controls={false}>
                 {a}
             </Carousel>
         );
     }
 }
-
 
 class App extends React.Component {
     constructor(props) {
@@ -131,12 +122,22 @@ class App extends React.Component {
 
     setRows() {
         if (this.state.eventsPerHour == null) return null;
-
+        var i = 0;
+        var index_time_block = 0;
+        let color = "";
+        let color_time_block = "";
         let rows = this.state.eventsPerHour.map((hourBlock, index) => {
             const records = Object.values(hourBlock.records);
             const events = records.map((event, index2) => {
+                i++;
+                i % 2 === 0 ? (color = "color1") : (color = "color2");
+                if (index2 === 0) color_time_block++;
+                index_time_block % 2 === 0
+                    ? (color_time_block = "color_time_block1")
+                    : (color_time_block = "color_time_block2");
                 return (
                     <Row
+                        color={color}
                         timeBlock={this.fromNumberToHour(hourBlock.hour)}
                         eventsPerTimeBlock={records.length + 1}
                         drawTimeBlock={index2 === 0 ? true : false}
@@ -166,7 +167,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <header className="App-header">
-                    <Table className="table table-light">
+                    <Table className="EventTable">
                         <thead className="thead-primary">
                             <tr>
                                 <th className="logo" colSpan="3">
@@ -195,7 +196,7 @@ class App extends React.Component {
                     </Table>
                     <AnnouncementsToShow></AnnouncementsToShow>
                 </header>
-            </div >
+            </div>
         );
     }
 }

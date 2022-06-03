@@ -15,7 +15,7 @@
 }
 
 .App-header {
-    background-color: #f8f9fa;
+    background-color: rgb(149, 175, 187);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -38,11 +38,7 @@
     }
 }
 
-
-
-
-
-.carousel .carouselItem{
+.carousel .carouselItem {
     height: 200px;
     width: 100vw;
 }
@@ -56,19 +52,38 @@
 }
 
 .heading {
-    font-family: 'Smooch';
+    font-family: "Smooch";
     text-decoration: underline;
 }
 
-p.message{
+p.message {
     font-size: 24px;
 }
 
-p.writer{
-text-decoration: underline;
-position:absolute;
-right: 200px;
-bottom: 0px;
-font-size:medium;
+p.writer {
+    text-decoration: underline;
+    position: absolute;
+    right: 200px;
+    bottom: 0px;
+    font-size: medium;
 }
 
+.color1 {
+    color: rgb(3, 3, 3);
+    background-color: rgb(173, 204, 235);
+    font-weight: 504;
+}
+
+.color2 {
+    color: rgb(255, 255, 255);
+    background-color: rgb(97, 135, 160);
+}
+
+.EventTable {
+    background-color: rgb(199, 204, 206);
+}
+
+.EventTable .TimeBlock {
+    color: rgb(20, 20, 20);
+    background-color: rgb(199, 204, 206);
+}

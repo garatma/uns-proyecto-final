@@ -13,13 +13,13 @@ function getEventState(timestampEventBegin, timestampEventEnd) {
 function Row(props) {
     let timeBlock =
         props.drawTimeBlock === true ? (
-            <td className="TimeBlock" rowSpan={props.eventsPerTimeBlock}>
+            <th className="TimeBlock" rowSpan={props.eventsPerTimeBlock}>
                 {props.timeBlock}
-            </td>
+            </th>
         ) : null;
 
     return (
-        <tr>
+        <tr className={props.color}>
             {timeBlock}
             <td>{props.eventName}</td>
             <td>{props.roomName}</td>
