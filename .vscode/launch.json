@@ -33,6 +33,6 @@
             ],
             "runtimeExecutable": "npm",
             "type": "node"
-        },
+        }
     ]
 }
