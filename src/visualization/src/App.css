@@ -19,56 +19,6 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
 }
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-
-
-
-.carousel .carouselItem{
-    height: 200px;
-    width: 100vw;
-}
-
-.alert {
-    position: absolute;
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    min-height: 200px;
-}
-
-.heading {
-    font-family: 'Smooch';
-    text-decoration: underline;
-}
-
-p.message{
-    font-size: 24px;
-}
-
-p.writer{
-text-decoration: underline;
-position:absolute;
-right: 200px;
-bottom: 0px;
-font-size:medium;
-}
-

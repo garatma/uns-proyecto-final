@@ -4,61 +4,8 @@ import logo from "./icons/logo.png";
 import Clock from "./clock/Clock.js";
 import Row from "./Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Alert from "react-bootstrap/Alert";
-import Carousel from "react-bootstrap/Carousel";
 import Table from "react-bootstrap/Table";
-
-class AnnouncementsToShow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            announcements: null
-        };
-    }
-
-    componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        fetch("/backend/announcement/")
-            .then((response) => response.json())
-            .then((json) => this.setState({ announcements: json }))
-            .catch((reason) => console.log("no se pudo hacer el request: " + reason));
-    }
-
-    setAnnouncements() {
-        if (this.state.announcements == null) return null;
-
-        console.log(this.state.announcements);
-
-        let a = this.state.announcements.map((element) => {
-            return (
-                <Carousel.Item className="carouselItem">
-                    <Alert className="alert" variant="success">
-                        <Alert.Heading className="heading">{element.title}</Alert.Heading>
-                        <p className="message">{element.message}</p>
-                        <p className="writer">{element.writer}</p>
-                    </Alert>
-                </Carousel.Item>
-            );
-        });
-        return a;
-    }
-
-    render() {
-        let a = this.setAnnouncements();
-        return (
-            <Carousel className="carousel" variant="dark" interval={10000} controls={false}>
-                {a}
-            </Carousel>
-        );
-    }
-}
+import AnnouncementsToShow from "./announcement/Announcement.js";
 
 class App extends React.Component {
     constructor(props) {
