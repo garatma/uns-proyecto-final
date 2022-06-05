@@ -1,4 +1,4 @@
-import "./App.css";
+import "./Admin.css";
 import React from "react";
 
 class Timestamp extends React.Component {
@@ -181,11 +181,11 @@ class Announcement extends React.Component {
     }
 }
 
-class App extends React.Component {
+class Admin extends React.Component {
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
+            <div className="Admin">
+                <header className="Admin-header">
                     <Announcement></Announcement>
                 </header>
             </div>
@@ -193,4 +193,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default Admin;

@@ -118,6 +118,6 @@ app.use("*", express.static(path.join(__dirname, "../visualization/build")));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`App listening on http://127.0.0.1:${PORT}`);
+    console.log(`Backend listening on http://127.0.0.1:${PORT}`);
     console.log("Press Ctrl+C to quit.");
 });

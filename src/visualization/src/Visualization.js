@@ -1,4 +1,4 @@
-import "./App.css";
+import "./Visualization.css";
 import React from "react";
 import logo from "./icons/logo.png";
 import Clock from "./clock/Clock.js";
@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
-class App extends React.Component {
+class Visualization extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,8 +97,8 @@ class App extends React.Component {
         let rows = this.setRows();
 
         return (
-            <div className="App">
-                <header className="App-header">
+            <div className="Visualization">
+                <header className="Visualization-header">
                     <Table className="table table-light">
                         <thead className="thead-primary">
                             <tr>
@@ -133,4 +133,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default Visualization;
