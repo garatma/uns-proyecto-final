@@ -54,12 +54,15 @@ class Announcement extends React.Component {
             fromTimestamp: this.now(),
             toTimestamp: this.now(),
             priority: "MID",
-            author: ""
+            author: "",
+            photo: "",
+            photo64: ""
         };
 
         this.handleTimestampChange = this.handleTimestampChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -102,14 +105,46 @@ class Announcement extends React.Component {
         });
     }
 
-    toEpoch() {}
+    handleFileChange(event) {
+        let file = event.target.files[0];
+
+        this.setState({
+            photo: file
+        });
+
+        // convert photo to base64
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+
+        reader.onload = (e) => {
+            this.setState({
+                photo64: e.target.result
+            });
+        };
+    }
 
     handleSubmit(event) {
+        event.preventDefault();
+
+        // if the photo is not PNG, return
+        if (
+            this.state.photo != null &&
+            this.state.photo !== "" &&
+            this.state.photo.type !== "image/png" &&
+            this.state.photo.type !== "image/jpg" &&
+            this.state.photo.type !== "image/jpeg"
+        ) {
+            alert("Nada más se soportan imágenes de tipo PNG/JPG/JPEG.");
+            return;
+        }
+
         const insert = {
-            title: this.state.title,
-            message: this.state.body,
-            writer: this.state.author,
-            priority: this.state.priority,
+            title: this.state.title.trim(),
+            message: this.state.body.trim(),
+            writer: this.state.author.trim(),
+            priority: this.state.priority.trim(),
+            photo: this.state.photo64.trim(),
             timestamp_begin: parseInt(Date.parse(this.state.fromTimestamp) / 1000),
             timestamp_end: parseInt(Date.parse(this.state.toTimestamp) / 1000),
             timestamp_create: parseInt(Date.now() / 1000),
@@ -124,12 +159,11 @@ class Announcement extends React.Component {
             body: JSON.stringify(insert)
         };
 
+        // TODO: handle code 413 (payload to large)
         fetch("/backend/announcement/", options)
             .then((response) => response.text())
             .then((text) => console.log(text))
             .catch((cause) => console.log("couldn't submit announcement form: " + cause));
-
-        event.preventDefault();
     }
 
     render() {
@@ -173,6 +207,11 @@ class Announcement extends React.Component {
                         value={this.state.author}
                         onChange={this.handleTextChange}
                     />
+
+                    <label>
+                        Foto:
+                        <input type="file" onChange={this.handleFileChange} />
+                    </label>
 
                     <button>Publicar anuncio</button>
                 </form>
