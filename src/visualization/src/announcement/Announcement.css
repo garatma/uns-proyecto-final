@@ -22,3 +22,12 @@ p.writer {
     bottom: 0px;
     font-size: medium;
 }
+
+.photo {
+    max-height: 90%;
+    max-width: 30%;
+    filter: invert(100%);
+    position: absolute;
+    left: 5px;
+    top: 10px;
+}

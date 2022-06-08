@@ -159,7 +159,7 @@ class Announcement extends React.Component {
             body: JSON.stringify(insert)
         };
 
-        // TODO: handle code 413 (payload to large)
+        // TODO: handle code 413 (payload too large)
         fetch("/backend/announcement/", options)
             .then((response) => response.text())
             .then((text) => console.log(text))
