@@ -1,6 +1,13 @@
 import "./App.css";
 import React from "react";
 
+const timeFormat = {
+    hour: "numeric",
+    minute: "numeric"
+};
+
+let rowsSelected = [];
+
 class Timestamp extends React.Component {
     constructor(props) {
         super(props);
@@ -44,6 +51,7 @@ class Priority extends React.Component {
         );
     }
 }
+
 
 class Announcement extends React.Component {
     constructor(props) {
@@ -102,7 +110,7 @@ class Announcement extends React.Component {
         });
     }
 
-    toEpoch() {}
+    toEpoch() { }
 
     handleSubmit(event) {
         const insert = {
@@ -162,17 +170,20 @@ class Announcement extends React.Component {
                         onChange={this.handleTimestampChange}
                     />
 
-                    <label>Prioridad:</label>
-                    <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                    <label className="PriorityLabel">Prioridad:
+                        <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                    </label>
 
                     <label className="authorLabel">Autor/a:</label>
                     <input
                         required
+                        className="authorInput"
                         name="author"
                         type="text"
                         value={this.state.author}
                         onChange={this.handleTextChange}
                     />
+
 
                     <button>Publicar anuncio</button>
                 </form>
@@ -181,14 +192,143 @@ class Announcement extends React.Component {
     }
 }
 
+
+class ReadAnnouncement extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            announcementTable: null
+        }
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+        this.tick();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        fetch("/backend/announcement/")
+            .then((response) => response.json())
+            .then((json) => this.setState({
+                announcementTable: json
+            }))
+            .catch((cause) => console.log("couldn't get announcement info: " + cause));
+    }
+
+    setTimestamp(timestamp) {
+        return new Date(timestamp * 1000).toLocaleTimeString("en-US", timeFormat);
+    }
+
+    handleInputChange() { //obtener la fila asociada al checkbox
+
+    }
+
+    setRows() {
+        const rows = this.state.announcementTable.map(row => {
+            let drawAction = null;// = this.props.action !== "" ? <input className="selectRow" type="checkbox"></input> : null;
+            if (this.props.action !== "") {
+                drawAction = <input
+                    className="selectRow" type="checkbox" onChange={this.handleInputChange}></input>
+            }
+            else drawAction = null;
+
+            return (<tr>
+                <td>{row.title}</td>
+                <td>{row.message}</td>
+                <td>{this.setTimestamp(row.timestamp_begin)}</td>
+                <td>{this.setTimestamp(row.timestamp_end)}</td>
+                <td>{row.priority}</td>
+                <td>{row.writer}</td>
+                {drawAction}
+            </tr>);
+        })
+        return rows;
+    }
+
+    render() {
+        var rows = this.state.announcementTable != null ? this.setRows() : null;
+
+        return (
+            <table className="announcementTable">
+                <thead>
+                    <th>Título</th>
+                    <th>Mensaje</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Prioridad</th>
+                    <th>Autor/a</th>
+                    {this.props.action !== "" ? <th>{this.props.action}</th> : null}
+                </thead>
+                <tbody>{rows}</tbody>
+            </table >
+        );
+    }
+}
+
+class Delete extends React.Component {
+    render() {
+        return (
+            <div>
+                <ReadAnnouncement action={"Eliminar"} />
+                <button className="deleteButton">Eliminar</button>
+            </div>
+        );
+    }
+}
+
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            gui: null
+        };
+
+        this.handleCreateAnnouncement = this.handleCreateAnnouncement.bind(this);
+        this.handleSeeAnnouncements = this.handleSeeAnnouncements.bind(this);
+        this.handleDeleteAnnouncement = this.handleDeleteAnnouncement.bind(this);
+    }
+
+    handleCreateAnnouncement(event) {
+        this.setState({
+            gui: <Announcement></Announcement>
+        });
+    }
+
+    handleDeleteAnnouncement(event) {
+        this.setState({
+            gui: <Delete />
+        });
+
+    }
+
+    handleSeeAnnouncements(event) {
+        this.setState({
+            gui: <ReadAnnouncement action={""} />
+        });
+    }
+
     render() {
         return (
             <div className="App">
                 <header className="App-header">
-                    <Announcement></Announcement>
-                </header>
-            </div>
+                    <div className="menuAnnouncement">
+                        <button onClick={this.handleCreateAnnouncement}>Crear Anuncio</button>
+
+                        <button onClick={this.handleSeeAnnouncements}>Ver Anuncios</button>
+
+                        <button>Editar Anuncio</button>
+
+                        <button onClick={this.handleDeleteAnnouncement}>Eliminar Anuncio</button>
+
+                    </div>
+                    {this.state.gui}
+                </header >
+            </div >
         );
     }
 }
