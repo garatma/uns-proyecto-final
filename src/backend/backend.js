@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const cors = require("cors");
+const { json } = require("express");
 var sqlite3 = require("sqlite3").verbose();
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -98,9 +99,10 @@ app.put("/backend/announcement", (req, res) => {
     );
 });
 
-app.delete("/backend/announcement/:id", (req, res) => {
+app.delete("/backend/announcement/", (req, res) => {
     console.log("DELETE to " + req.url);
-    db.run("delete from announcement where id=" + req.params.id, [], (err) => {
+    console.log("hhola  " + JSON.stringify(req.body));
+    db.run("delete from announcement where id in (" + JSON.stringify(req.body).replace("[", "").replace("]", "") + ")", (err) => {
         if (err) res.status(400).json({ error: err.message });
         else res.status(200).json({ result: "deleted!" });
     });
