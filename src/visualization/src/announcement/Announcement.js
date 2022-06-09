@@ -38,12 +38,16 @@ class AnnouncementsToShow extends React.Component {
 
             if (now < begin || end < now) return null;
 
+            console.log(element);
+            console.log(element.photo);
+
             return (
                 <Carousel.Item className="carouselItem">
                     <Alert className="alert" variant="success">
                         <Alert.Heading className="heading">{element.title}</Alert.Heading>
                         <p className="message">{element.message}</p>
                         <p className="writer">{element.writer}</p>
+                        <img src={element.photo} className="photo" alt="" />
                     </Alert>
                 </Carousel.Item>
             );
