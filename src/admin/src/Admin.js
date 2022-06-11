@@ -1,5 +1,7 @@
 import "./Admin.css";
 import React from "react";
+import ReadAnnouncement from "./ReadAnnouncement.js"
+import DeleteAnnouncement from "./DeleteAnnouncement.js"
 
 class Timestamp extends React.Component {
     constructor(props) {
@@ -45,7 +47,8 @@ class Priority extends React.Component {
     }
 }
 
-class Announcement extends React.Component {
+
+class CreateAnnouncement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -196,12 +199,14 @@ class Announcement extends React.Component {
                         onChange={this.handleTimestampChange}
                     />
 
-                    <label>Prioridad:</label>
-                    <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                    <label className="PriorityLabel">Prioridad:
+                        <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                    </label>
 
                     <label className="authorLabel">Autor/a:</label>
                     <input
                         required
+                        className="authorInput"
                         name="author"
                         type="text"
                         value={this.state.author}
@@ -221,13 +226,53 @@ class Announcement extends React.Component {
 }
 
 class Admin extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            gui: null
+        };
+
+        this.handleCreateAnnouncement = this.handleCreateAnnouncement.bind(this);
+        this.handleSeeAnnouncements = this.handleSeeAnnouncements.bind(this);
+        this.handleDeleteAnnouncement = this.handleDeleteAnnouncement.bind(this);
+    }
+
+    handleCreateAnnouncement(event) {
+        this.setState({
+            gui: <CreateAnnouncement></CreateAnnouncement>
+        });
+    }
+
+    handleDeleteAnnouncement(event) {
+        this.setState({
+            gui: <DeleteAnnouncement />
+        });
+
+    }
+
+    handleSeeAnnouncements(event) {
+        this.setState({
+            gui: <ReadAnnouncement action={""} />
+        });
+    }
+
     render() {
         return (
             <div className="Admin">
                 <header className="Admin-header">
-                    <Announcement></Announcement>
-                </header>
-            </div>
+                    <div className="menuAnnouncement">
+                        <button onClick={this.handleCreateAnnouncement}>Crear Anuncio</button>
+
+                        <button onClick={this.handleSeeAnnouncements}>Ver Anuncios</button>
+
+                        <button>Editar Anuncio</button>
+
+                        <button onClick={this.handleDeleteAnnouncement}>Eliminar Anuncio</button>
+
+                    </div>
+                    {this.state.gui}
+                </header >
+            </div >
         );
     }
 }

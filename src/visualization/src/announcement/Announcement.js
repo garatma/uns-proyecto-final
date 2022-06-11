@@ -13,7 +13,7 @@ class AnnouncementsToShow extends React.Component {
     }
 
     componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 1800000);
+        this.timerID = setInterval(() => this.tick(), 180000);
         this.tick();
     }
 

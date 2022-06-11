@@ -8,20 +8,20 @@
 }
 
 .Admin-header {
-    background-color: #282c34;
+    background-color:rgb(169, 189, 197);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: rgb(15, 15, 15);
 }
 
 label {
     text-align: left;
     display: block;
-    color: rgb(202, 209, 223);
+    color: rgb(27, 28, 29);
     box-sizing: border-box;
     font-size: large;
     margin: 10px;
@@ -44,17 +44,17 @@ input {
     resize: none;
 }
 
-.authorLabel label {
+.authorLabel {
     width: 5px;
     height: 40px;
-    display: inline-block;
-    background-color: transparent;
+    display: inline-block;padding-right: 20px;
 }
 
 .authorInput {
-    width: 500px;
-    height: 40px;
+    width: 240px;
+    height: 20px;
     display: inline-block;
+    margin-left: 50px;
 }
 
 textarea {
@@ -75,7 +75,14 @@ button {
     margin: 20px;
     border-radius: 4px;
     font-size: large;
+    display: block;
 }
+
+.menuAnnouncement{
+    position: absolute;
+    left:10px;
+}
+
 
 .hourAndMinutes {
     display: inline-block;
@@ -93,6 +100,39 @@ button {
     padding: 1px 0px;
 }
 
+.PriorityLabel{
+    display:inline-block;
+}
+
 .priority {
     margin-left: 10px;
+}
+
+.announcementTable{
+    position:absolute;
+    left:300px;
+    top:200px;
+}
+
+.announcementTable, th, td {
+    border: 1px solid;
+    text-align: center;
+    border-collapse:collapse;
+    border-color: rgb(87, 82, 82);
+    padding: 10px;
+    background-color: rgb(111, 157, 158);
+}
+
+th{
+    background-color: rgb(133, 190, 192);
+}
+
+.selectRow{
+    width: 20px;
+    height: 20px;
+}
+
+.deleteButton{
+    position:absolute;
+    top: 100px;
 }
