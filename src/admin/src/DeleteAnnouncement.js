@@ -1,20 +1,19 @@
 import "./Admin";
 import React from "react";
-import ReadAnnouncement from "./ReadAnnouncement.js"
+import ReadAnnouncement from "./ReadAnnouncement.js";
 
 class DeleteAnnouncement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             announcementsToDelete: []
-        }
+        };
         this.handleDeleteSelection = this.handleDeleteSelection.bind(this);
         this.deleteSelectedAnnouncement = this.deleteSelectedAnnouncement.bind(this);
     }
 
     handleDeleteSelection(announcementID) {
-        this.setState(state => ({ announcementsToDelete: state.announcementsToDelete.concat(announcementID) }));
-
+        this.setState((state) => ({ announcementsToDelete: state.announcementsToDelete.concat(announcementID) }));
     }
 
     deleteSelectedAnnouncement() {
@@ -34,21 +33,16 @@ class DeleteAnnouncement extends React.Component {
             .catch((cause) => console.log("couldn't delete announcement : " + cause));
     }
 
-
     render() {
         return (
             <div>
-                <ReadAnnouncement
-                    action={"Eliminar"}
-                    onRowSelection={this.handleDeleteSelection} />
-                <button
-                    className="deleteButton"
-                    onClick={this.deleteSelectedAnnouncement}>{
-                        this.state.announcementsToDelete}</button>
+                <ReadAnnouncement action={"Eliminar"} onRowSelection={this.handleDeleteSelection} />
+                <button className="deleteButton" onClick={this.deleteSelectedAnnouncement}>
+                    {this.state.announcementsToDelete}
+                </button>
             </div>
         );
     }
 }
-
 
 export default DeleteAnnouncement;

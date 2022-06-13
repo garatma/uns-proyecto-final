@@ -30,7 +30,7 @@ class Visualization extends React.Component {
     getEventCountWithSameHour(json) {
         if (json == null) return null;
         let eventsPerHour = [];
-        for (let i = 0; i < 24; i++) {
+        for (let i = 8; i < 22; i++) {
             eventsPerHour.push({ hour: i, records: null });
         }
 
@@ -50,7 +50,7 @@ class Visualization extends React.Component {
                     eventsPerHour: this.getEventCountWithSameHour(json)
                 });
             })
-            .catch((reason) => console.log("no se pudo hacer el request: " + reason));
+            .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
     }
 
     fromNumberToHour(hourNumber) {
@@ -65,8 +65,32 @@ class Visualization extends React.Component {
     setRows() {
         if (this.state.eventsPerHour == null) return null;
 
-        let rows = this.state.eventsPerHour.map((hourBlock, index) => {
-            const records = Object.values(hourBlock.records);
+        let rows = this.state.eventsPerHour.map((hourBlock) => {
+            let records = Object.values(hourBlock.records);
+
+            if (records.length === 0) {
+                return (
+                    <tbody>
+                        <Row
+                            timeBlock={this.fromNumberToHour(hourBlock.hour)}
+                            eventsPerTimeBlock={1}
+                            drawTimeBlock={true}
+                            eventName={null}
+                            eventHost={null}
+                            eventAttendance={null}
+                            eventTimestampBegin={null}
+                            eventTimestampEnd={null}
+                            roomName={null}
+                            hasProjector={null}
+                            hasSoundEquipment={null}
+                            hasDisabledAccess={null}
+                            hasWifi={null}
+                            hasEthernet={null}
+                        />
+                    </tbody>
+                );
+            }
+
             const events = records.map((event, index2) => {
                 return (
                     <Row

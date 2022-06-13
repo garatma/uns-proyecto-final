@@ -21,16 +21,27 @@ function Row(props) {
             </td>
         ) : null;
 
+    const timestampBegin =
+        props.eventTimestampBegin === null ? null : props.eventTimestampBegin.toLocaleTimeString("en-US", timeFormat);
+
+    const timestampEnd =
+        props.eventTimestampEnd === null ? null : props.eventTimestampEnd.toLocaleTimeString("en-US", timeFormat);
+
+    const eventState =
+        props.timestampEventBegin === null || props.timestampEventEnd === null
+            ? null
+            : getEventState(props.eventTimestampBegin, props.eventTimestampEnd);
+
     return (
         <tr>
             {timeBlock}
             <td>{props.eventName}</td>
             <td>{props.roomName}</td>
-            <td>{props.eventTimestampBegin.toLocaleTimeString("en-US", timeFormat)}</td>
-            <td>{props.eventTimestampEnd.toLocaleTimeString("en-US", timeFormat)}</td>
+            <td>{timestampBegin}</td>
+            <td>{timestampEnd}</td>
             <td>{props.eventHost}</td>
             <td>{props.eventAttendance}</td>
-            <td>{getEventState(props.eventTimestampBegin, props.eventTimestampEnd)}</td>
+            <td>{eventState}</td>
             <td>
                 <Resources
                     projector={props.hasProjector}
