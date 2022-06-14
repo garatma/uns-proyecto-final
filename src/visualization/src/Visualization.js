@@ -6,6 +6,7 @@ import Row from "./Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
+import Weather from "./weather/Weather";
 
 class Visualization extends React.Component {
     constructor(props) {
@@ -129,11 +130,14 @@ class Visualization extends React.Component {
                                 <th className="logo" colSpan="3">
                                     <img src={logo} className="icon" alt="icon" />
                                 </th>
-                                <th colSpan="5" className="date">
+                                <th colSpan="1">
+                                    <Clock type="time" />
+                                </th>
+                                <th colSpan="3" className="date">
                                     <Clock type="date" />
                                 </th>
-                                <th colSpan="1" className="time">
-                                    <Clock type="time" />
+                                <th colSpan="2">
+                                    <Weather />
                                 </th>
                             </tr>
                             <tr>
