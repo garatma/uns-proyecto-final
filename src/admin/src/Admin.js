@@ -52,14 +52,15 @@ class CreateAnnouncement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "",
-            body: "",
-            fromTimestamp: this.now(),
-            toTimestamp: this.now(),
-            priority: "MID",
-            author: "",
+            title: this.props.title != null ? this.props.title : "",
+            body: this.props.body != null ? this.props.body : "",
+            fromTimestamp: this.props.fromTimestamp != null ? this.setTimestamp(new Date(this.props.fromTimestamp * 1000)) : this.setTimestamp(new Date()),
+            toTimestamp: this.props.toTimestamp != null ? this.setTimestamp(new Date(this.props.toTimestamp * 1000)) : this.setTimestamp(new Date()),
+            priority: this.props.priority != null ? this.props.priority : "MID",
+            author: this.props.author != null ? this.props.author : "",
             photo: "",
-            photo64: ""
+            photo64: "",
+            id: this.props.id != null ? this.props.id : "",
         };
 
         this.handleTimestampChange = this.handleTimestampChange.bind(this);
@@ -69,14 +70,12 @@ class CreateAnnouncement extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    now() {
-        let now = new Date();
-
-        let year = now.getFullYear();
-        let month = now.getMonth() < 10 ? "0" + (now.getMonth() + 1) : now.getMonth() + 1;
-        let day = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
-        let hours = now.getHours() < 10 ? "0" + now.getHours() : now.getHours();
-        let minutes = now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes();
+    setTimestamp(timestamp) {
+        let year = timestamp.getFullYear();
+        let month = timestamp.getMonth() < 10 ? "0" + (timestamp.getMonth() + 1) : timestamp.getMonth() + 1;
+        let day = timestamp.getDate() < 10 ? "0" + timestamp.getDate() : timestamp.getDate();
+        let hours = timestamp.getHours() < 10 ? "0" + timestamp.getHours() : timestamp.getHours();
+        let minutes = timestamp.getMinutes() < 10 ? "0" + timestamp.getMinutes() : timestamp.getMinutes();
 
         return year + "-" + month + "-" + day + "T" + hours + ":" + minutes;
     }
@@ -143,6 +142,7 @@ class CreateAnnouncement extends React.Component {
         }
 
         const insert = {
+            id: this.state.id,
             title: this.state.title.trim(),
             message: this.state.body.trim(),
             writer: this.state.author.trim(),
@@ -154,19 +154,37 @@ class CreateAnnouncement extends React.Component {
             timestamp_update: null
         };
 
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(insert)
-        };
+        if (this.state.id !== "") {
+            const options = {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(insert)
+            };
 
-        // TODO: handle code 413 (payload too large)
-        fetch("/backend/announcement/", options)
-            .then((response) => response.text())
-            .then((text) => console.log(text))
-            .catch((cause) => console.log("couldn't submit announcement form: " + cause));
+            // TODO: handle code 413 (payload too large)
+            fetch("/backend/announcement/", options)
+                .then((response) => response.text())
+                .then((text) => console.log(text))
+                .catch((cause) => console.log("couldn't submit announcement form: " + cause));
+
+        }
+        else {
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(insert)
+            };
+
+            // TODO: handle code 413 (payload too large)
+            fetch("/backend/announcement/", options)
+                .then((response) => response.text())
+                .then((text) => console.log(text))
+                .catch((cause) => console.log("couldn't submit announcement form: " + cause));
+        }
     }
 
     render() {
@@ -218,8 +236,47 @@ class CreateAnnouncement extends React.Component {
                         <input type="file" onChange={this.handleFileChange} />
                     </label>
 
-                    <button>Publicar anuncio</button>
+                    <button>Publicar</button>
                 </form>
+            </div>
+        );
+    }
+}
+
+
+class EditAnnouncement extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            gui: null
+        };
+        this.handleEditSelection = this.handleEditSelection.bind(this);
+    }
+
+
+    handleEditSelection(announcementID) {
+
+        fetch("/backend/announcement/" + announcementID)
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                this.setState({
+                    gui: <CreateAnnouncement title={json.title}
+                        body={json.message}
+                        priority={json.priority}
+                        fromTimestamp={json.timestamp_begin}
+                        toTimestamp={json.timestamp_end}
+                        author={json.writer}
+                        id={json.id} />
+                })
+            })
+            .catch((cause) => console.log("couldn't get announcement info: " + cause));
+    }
+
+    render() {
+        return (
+            <div>
+                {this.state.gui}
             </div>
         );
     }
@@ -235,24 +292,52 @@ class Admin extends React.Component {
         this.handleCreateAnnouncement = this.handleCreateAnnouncement.bind(this);
         this.handleSeeAnnouncements = this.handleSeeAnnouncements.bind(this);
         this.handleDeleteAnnouncement = this.handleDeleteAnnouncement.bind(this);
+        this.handleEditAnnouncement = this.handleEditAnnouncement.bind(this);
+        this.handleEditSelection = this.handleEditSelection.bind(this);
     }
 
-    handleCreateAnnouncement(event) {
+
+    handleEditSelection(announcementID) {
+
+        fetch("/backend/announcement/" + announcementID)
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                this.setState({
+                    gui: <CreateAnnouncement title={json.title}
+                        body={json.message}
+                        priority={json.priority}
+                        fromTimestamp={json.timestamp_begin}
+                        toTimestamp={json.timestamp_end}
+                        author={json.writer}
+                        id={json.id} />
+                })
+            })
+            .catch((cause) => console.log("couldn't get announcement info: " + cause));
+    }
+
+    handleCreateAnnouncement() {
         this.setState({
-            gui: <CreateAnnouncement></CreateAnnouncement>
+            gui: <CreateAnnouncement />
         });
     }
 
-    handleDeleteAnnouncement(event) {
+    handleDeleteAnnouncement() {
         this.setState({
             gui: <DeleteAnnouncement />
         });
-
     }
 
-    handleSeeAnnouncements(event) {
+    handleSeeAnnouncements() {
         this.setState({
-            gui: <ReadAnnouncement action={""} />
+            gui: <ReadAnnouncement action={null} />
+        });
+    }
+
+    handleEditAnnouncement() {
+        this.setState({
+            gui:
+                <ReadAnnouncement action={"Editar"} onRowSelection={this.handleEditSelection} />
         });
     }
 
@@ -265,7 +350,7 @@ class Admin extends React.Component {
 
                         <button onClick={this.handleSeeAnnouncements}>Ver Anuncios</button>
 
-                        <button>Editar Anuncio</button>
+                        <button onClick={this.handleEditAnnouncement}>Editar Anuncio</button>
 
                         <button onClick={this.handleDeleteAnnouncement}>Eliminar Anuncio</button>
 
