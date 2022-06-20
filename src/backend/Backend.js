@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const backend = express();
 const cors = require("cors");
-const { json } = require("express");
 var sqlite3 = require("sqlite3").verbose();
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -11,7 +10,6 @@ var sqlite3 = require("sqlite3").verbose();
 
 backend.use(cors());
 backend.use(express.json({ limit: "5mb" }));
-backend.use(express.urlencoded({ limit: "5mb" }));
 backend.use("/admin", express.static(path.join(__dirname, "../admin/build")));
 backend.use("/visualization", express.static(path.join(__dirname, "../visualization/build")));
 backend.use("/", express.static(path.join(__dirname, "../visualization/build")));
@@ -105,10 +103,13 @@ backend.put("/backend/announcement", (req, res) => {
 backend.delete("/backend/announcement/", (req, res) => {
     console.log("DELETE to " + req.url);
     console.log("hhola  " + JSON.stringify(req.body));
-    db.run("delete from announcement where id in (" + JSON.stringify(req.body).replace("[", "").replace("]", "") + ")", (err) => {
-        if (err) res.status(400).json({ error: err.message });
-        else res.status(200).json({ result: "deleted!" });
-    });
+    db.run(
+        "delete from announcement where id in (" + JSON.stringify(req.body).replace("[", "").replace("]", "") + ")",
+        (err) => {
+            if (err) res.status(400).json({ error: err.message });
+            else res.status(200).json({ result: "deleted!" });
+        }
+    );
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
