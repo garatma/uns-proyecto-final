@@ -1,25 +1,23 @@
-import "./Admin";
 import React from "react";
-import ReadAnnouncement from "./ReadAnnouncement.js"
+import Table from "./shared/Table";
 
 class DeleteAnnouncement extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            announcementsToDelete: []
-        }
+
         this.handleDeleteSelection = this.handleDeleteSelection.bind(this);
         this.deleteSelectedAnnouncement = this.deleteSelectedAnnouncement.bind(this);
+
+        this.state = {
+            announcementsToDelete: []
+        };
     }
 
-    handleDeleteSelection(announcementID) {
-        this.setState(state => ({ announcementsToDelete: state.announcementsToDelete.concat(announcementID) }));
-
+    handleDeleteSelection(event) {
+        this.setState((state) => ({ announcementsToDelete: state.announcementsToDelete.concat(event.target.value) }));
     }
 
     deleteSelectedAnnouncement() {
-        console.log(this.state.announcementsToDelete);
-
         const ids = {
             method: "DELETE",
             headers: {
@@ -34,21 +32,16 @@ class DeleteAnnouncement extends React.Component {
             .catch((cause) => console.log("couldn't delete announcement : " + cause));
     }
 
-
     render() {
         return (
             <div>
-                <ReadAnnouncement
-                    action={"Eliminar"}
-                    onRowSelection={this.handleDeleteSelection} />
-                <button
-                    className="deleteButton"
-                    onClick={this.deleteSelectedAnnouncement}>{
-                        this.state.announcementsToDelete}</button>
+                <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} />
+                <button className="deleteButton" onClick={this.deleteSelectedAnnouncement}>
+                    {this.state.announcementsToDelete}
+                </button>
             </div>
         );
     }
 }
-
 
 export default DeleteAnnouncement;
