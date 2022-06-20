@@ -2,20 +2,54 @@
     width: 100%;
 }
 
-.alert {
+.normal {
     min-height: 200px;
 }
 
-.heading {
+.emergency{
+    min-height: 200px;
+    background-color: rgb(206, 157, 152);
+
+}
+
+.announcementIcon{
+    position:absolute;
+    right: 30px;
+    top: 15px;
+    height: 10vmin;
+    
+}
+
+.emergencyHeading {
+    font-family: "Smooch";
+    text-decoration: underline;
+    color: rgb(5, 5, 5);
+}
+
+p.emergencyMessage{
+    font-size: 24px;
+    color: rgb(5, 5, 5);
+}
+
+p.emergencyWriter {
+    text-decoration: underline;
+    position: absolute;
+    right: 200px;
+    bottom: 0px;
+    font-size: medium;
+    color: rgb(5, 5, 5);
+}
+
+.normalHeading {
     font-family: "Smooch";
     text-decoration: underline;
 }
 
-p.message {
+p.normalMessage {
     font-size: 24px;
 }
 
-p.writer {
+p.normalWriter {
     text-decoration: underline;
     position: absolute;
     right: 200px;

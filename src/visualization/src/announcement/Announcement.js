@@ -2,7 +2,12 @@ import "./Announcement.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 import Carousel from "react-bootstrap/Carousel";
+import emergencyIcon from "./icons/siren.png";
+import informationIcon from "./icons/information.png";
+//Emergency Icon: <a href="https://www.flaticon.com/free-icons/alert" title="alert icons">Alert icons created by Freepik - Flaticon</a>
+//Information Icon: <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
 
 class AnnouncementsToShow extends React.Component {
     constructor(props) {
@@ -28,30 +33,40 @@ class AnnouncementsToShow extends React.Component {
             .catch((cause) => console.log("no se pudo hacer el request: " + cause));
     }
 
+    printAnnouncement(element, priority, icon) {
+        return <Carousel.Item key={element.id} className="carouselItem">
+            <Alert className={priority} >
+                <Alert.Heading className={priority + "Heading"}>{element.title}</Alert.Heading>
+                <div className=""><img src={icon} className="announcementIcon" alt="icon" /></div>
+                <p className={priority + "Message"}>{element.message}</p>
+                <p className={priority + "Writer"}>{element.writer}</p>
+                <img src={element.photo} className="photo" alt="" />
+            </Alert>
+        </Carousel.Item>
+
+    }
+
     setAnnouncements() {
         if (this.state.announcements == null) return null;
 
-        let a = this.state.announcements.map((element) => {
-            let now = new Date();
-            let begin = new Date(element.timestamp_begin * 1000);
-            let end = new Date(element.timestamp_end * 1000);
+        let a = [];
 
-            if (now < begin || end < now) return null;
 
-            console.log(element);
-            console.log(element.photo);
+        for (let i = 0; i < this.state.announcements.length; i++) {
+            const element = this.state.announcements[i];
 
-            return (
-                <Carousel.Item className="carouselItem">
-                    <Alert className="alert" variant="success">
-                        <Alert.Heading className="heading">{element.title}</Alert.Heading>
-                        <p className="message">{element.message}</p>
-                        <p className="writer">{element.writer}</p>
-                        <img src={element.photo} className="photo" alt="" />
-                    </Alert>
-                </Carousel.Item>
-            );
-        });
+            if (element.priority === "Emergency") {
+                let priority = "emergency";
+                a = [];
+                a.push(this.printAnnouncement(element, priority, emergencyIcon));
+                break;
+            }
+            else {
+                let priority = "normal";
+                a.push(this.printAnnouncement(element, priority, informationIcon));
+            }
+        }
+
         return a;
     }
 
