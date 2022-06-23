@@ -8,6 +8,7 @@ const timeFormat = {
 
 function getEventState(timestampEventBegin, timestampEventEnd) {
     let now = new Date();
+    if (timestampEventBegin == null || timestampEventEnd == null) return null;
     if (now > timestampEventEnd) return "Finalizado";
     else if (now < timestampEventBegin) return "No Empezó";
     else return "En Progreso";
