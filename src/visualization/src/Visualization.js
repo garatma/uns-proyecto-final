@@ -6,7 +6,9 @@ import Row from "./Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
-import ReactPaginate from "react-paginate";
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import 'animate.css';
+
 
 class Visualization extends React.Component {
     constructor(props) {
@@ -14,7 +16,8 @@ class Visualization extends React.Component {
         this.state = {
             eventTable: null,
             eventsPerHour: null,
-            carouselTableIndex: 0
+            carouselTableIndex: 0,
+            carouselActivated: false
         };
     }
 
@@ -58,8 +61,9 @@ class Visualization extends React.Component {
     }
 
     tick() {
-        if (this.state.carouselTableIndex === 21) this.setState({ carouselTableIndex: 0 });
-        else this.setState((prevState) => ({ carouselTableIndex: prevState.carouselTableIndex + 1 }));
+        if (this.state.carouselActivated) {
+            this.setState((prevState) => ({ carouselTableIndex: prevState.carouselTableIndex + 1 }));
+        }
     }
 
     componentWillUnmount() {
@@ -80,15 +84,25 @@ class Visualization extends React.Component {
         if (this.state.eventsPerHour == null) return null;
 
         const maxRowCount = 7;
-        let limitRow = maxRowCount;
         let indexRow = 0;
         let firstRow = 0;
+        let rowCountOfHourBlock = 0;
+        let hourBlock = 0;
+        let firstHour = 0;
 
-        let firstHour = 0; //variar segun el horario
+        let now = 11;//new Date().getHours();
+        let minHourBlock = now - 2;
+        let maxHourBlock = now + 2;
+
+        if (now > 12)
+            firstHour = minHourBlock - 8; //porque la fila 0 es la hora 8
+
         let rowsFor = [];
-        for (let i = firstHour; i < this.state.eventsPerHour.length && rowCount < limitRow; i++) {
+        for (let i = firstHour; i < this.state.eventsPerHour.length && rowCount < maxRowCount; i++) {
             firstRow = 0;
+            rowCountOfHourBlock = 0;
             const element = this.state.eventsPerHour[i];
+            hourBlock = element.hour;
             let records = Object.values(element.records);
             if (records.length === 0) {
                 if (indexRow < this.state.carouselTableIndex) indexRow++;
@@ -115,14 +129,17 @@ class Visualization extends React.Component {
                 }
             } else {
                 for (let j = 0; j < records.length; j++) {
-                    if (indexRow < this.state.carouselTableIndex) indexRow++;
+                    if (indexRow < this.state.carouselTableIndex) {
+                        rowCountOfHourBlock++;
+                        indexRow++;
+                    }
                     else {
                         const record = records[j];
                         rowCount++;
                         rowsFor.push(
                             <Row
                                 timeBlock={this.fromNumberToHour(element.hour)}
-                                eventsPerTimeBlock={records.length}
+                                eventsPerTimeBlock={records.length - rowCountOfHourBlock}
                                 drawTimeBlock={firstRow === 0 ? true : false}
                                 eventName={record.event_name}
                                 eventHost={record.event_host}
@@ -138,10 +155,19 @@ class Visualization extends React.Component {
                             />
                         );
 
-                        firstRow = 1;
+                        firstRow++;
                     }
                 }
             }
+        }
+
+        if (hourBlock <= maxHourBlock && maxHourBlock < 22) { //no llego a mostrarse todo
+            this.setState({ carouselActivated: true });
+        }
+        else {
+            this.setState({ carouselActivated: false });
+            this.setState({ carouselTableIndex: minHourBlock - 8 });
+            this.setState({ carouselActivated: true });
         }
 
         let rows = this.state.eventsPerHour.map((hourBlock) => {
