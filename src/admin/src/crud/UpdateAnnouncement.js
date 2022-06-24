@@ -8,9 +8,11 @@ class UpdateAnnouncement extends React.Component {
 
         this.handleUpdateSelection = this.handleUpdateSelection.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.goBack = this.goBack.bind(this);
 
         this.state = {
-            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />
+            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />,
+            showTable: true
         };
     }
 
@@ -31,7 +33,8 @@ class UpdateAnnouncement extends React.Component {
                             photo={json.photo}
                             onSubmit={this.handleSubmit}
                         />
-                    )
+                    ),
+                    showTable: false
                 });
             })
             .catch((cause) => console.log("couldn't get announcement info: " + cause));
@@ -53,8 +56,22 @@ class UpdateAnnouncement extends React.Component {
             .catch((cause) => console.log("couldn't update announcement form: " + cause));
     }
 
+    goBack() {
+        this.setState({
+            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />,
+            showTable: true
+        });
+    }
+
     render() {
-        return <div>{this.state.gui}</div>;
+        let goBackButton = this.state.showTable ? null : <button onClick={this.goBack}>Volver a la tabla</button>;
+
+        return (
+            <div>
+                {this.state.gui}
+                {goBackButton}
+            </div>
+        );
     }
 }
 

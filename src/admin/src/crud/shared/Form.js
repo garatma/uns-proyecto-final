@@ -36,9 +36,8 @@ class Priority extends React.Component {
     render() {
         return (
             <select value={this.props.value} className="priority" onChange={this.handleInputChange}>
-                <option value="LOW">Baja</option>
-                <option value="MID">Media</option>
-                <option value="HIGH">Alta</option>
+                <option value="NORMAL">Normal</option>
+                <option value="EMERGENCY">Emergencia</option>
             </select>
         );
     }
@@ -58,7 +57,7 @@ class Form extends React.Component {
                 this.props.toTimestamp != null
                     ? this.getTimestamp(new Date(this.props.toTimestamp * 1000))
                     : this.getTimestamp(new Date()),
-            priority: this.props.priority != null ? this.props.priority : "MID",
+            priority: this.props.priority != null ? this.props.priority : "NORMAL",
             author: this.props.author != null ? this.props.author : "",
             photo: "",
             photo64: this.props.photo != null ? this.props.photo : "",

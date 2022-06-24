@@ -71,13 +71,16 @@ class Table extends React.Component {
                 );
             }
 
+            // row.priority cannot be null
+            let priority = row.priority === "NORMAL" ? "Normal" : "Emergencia";
+
             return (
                 <tr key={row.id}>
                     <td>{row.title}</td>
                     <td>{row.message}</td>
                     <td>{this.getTimestamp(row.timestamp_begin)}</td>
                     <td>{this.getTimestamp(row.timestamp_end)}</td>
-                    <td>{row.priority}</td>
+                    <td>{priority}</td>
                     <td>{row.writer}</td>
                     {actionColumn}
                 </tr>

@@ -37,7 +37,7 @@ class DeleteAnnouncement extends React.Component {
             <div>
                 <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} />
                 <button className="deleteButton" onClick={this.deleteSelectedAnnouncement}>
-                    {this.state.announcementsToDelete}
+                    Eliminar selección
                 </button>
             </div>
         );
