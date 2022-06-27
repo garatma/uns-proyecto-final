@@ -8,19 +8,13 @@ const timeFormat = {
 
 function getEventState(timestampEventBegin, timestampEventEnd) {
     let now = new Date();
+    if (timestampEventBegin == null || timestampEventEnd == null) return null;
     if (now > timestampEventEnd) return "Finalizado";
     else if (now < timestampEventBegin) return "No Empezó";
     else return "En Progreso";
 }
 
 function Row(props) {
-    let timeBlock =
-        props.drawTimeBlock === true ? (
-            <td className="TimeBlock" rowSpan={props.eventsPerTimeBlock}>
-                {props.timeBlock}
-            </td>
-        ) : null;
-
     const timestampBegin =
         props.eventTimestampBegin === null ? null : props.eventTimestampBegin.toLocaleTimeString("en-US", timeFormat);
 
@@ -33,13 +27,12 @@ function Row(props) {
             : getEventState(props.eventTimestampBegin, props.eventTimestampEnd);
 
     return (
-        <tr>
-            {timeBlock}
-            <td>{props.eventName}</td>
-            <td>{props.roomName}</td>
+        <tr className="rows">
             <td>{timestampBegin}</td>
+            <td className="eventCol">{props.eventName}</td>
+            <td>{props.roomName}</td>
             <td>{timestampEnd}</td>
-            <td>{props.eventHost}</td>
+            <td className="hostCol">{props.eventHost}</td>
             <td>{props.eventAttendance}</td>
             <td>{eventState}</td>
             <td>

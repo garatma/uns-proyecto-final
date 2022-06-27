@@ -21,3 +21,20 @@
     font-size: calc(10px + 2vmin);
     color: white;
 }
+
+.rows {
+    height: 60px;
+}
+.eventCol {
+    width: 350px;
+}
+.hostCol {
+    width: 300px;
+}
+
+.new {
+    animation: bounceIn;
+    /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s;
+    /* don't forget to set a duration! */
+}

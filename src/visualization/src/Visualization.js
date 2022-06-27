@@ -12,33 +12,10 @@ class Visualization extends React.Component {
         super(props);
         this.state = {
             eventTable: null,
-            eventsPerHour: null
+            carouselTableIndex: 0,
+            carouselActivated: true,
+            rowsToShow: []
         };
-    }
-
-    recordsPerHour(hour, json) {
-        let recordPerHour = [];
-        json.forEach((element) => {
-            var date = new Date(element.event_timestamp_begin * 1000);
-            if (date.getHours() === hour) {
-                recordPerHour.push(element);
-            }
-        });
-        return recordPerHour;
-    }
-
-    getEventCountWithSameHour(json) {
-        if (json == null) return null;
-        let eventsPerHour = [];
-        for (let i = 8; i < 22; i++) {
-            eventsPerHour.push({ hour: i, records: null });
-        }
-
-        eventsPerHour.forEach((element) => {
-            element.records = this.recordsPerHour(element.hour, json);
-        });
-
-        return eventsPerHour;
     }
 
     componentDidMount() {
@@ -46,11 +23,29 @@ class Visualization extends React.Component {
             .then((response) => response.json())
             .then((json) => {
                 this.setState({
-                    eventTable: json,
-                    eventsPerHour: this.getEventCountWithSameHour(json)
+                    eventTable: json
                 });
             })
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
+
+        this.interval = setInterval(() => this.tick(), 3000);
+    }
+
+    tick() {
+        if (this.state.carouselActivated) {
+            this.setState((prevState) => ({
+                carouselTableIndex: prevState.carouselTableIndex + 1
+            }));
+        } else {
+            this.setState({
+                carouselTableIndex: 0
+            });
+        }
+        this.setRows();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     fromNumberToHour(hourNumber) {
@@ -62,63 +57,83 @@ class Visualization extends React.Component {
         return new Date(timestamp * 1000);
     }
 
+    createEmptyRow() {
+        return (
+            <Row
+                eventTimestampBegin={null}
+                eventName={null}
+                eventHost={null}
+                eventAttendance={null}
+                eventTimestampEnd={null}
+                roomName={null}
+                hasProjector={null}
+                hasSoundEquipment={null}
+                hasDisabledAccess={null}
+                hasWifi={null}
+                hasEthernet={null}
+            />
+        );
+    }
+
+    updateAnimationState(newState) {
+        this.setState({ carouselActivated: newState });
+    }
+
     setRows() {
-        if (this.state.eventsPerHour == null) return null;
+        if (this.state.eventTable == null) return null;
 
-        let rows = this.state.eventsPerHour.map((hourBlock) => {
-            let records = Object.values(hourBlock.records);
+        const maxRowCount = 9;
+        let rowCount = 0;
+        let lastEventAlreadyDisplayed = false;
+        let rows = [];
+        let totalEvents = this.state.eventTable.length;
 
-            if (records.length === 0) {
-                return (
-                    <tbody>
-                        <Row
-                            timeBlock={this.fromNumberToHour(hourBlock.hour)}
-                            eventsPerTimeBlock={1}
-                            drawTimeBlock={true}
-                            eventName={null}
-                            eventHost={null}
-                            eventAttendance={null}
-                            eventTimestampBegin={null}
-                            eventTimestampEnd={null}
-                            roomName={null}
-                            hasProjector={null}
-                            hasSoundEquipment={null}
-                            hasDisabledAccess={null}
-                            hasWifi={null}
-                            hasEthernet={null}
-                        />
-                    </tbody>
-                );
+        for (let i = this.state.carouselTableIndex; i < this.state.eventTable.length && rowCount < maxRowCount; i++) {
+            const element = this.state.eventTable[i];
+
+            rowCount++;
+            if (element.event_id === this.state.eventTable[totalEvents - 1].event_id) {
+                lastEventAlreadyDisplayed = true;
+                console.log(element.event_name);
             }
 
-            const events = records.map((event, index2) => {
-                return (
-                    <Row
-                        timeBlock={this.fromNumberToHour(hourBlock.hour)}
-                        eventsPerTimeBlock={records.length + 1}
-                        drawTimeBlock={index2 === 0 ? true : false}
-                        eventName={event.event_name}
-                        eventHost={event.event_host}
-                        eventAttendance={event.event_attendance + "%"}
-                        eventTimestampBegin={this.setTimestamp(event.event_timestamp_begin)}
-                        eventTimestampEnd={this.setTimestamp(event.event_timestamp_end)}
-                        roomName={event.room_name}
-                        hasProjector={event.room_has_projector}
-                        hasSoundEquipment={event.room_has_sound_equipment}
-                        hasDisabledAccess={event.room_has_disabled_access}
-                        hasWifi={event.room_has_wifi}
-                        hasEthernet={event.room_has_ethernet}
-                    />
-                );
-            });
-            return <tbody>{events}</tbody>;
-        });
+            rows.push(
+                <Row
+                    eventTimestampBegin={this.setTimestamp(element.event_timestamp_begin)}
+                    eventName={element.event_name}
+                    eventHost={element.event_host}
+                    eventAttendance={element.event_attendance + "%"}
+                    eventTimestampEnd={this.setTimestamp(element.event_timestamp_end)}
+                    roomName={element.room_name}
+                    hasProjector={element.room_has_projector}
+                    hasSoundEquipment={element.room_has_sound_equipment}
+                    hasDisabledAccess={element.room_has_disabled_access}
+                    hasWifi={element.room_has_wifi}
+                    hasEthernet={element.room_has_ethernet}
+                />
+            );
+        }
 
-        return rows;
+        for (let i = rowCount; i < maxRowCount; i++) {
+            rows.push(this.createEmptyRow());
+        }
+
+        if (totalEvents > maxRowCount) {
+            this.updateAnimationState(true);
+            if (lastEventAlreadyDisplayed) {
+                this.updateAnimationState(false);
+            }
+        } else this.updateAnimationState(false);
+
+        this.setState({ rowsToShow: rows });
+    }
+
+    getRows() {
+        return <tbody>{this.state.rowsToShow}</tbody>;
     }
 
     render() {
-        let rows = this.setRows();
+        let rows = this.getRows();
 
         return (
             <div className="Visualization">
@@ -129,7 +144,7 @@ class Visualization extends React.Component {
                                 <th className="logo" colSpan="3">
                                     <img src={logo} className="icon" alt="icon" />
                                 </th>
-                                <th colSpan="5" className="date">
+                                <th colSpan="4" className="date">
                                     <Clock type="date" />
                                 </th>
                                 <th colSpan="1" className="time">
@@ -137,10 +152,9 @@ class Visualization extends React.Component {
                                 </th>
                             </tr>
                             <tr>
-                                <th></th>
+                                <th>Inicio</th>
                                 <th>Evento</th>
                                 <th>Espacio</th>
-                                <th>Inicio</th>
                                 <th>Fin</th>
                                 <th>Persona a cargo</th>
                                 <th>Ocupación</th>
