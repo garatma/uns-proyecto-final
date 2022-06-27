@@ -22,10 +22,19 @@
     color: white;
 }
 
+.rows {
+    height: 60px;
+}
+.eventCol {
+    width: 350px;
+}
+.hostCol {
+    width: 300px;
+}
 
-.new{
+.new {
     animation: bounceIn;
-        /* referring directly to the animation's @keyframe declaration */
-        animation-duration: 2s;
-        /* don't forget to set a duration! */
+    /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s;
+    /* don't forget to set a duration! */
 }
