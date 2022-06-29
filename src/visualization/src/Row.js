@@ -1,6 +1,8 @@
 import React from "react";
 import Resources from "./resources/Resources.js";
 
+import "./Visualization.css";
+
 const timeFormat = {
     hour: "numeric",
     minute: "numeric"
@@ -27,7 +29,7 @@ function Row(props) {
             : getEventState(props.eventTimestampBegin, props.eventTimestampEnd);
 
     return (
-        <tr className="rows">
+        <tr className={props.color}>
             <td>{timestampBegin}</td>
             <td className="eventCol">{props.eventName}</td>
             <td>{props.roomName}</td>

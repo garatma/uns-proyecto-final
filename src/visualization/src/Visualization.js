@@ -57,9 +57,10 @@ class Visualization extends React.Component {
         return new Date(timestamp * 1000);
     }
 
-    createEmptyRow() {
+    createEmptyRow(i) {
         return (
             <Row
+                color={this.setColorToRow(i)}
                 eventTimestampBegin={null}
                 eventName={null}
                 eventHost={null}
@@ -77,6 +78,12 @@ class Visualization extends React.Component {
 
     updateAnimationState(newState) {
         this.setState({ carouselActivated: newState });
+    }
+
+    setColorToRow(index) {
+        let color = "color1";
+        index % 2 === 0 ? (color = "color1") : (color = "color2");
+        return color;
     }
 
     setRows() {
@@ -99,6 +106,7 @@ class Visualization extends React.Component {
 
             rows.push(
                 <Row
+                    color={this.setColorToRow(i)}
                     eventTimestampBegin={this.setTimestamp(element.event_timestamp_begin)}
                     eventName={element.event_name}
                     eventHost={element.event_host}
@@ -115,7 +123,7 @@ class Visualization extends React.Component {
         }
 
         for (let i = rowCount; i < maxRowCount; i++) {
-            rows.push(this.createEmptyRow());
+            rows.push(this.createEmptyRow(i));
         }
 
         if (totalEvents > maxRowCount) {
@@ -138,16 +146,16 @@ class Visualization extends React.Component {
         return (
             <div className="Visualization">
                 <header className="Visualization-header">
-                    <Table className="table table-light">
+                    <Table className="EventTable">
                         <thead className="thead-primary">
                             <tr>
-                                <th className="logo" colSpan="3">
+                                <th className="logo" colSpan="2">
                                     <img src={logo} className="icon" alt="icon" />
                                 </th>
                                 <th colSpan="4" className="date">
                                     <Clock type="date" />
                                 </th>
-                                <th colSpan="1" className="time">
+                                <th colSpan="2" className="time">
                                     <Clock type="time" />
                                 </th>
                             </tr>
