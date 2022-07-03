@@ -9,6 +9,12 @@
     filter: invert(100%);
 }
 
+.iconEthernet {
+    height: 7vmin;
+    pointer-events: none;
+    padding-right: 3vmin;
+}
+
 .logo {
     text-align: left;
 }
