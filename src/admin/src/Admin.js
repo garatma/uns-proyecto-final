@@ -1,7 +1,7 @@
 import "./Admin.css";
 import React from "react";
-import ReadAnnouncement from "./ReadAnnouncement.js"
-import DeleteAnnouncement from "./DeleteAnnouncement.js"
+import ReadAnnouncement from "./ReadAnnouncement.js";
+import DeleteAnnouncement from "./DeleteAnnouncement.js";
 
 class Timestamp extends React.Component {
     constructor(props) {
@@ -46,7 +46,6 @@ class Priority extends React.Component {
         );
     }
 }
-
 
 class CreateAnnouncement extends React.Component {
     constructor(props) {
@@ -199,7 +198,8 @@ class CreateAnnouncement extends React.Component {
                         onChange={this.handleTimestampChange}
                     />
 
-                    <label className="PriorityLabel">Prioridad:
+                    <label className="PriorityLabel">
+                        Prioridad:
                         <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
                     </label>
 
@@ -247,7 +247,6 @@ class Admin extends React.Component {
         this.setState({
             gui: <DeleteAnnouncement />
         });
-
     }
 
     handleSeeAnnouncements(event) {
@@ -268,11 +267,10 @@ class Admin extends React.Component {
                         <button>Editar Anuncio</button>
 
                         <button onClick={this.handleDeleteAnnouncement}>Eliminar Anuncio</button>
-
                     </div>
                     {this.state.gui}
-                </header >
-            </div >
+                </header>
+            </div>
         );
     }
 }
