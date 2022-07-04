@@ -2,15 +2,15 @@
     text-align: center;
 }
 
-.icon {
+.blackIcons {
     height: 5vmin;
     pointer-events: none;
     padding-right: 3vmin;
     filter: invert(100%);
 }
 
-.iconEthernet {
-    height: 7vmin;
+.whiteIcons {
+    height: 5vmin;
     pointer-events: none;
     padding-right: 3vmin;
 }
@@ -28,19 +28,32 @@
     color: white;
 }
 
-.rows {
-    height: 60px;
-}
-.eventCol {
-    width: 350px;
-}
-.hostCol {
-    width: 300px;
-}
-
 .new {
     animation: bounceIn;
     /* referring directly to the animation's @keyframe declaration */
     animation-duration: 2s;
     /* don't forget to set a duration! */
+}
+
+.color1 {
+    color: black;
+    background-color: rgb(155, 199, 228);
+    height: 60px;
+}
+
+.color2 {
+    color: whitesmoke;
+    background-color: rgb(86, 143, 180);
+    height: 60px;
+}
+
+.EventTable {
+    background-color: rgb(216, 225, 231);
+}
+
+.eventCol {
+    width: 350px;
+}
+.hostCol {
+    width: 300px;
 }
