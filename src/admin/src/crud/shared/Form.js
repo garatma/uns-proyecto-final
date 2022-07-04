@@ -56,7 +56,7 @@ class Form extends React.Component {
             toTimestamp:
                 this.props.toTimestamp != null
                     ? this.getTimestamp(new Date(this.props.toTimestamp * 1000))
-                    : this.getTimestamp(new Date()),
+                    : this.getTimestamp(new Date(Date.now() + 3600000)),
             priority: this.props.priority != null ? this.props.priority : "NORMAL",
             author: this.props.author != null ? this.props.author : "",
             photo: "",

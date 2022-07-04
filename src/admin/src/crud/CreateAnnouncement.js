@@ -7,7 +7,7 @@ class CreateAnnouncement extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(data) {
+    async handleSubmit(data) {
         const options = {
             method: "POST",
             headers: {
@@ -16,11 +16,22 @@ class CreateAnnouncement extends React.Component {
             body: JSON.stringify(data)
         };
 
-        // TODO: handle code 413 (payload too large)
-        fetch("/backend/announcement/", options)
-            .then((response) => response.text())
-            .then((text) => console.log(text))
-            .catch((cause) => console.log("couldn't create announcement form: " + cause));
+        let response = await fetch("/backend/announcement/", options);
+        if (response.ok) {
+            alert("Anuncio creado!");
+            return;
+        }
+
+        if (response.status === 409) {
+            alert("Ya existe un anuncio de Emergencia durante ese período de tiempo.");
+            return;
+        } else if (response.status === 413) {
+            alert("No se soportan imágenes de tamaño mayor a 5MB.");
+            return;
+        }
+
+        let json = await response.json();
+        alert("Se produjo un error al crear el anuncio: " + json.error);
     }
 
     render() {
