@@ -14,7 +14,12 @@ class DeleteAnnouncement extends React.Component {
     }
 
     handleDeleteSelection(event) {
-        this.setState((state) => ({ announcementsToDelete: state.announcementsToDelete.concat(event.target.value) }));
+        if (event.target.checked)
+            this.setState((state) => ({ announcementsToDelete: state.announcementsToDelete.concat(event.target.value) }));
+        else {
+            let indexId = this.state.announcementsToDelete.findIndex(id => id === event.target.value);
+            this.state.announcementsToDelete.splice(indexId, 1);
+        }
     }
 
     deleteSelectedAnnouncement() {
@@ -34,12 +39,7 @@ class DeleteAnnouncement extends React.Component {
 
     render() {
         return (
-            <div>
-                <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} />
-                <button className="deleteButton" onClick={this.deleteSelectedAnnouncement}>
-                    {this.state.announcementsToDelete}
-                </button>
-            </div>
+            <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} actionButton={this.deleteSelectedAnnouncement} />
         );
     }
 }

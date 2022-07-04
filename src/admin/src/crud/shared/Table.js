@@ -1,4 +1,8 @@
 import React from "react";
+import trashIcon from "./trash.png";
+//<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
+const trash = <img src={trashIcon} className="icon" alt="icon" />;
+
 
 class Table extends React.Component {
     constructor(props) {
@@ -104,6 +108,11 @@ class Table extends React.Component {
                         </tr>
                     </thead>
                     {table}
+                    <tbody>
+                        {this.props.action === "delete" ?
+                            <tr><td className="deleteSelectionRow" colSpan={7}><button className="deleteSelection" onClick={this.props.actionButton}>{trash}</button></td></tr> : null}
+
+                    </tbody>
                 </table>
             </div>
         );
