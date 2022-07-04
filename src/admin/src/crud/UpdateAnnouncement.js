@@ -44,6 +44,11 @@ class UpdateAnnouncement extends React.Component {
     }
 
     async handleSubmit(data) {
+        if (data.timestamp_end <= data.timestamp_begin) {
+            alert("La fecha de inicio debe ser anterior a la de fin!");
+            return;
+        }
+
         const options = {
             method: "PUT",
             headers: {
