@@ -22,7 +22,7 @@ class DeleteAnnouncement extends React.Component {
         }
     }
 
-    deleteSelectedAnnouncement() {
+    async deleteSelectedAnnouncement() {
         const ids = {
             method: "DELETE",
             headers: {
@@ -31,15 +31,21 @@ class DeleteAnnouncement extends React.Component {
             body: JSON.stringify(this.state.announcementsToDelete)
         };
 
-        fetch("/backend/announcement/", ids)
-            .then((response) => response.text())
-            .then((text) => console.log(text))
-            .catch((cause) => console.log("couldn't delete announcement : " + cause));
+        let response = await fetch("/backend/announcement", ids);
+        if (response.ok) {
+            if (this.state.announcementsToDelete.length === 1) alert("Anuncio eliminado!");
+            else alert("Anuncios eliminados!");
+            return;
+        }
+
+        let json = await response.json();
+        alert("Se produjo un error al eliminar el anuncio: " + json.error);
     }
 
     render() {
         return (
             <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} actionButton={this.deleteSelectedAnnouncement} />
+
         );
     }
 }

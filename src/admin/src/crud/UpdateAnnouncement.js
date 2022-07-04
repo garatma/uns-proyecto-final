@@ -8,36 +8,47 @@ class UpdateAnnouncement extends React.Component {
 
         this.handleUpdateSelection = this.handleUpdateSelection.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.goBack = this.goBack.bind(this);
 
         this.state = {
-            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />
+            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />,
+            showTable: true
         };
     }
 
-    handleUpdateSelection(event) {
-        fetch("/backend/announcement/" + event.target.value)
-            .then((response) => response.json())
-            .then((json) => {
-                this.setState({
-                    gui: (
-                        <Form
-                            title={json.title}
-                            body={json.message}
-                            priority={json.priority}
-                            fromTimestamp={json.timestamp_begin}
-                            toTimestamp={json.timestamp_end}
-                            author={json.writer}
-                            id={json.id}
-                            photo={json.photo}
-                            onSubmit={this.handleSubmit}
-                        />
-                    )
-                });
-            })
-            .catch((cause) => console.log("couldn't get announcement info: " + cause));
+    async handleUpdateSelection(event) {
+        let response = await fetch("/backend/announcement/id/" + event.target.value);
+        let json = await response.json();
+
+        if (!response.ok) {
+            alert("Se produjo un error al obtener más información sobre el anuncio: " + json.error);
+            return;
+        }
+
+        this.setState({
+            gui: (
+                <Form
+                    title={json.title}
+                    body={json.message}
+                    priority={json.priority}
+                    fromTimestamp={json.timestamp_begin}
+                    toTimestamp={json.timestamp_end}
+                    author={json.writer}
+                    id={json.id}
+                    photo={json.photo}
+                    onSubmit={this.handleSubmit}
+                />
+            ),
+            showTable: false
+        });
     }
 
-    handleSubmit(data) {
+    async handleSubmit(data) {
+        if (data.timestamp_end <= data.timestamp_begin) {
+            alert("La fecha de inicio debe ser anterior a la de fin!");
+            return;
+        }
+
         const options = {
             method: "PUT",
             headers: {
@@ -46,15 +57,41 @@ class UpdateAnnouncement extends React.Component {
             body: JSON.stringify(data)
         };
 
-        // TODO: handle code 413 (payload too large)
-        fetch("/backend/announcement/", options)
-            .then((response) => response.text())
-            .then((text) => console.log(text))
-            .catch((cause) => console.log("couldn't update announcement form: " + cause));
+        let response = await fetch("/backend/announcement/", options);
+        if (response.ok) {
+            alert("Anuncio actualizado!");
+            return;
+        }
+
+        // handle errors
+        if (response.status === 409) {
+            alert("Ya existe un anuncio de Emergencia durante ese período de tiempo.");
+            return;
+        } else if (response.status === 413) {
+            alert("No se soportan imágenes de tamaño mayor a 5MB.");
+            return;
+        }
+
+        let json = await response.json();
+        alert("Se produjo un error al actualizar el anuncio: " + json.error);
+    }
+
+    goBack() {
+        this.setState({
+            gui: <Table action="update" handleUpdateSelection={this.handleUpdateSelection} />,
+            showTable: true
+        });
     }
 
     render() {
-        return <div>{this.state.gui}</div>;
+        let goBackButton = this.state.showTable ? null : <button onClick={this.goBack}>Volver a la tabla</button>;
+
+        return (
+            <div>
+                {this.state.gui}
+                {goBackButton}
+            </div>
+        );
     }
 }
 

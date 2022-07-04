@@ -32,7 +32,7 @@ db.serialize();
 backend.get("/backend/room-event", (req, res) => {
     console.log("GET to " + req.url);
     db.all("select * from event_room", [], (err, rows) => {
-        if (err) res.status(400).json({ error: err.message });
+        if (err) res.status(500).json({ error: err.message });
         else res.status(200).json(rows);
     });
 });
@@ -42,37 +42,95 @@ backend.get("/backend/room-event", (req, res) => {
 backend.get("/backend/announcement", (req, res) => {
     console.log("GET to " + req.url);
     db.all("select * from announcement", [], (err, rows) => {
-        if (err) res.status(400).json({ error: err.message });
+        if (err) res.status(500).json({ error: err.message });
         else res.status(200).json(rows);
     });
 });
 
-backend.get("/backend/announcement/:id", (req, res) => {
+backend.get("/backend/announcement/id/:id", (req, res) => {
     console.log("GET to " + req.url);
     db.get("select * from announcement where id=" + req.params.id, [], (err, rows) => {
-        if (err) res.status(400).json({ error: err.message });
+        if (err) res.status(500).json({ error: err.message });
         else res.status(200).json(rows);
+    });
+});
+
+backend.get("/backend/announcement/timestamp/:timestamp", (req, res) => {
+    console.log("GET to " + req.url);
+
+    let timestamp = parseInt(req.params.timestamp);
+
+    let queryEmergency =
+        "select * from announcement where timestamp_begin <= $timestamp and $timestamp <= timestamp_end and " +
+        "priority='EMERGENCY'";
+
+    let queryNormal =
+        "select * from announcement where timestamp_begin <= $timestamp and $timestamp <= timestamp_end and " +
+        "priority='NORMAL'";
+
+    db.all(queryEmergency, { $timestamp: timestamp }, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+
+        if (rows.length == 1) {
+            // if there's only one emergency announcement, we return it
+            res.status(200).json(rows);
+            return;
+        } else if (rows.length != 0) {
+            // this should never happen
+            res.status(500).json({ error: "there's more than one emergency announcement active at that moment" });
+        }
+
+        // if there's no emergency announcement, we return all current normal announcements
+
+        db.all(queryNormal, { $timestamp: timestamp }, (err, rows) => {
+            if (err) res.status(500).json({ error: err.message });
+            else res.status(200).json(rows);
+        });
     });
 });
 
 backend.post("/backend/announcement", (req, res) => {
     console.log("POST to " + req.url);
-    db.run(
-        "insert into announcement (title,message,writer,priority,photo,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) values ($title,$message,$writer,$priority,$photo,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update)",
-        {
-            $title: req.body.title.trim(),
-            $message: req.body.message.trim(),
-            $writer: req.body.writer.trim(),
-            $priority: req.body.priority.trim(),
-            $photo: req.body.photo,
-            $timestamp_begin: req.body.timestamp_begin,
-            $timestamp_end: req.body.timestamp_end,
-            $timestamp_create: req.body.timestamp_create,
-            $timestamp_update: req.body.timestamp_update
-        },
-        (err) => {
-            if (err) res.status(400).json({ error: err.message });
-            else res.status(200).json({ result: "created!" });
+
+    let query =
+        "select * from announcement where (timestamp_begin<=$timestamp_end and $timestamp_begin<=timestamp_end) and " +
+        "priority='EMERGENCY'";
+
+    db.all(
+        query,
+        { $timestamp_begin: req.body.timestamp_begin, $timestamp_end: req.body.timestamp_end },
+        (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+
+            if (rows.length != 0 && req.body.priority.trim() === "EMERGENCY") {
+                res.status(409).json({ error: "there's already an EMERGENCY announcement in that time period." });
+                return;
+            }
+
+            db.run(
+                "insert into announcement (title,message,writer,priority,photo,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) values ($title,$message,$writer,$priority,$photo,$timestamp_begin,$timestamp_end,$timestamp_create,$timestamp_update)",
+                {
+                    $title: req.body.title.trim(),
+                    $message: req.body.message.trim(),
+                    $writer: req.body.writer.trim(),
+                    $priority: req.body.priority.trim(),
+                    $photo: req.body.photo,
+                    $timestamp_begin: req.body.timestamp_begin,
+                    $timestamp_end: req.body.timestamp_end,
+                    $timestamp_create: req.body.timestamp_create,
+                    $timestamp_update: req.body.timestamp_update
+                },
+                (err) => {
+                    if (err) res.status(500).json({ error: err.message });
+                    else res.status(200).json({ result: "created!" });
+                }
+            );
         }
     );
 });
@@ -94,7 +152,7 @@ backend.put("/backend/announcement", (req, res) => {
             $timestamp_update: req.body.timestamp_update
         },
         (err) => {
-            if (err) res.status(400).json({ error: err.message });
+            if (err) res.status(500).json({ error: err.message });
             else res.status(200).json({ result: "updated!" });
         }
     );
@@ -102,11 +160,10 @@ backend.put("/backend/announcement", (req, res) => {
 
 backend.delete("/backend/announcement/", (req, res) => {
     console.log("DELETE to " + req.url);
-    console.log("hhola  " + JSON.stringify(req.body));
     db.run(
         "delete from announcement where id in (" + JSON.stringify(req.body).replace("[", "").replace("]", "") + ")",
         (err) => {
-            if (err) res.status(400).json({ error: err.message });
+            if (err) res.status(500).json({ error: err.message });
             else res.status(200).json({ result: "deleted!" });
         }
     );
@@ -122,8 +179,8 @@ backend.use("*", express.static(path.join(__dirname, "../visualization/build")))
 
 // start listening
 
-const PORT = process.env.PORT || 5000;
-backend.listen(PORT, () => {
-    console.log(`Backend listening on http://127.0.0.1:${PORT}`);
+const port = process.env.PORT || 5000;
+backend.listen(port, () => {
+    console.log("Backend listening on port " + port);
     console.log("Press Ctrl+C to quit.");
 });

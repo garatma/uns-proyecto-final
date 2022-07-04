@@ -35,15 +35,18 @@ class Table extends React.Component {
         clearInterval(this.timerID);
     }
 
-    tick() {
-        fetch("/backend/announcement/")
-            .then((response) => response.json())
-            .then((json) =>
-                this.setState({
-                    dbTable: json
-                })
-            )
-            .catch((cause) => console.log("couldn't get announcement info: " + cause));
+    async tick() {
+        let response = await fetch("/backend/announcement");
+        let json = await response.json();
+
+        if (!response.ok) {
+            alert("Se produjo un error al obtener los anuncios: " + json.error);
+            return;
+        }
+
+        this.setState({
+            dbTable: json
+        });
     }
 
     getTimestamp(timestamp) {
@@ -75,13 +78,16 @@ class Table extends React.Component {
                 );
             }
 
+            // row.priority cannot be null
+            let priority = row.priority === "NORMAL" ? "Normal" : "Emergencia";
+
             return (
                 <tr key={row.id}>
                     <td>{row.title}</td>
                     <td>{row.message}</td>
                     <td>{this.getTimestamp(row.timestamp_begin)}</td>
                     <td>{this.getTimestamp(row.timestamp_end)}</td>
-                    <td>{row.priority}</td>
+                    <td>{priority}</td>
                     <td>{row.writer}</td>
                     {actionColumn}
                 </tr>
