@@ -150,7 +150,7 @@ class Visualization extends React.Component {
                         <thead className="thead-primary">
                             <tr>
                                 <th className="logo" colSpan="2">
-                                    <img src={logo} className="icon" alt="icon" />
+                                    <img src={logo} className="blackIcons" alt="icon" />
                                 </th>
                                 <th colSpan="4" className="date">
                                     <Clock type="date" />
