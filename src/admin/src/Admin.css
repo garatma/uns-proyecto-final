@@ -108,6 +108,10 @@ button {
     margin-left: 10px;
 }
 
+.deleteGUI{
+    display: block;
+}
+
 .announcementTable {
     position: absolute;
     left: 300px;
@@ -129,12 +133,49 @@ th {
     background-color: rgb(133, 190, 192);
 }
 
-.selectRow {
+.selectRowCheckbox {
     width: 20px;
     height: 20px;
 }
 
+.selectRowButton{
+    width: 70px;
+    height: 40px;
+}
+
 .deleteButton {
-    position: absolute;
-    top: 100px;
+    position: relative;
+    top: 200px;
+    margin: 400px;
+}
+
+.photo {
+    max-height: 340px;
+    max-width: 510px;
+    position: relative;
+    left: 125px;
+}
+
+
+.deleteSelectionRow{
+    background-color:rgb(176, 196, 204);
+    max-height: 1px;
+    border: 0px;
+}
+
+.deleteSelection{
+    margin: 0px;
+    margin-left: 40%;
+    border: 20px;
+    background-color:transparent;
+}
+
+.icon{
+    margin-bottom: 0px;
+    height: 6vmin;
+
+}
+
+.icon:active {
+    transform: rotate(10deg);
 }
