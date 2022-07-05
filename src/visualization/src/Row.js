@@ -39,7 +39,7 @@ function Row(props) {
             <td>{eventState}</td>
             <td>
                 <Resources
-                    colorIcon={props.color === "color1" ? "blackIcons" : "whiteIcons"}
+                    colorIcon={props.color === "color1" ? "whiteIcons" : "blackIcons"}
                     projector={props.hasProjector}
                     sound={props.hasSoundEquipment}
                     disableAccess={props.hasDisabledAccess}

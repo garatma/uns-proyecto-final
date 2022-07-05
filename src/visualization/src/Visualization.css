@@ -6,13 +6,13 @@
     height: 5vmin;
     pointer-events: none;
     padding-right: 3vmin;
+    filter: invert(100%);
 }
 
 .whiteIcons {
     height: 5vmin;
     pointer-events: none;
     padding-right: 3vmin;
-    filter: invert(100%);
 }
 
 .logo {
