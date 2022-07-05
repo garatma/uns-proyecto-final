@@ -2,7 +2,6 @@ import "./Announcement.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Alert from "react-bootstrap/Alert";
-import Spinner from "react-bootstrap/Spinner";
 import Carousel from "react-bootstrap/Carousel";
 import emergencyIcon from "./icons/siren.png";
 import informationIcon from "./icons/information.png";
