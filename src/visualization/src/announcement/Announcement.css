@@ -2,11 +2,11 @@
     width: 100%;
 }
 
-.normal {
+.NORMAL {
     min-height: 200px;
 }
 
-.emergency{
+.EMERGENCY{
     min-height: 200px;
     background-color: rgb(206, 157, 152);
 
@@ -20,18 +20,18 @@
     
 }
 
-.emergencyHeading {
+.EMERGENCYHeading {
     font-family: "Smooch";
     text-decoration: underline;
     color: rgb(5, 5, 5);
 }
 
-p.emergencyMessage{
+p.EMERGENCYMessage{
     font-size: 24px;
     color: rgb(5, 5, 5);
 }
 
-p.emergencyWriter {
+p.EMERGENCYWriter {
     text-decoration: underline;
     position: absolute;
     right: 200px;
@@ -40,16 +40,16 @@ p.emergencyWriter {
     color: rgb(5, 5, 5);
 }
 
-.normalHeading {
+.NORMALHeading {
     font-family: "Smooch";
     text-decoration: underline;
 }
 
-p.normalMessage {
+p.NORMALMessage {
     font-size: 24px;
 }
 
-p.normalWriter {
+p.NORMALWriter {
     text-decoration: underline;
     position: absolute;
     right: 200px;

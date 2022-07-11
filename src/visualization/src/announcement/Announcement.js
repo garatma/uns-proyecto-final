@@ -26,7 +26,7 @@ class AnnouncementsToShow extends React.Component {
     }
 
     tick() {
-        fetch("/backend/announcement/")
+        fetch("/backend/announcement/timestamp/" + Math.floor(Date.now() / 1000))
             .then((response) => response.json())
             .then((json) => this.setState({ announcements: json }))
             .catch((cause) => console.log("no se pudo hacer el request: " + cause));
@@ -48,32 +48,27 @@ class AnnouncementsToShow extends React.Component {
     setAnnouncements() {
         if (this.state.announcements == null) return null;
 
-        let a = [];
-
+        let announcementsList = [];
 
         for (let i = 0; i < this.state.announcements.length; i++) {
             const element = this.state.announcements[i];
 
-            if (element.priority === "Emergency") {
-                let priority = "emergency";
-                a = [];
-                a.push(this.printAnnouncement(element, priority, emergencyIcon));
-                break;
+            if (element.priority === "EMERGENCY") {
+                announcementsList.push(this.printAnnouncement(element, element.priority, emergencyIcon));
             }
             else {
-                let priority = "normal";
-                a.push(this.printAnnouncement(element, priority, informationIcon));
+                announcementsList.push(this.printAnnouncement(element, element.priority, informationIcon));
             }
         }
 
-        return a;
+        return announcementsList;
     }
 
     render() {
-        let a = this.setAnnouncements();
+        let announcements = this.setAnnouncements();
         return (
             <Carousel className="carousel" variant="dark" interval={10000} controls={false}>
-                {a}
+                {announcements}
             </Carousel>
         );
     }
