@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
+const TIME_RANGE = 2;
+
 class Visualization extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +21,10 @@ class Visualization extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/backend/room-event")
+        let now = new Date();
+        let route =
+            "/backend/room-event?day_of_week=" + now.getDay() + "&range=" + TIME_RANGE + "&hours=" + now.getUTCHours();
+        fetch(route)
             .then((response) => response.json())
             .then((json) => {
                 this.setState({
@@ -53,19 +58,17 @@ class Visualization extends React.Component {
         else return hourNumber + ":00 PM";
     }
 
-    setTimestamp(timestamp) {
-        return new Date(timestamp * 1000);
-    }
-
     createEmptyRow(i) {
         return (
             <Row
                 color={this.setColorToRow(i)}
-                eventTimestampBegin={null}
+                eventHoursBegin={null}
+                eventMinutesBegin={null}
+                eventHoursEnd={null}
+                eventMinutesEnd={null}
                 eventName={null}
                 eventHost={null}
                 eventAttendance={null}
-                eventTimestampEnd={null}
                 roomName={null}
                 hasProjector={null}
                 hasSoundEquipment={null}
@@ -107,11 +110,13 @@ class Visualization extends React.Component {
             rows.push(
                 <Row
                     color={this.setColorToRow(i)}
-                    eventTimestampBegin={this.setTimestamp(element.event_timestamp_begin)}
+                    eventHoursBegin={element.event_hours_begin}
+                    eventMinutesBegin={element.event_minutes_begin}
+                    eventHoursEnd={element.event_hours_end}
+                    eventMinutesEnd={element.event_minutes_end}
                     eventName={element.event_name}
                     eventHost={element.event_host}
                     eventAttendance={element.event_attendance + "%"}
-                    eventTimestampEnd={this.setTimestamp(element.event_timestamp_end)}
                     roomName={element.room_name}
                     hasProjector={element.room_has_projector}
                     hasSoundEquipment={element.room_has_sound_equipment}

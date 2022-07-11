@@ -31,7 +31,45 @@ db.serialize();
 
 backend.get("/backend/room-event", (req, res) => {
     console.log("GET to " + req.url);
-    db.all("select * from event_room", [], (err, rows) => {
+
+    let query = "select * from event_room";
+
+    let dayOfWeek = req.query.day_of_week;
+    let hours = req.query.hours;
+    let range = req.query.range;
+
+    if (range !== undefined) {
+        if (dayOfWeek === undefined) {
+            res.status(400).send("day of week missing.");
+            return;
+        }
+
+        if (hours === undefined) {
+            res.status(400).send("current hours missing.");
+            return;
+        }
+
+        if (isNaN(parseInt(range)) || isNaN(parseInt(dayOfWeek)) || isNaN(parseInt(hours))) {
+            res.status(400).send("parameters must be integers.");
+            return;
+        }
+
+        let hoursBegin = parseInt(hours) - parseInt(range);
+        let hoursEnd = parseInt(hours) + parseInt(range);
+
+        query +=
+            " where event_day_of_week=" +
+            dayOfWeek +
+            " and (event_hours_begin<" +
+            hoursEnd +
+            " and " +
+            hoursBegin +
+            "<event_hours_end)";
+    }
+
+    console.log(query);
+
+    db.all(query, [], (err, rows) => {
         if (err) res.status(500).json({ error: err.message });
         else res.status(200).json(rows);
     });

@@ -3,40 +3,54 @@ import Resources from "./resources/Resources.js";
 
 import "./Visualization.css";
 
-const timeFormat = {
-    hour: "numeric",
-    minute: "numeric"
-};
+function getEventState(hoursBegin, minutesBegin, hoursEnd, minutesEnd) {
+    if (hoursBegin === null || minutesBegin === null || hoursEnd === null || minutesEnd === null) return null;
 
-function getEventState(timestampEventBegin, timestampEventEnd) {
     let now = new Date();
-    if (timestampEventBegin == null || timestampEventEnd == null) return null;
-    if (now > timestampEventEnd) return "Finalizado";
-    else if (now < timestampEventBegin) return "No Empezó";
+
+    let timestampBegin = new Date();
+    timestampBegin.setHours(hoursBegin);
+    timestampBegin.setMinutes(minutesBegin);
+    timestampBegin.setSeconds(0);
+    timestampBegin.setMilliseconds(0);
+
+    let timestampEnd = new Date();
+    timestampEnd.setHours(hoursEnd);
+    timestampEnd.setMinutes(minutesEnd);
+    timestampBegin.setSeconds(0);
+    timestampBegin.setMilliseconds(0);
+
+    if (timestampBegin == null || timestampEnd == null) return null;
+    if (now > timestampEnd) return "Finalizado";
+    else if (now < timestampBegin) return "No Empezó";
     else return "En Progreso";
 }
 
+function setTimestamp(hoursBegin, minutesBegin) {
+    if (hoursBegin === null || minutesBegin === null) return null;
+
+    let minutes = minutesBegin < 10 ? "0" + minutesBegin : minutesBegin;
+    let hours = hoursBegin < 10 ? "0" + hoursBegin : hoursBegin;
+    return hours + ":" + minutes;
+}
+
 function Row(props) {
-    const timestampBegin =
-        props.eventTimestampBegin === null ? null : props.eventTimestampBegin.toLocaleTimeString("en-US", timeFormat);
-
-    const timestampEnd =
-        props.eventTimestampEnd === null ? null : props.eventTimestampEnd.toLocaleTimeString("en-US", timeFormat);
-
-    const eventState =
-        props.timestampEventBegin === null || props.timestampEventEnd === null
-            ? null
-            : getEventState(props.eventTimestampBegin, props.eventTimestampEnd);
-
     return (
         <tr className={props.color}>
-            <td>{timestampBegin}</td>
+            <td>{setTimestamp(props.eventHoursBegin, props.eventMinutesBegin)}</td>
             <td className="eventCol">{props.eventName}</td>
             <td>{props.roomName}</td>
-            <td>{timestampEnd}</td>
+            <td>{setTimestamp(props.eventHoursEnd, props.eventMinutesEnd)}</td>
             <td className="hostCol">{props.eventHost}</td>
             <td>{props.eventAttendance}</td>
-            <td>{eventState}</td>
+            <td>
+                {getEventState(
+                    props.eventHoursBegin,
+                    props.eventMinutesBegin,
+                    props.eventHoursEnd,
+                    props.eventMinutesEnd
+                )}
+            </td>
             <td>
                 <Resources
                     colorIcon={props.color === "color1" ? "whiteIcons" : "blackIcons"}

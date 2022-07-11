@@ -30,7 +30,7 @@ class Clock extends React.Component {
     render() {
         let text = null;
         if (this.props.type === "date") text = this.state.date.toLocaleString("es-AR", dateFormat);
-        else if (this.props.type === "time") text = this.state.date.toLocaleTimeString();
+        else if (this.props.type === "time") text = this.state.date.toLocaleTimeString("es-AR");
 
         return <div className={this.props.type}>{text}</div>;
     }

@@ -1,80 +1,82 @@
-CREATE TABLE room (
-    id INTEGER NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    number_of_chairs INTEGER CHECK(number_of_chairs>=0),
-    has_projector INTEGER CHECK(has_projector==0 or has_projector==1),
-    has_sound_equipment INTEGER CHECK(has_sound_equipment==0 or has_sound_equipment==1),
-    has_disabled_access INTEGER CHECK(has_disabled_access==0 or has_disabled_access==1),
-    has_wifi INTEGER CHECK(has_wifi==0 or has_wifi==1),
-    has_ethernet INTEGER CHECK(has_ethernet==0 or has_ethernet==1),
-    PRIMARY KEY(id AUTOINCREMENT)
+create table room (
+    id integer not null unique,
+    name text not null,
+    number_of_chairs integer,
+    has_projector integer,
+    has_sound_equipment integer,
+    has_disabled_access integer,
+    has_wifi integer,
+    has_ethernet integer,
+    primary key(id autoincrement)
 );
 
-INSERT INTO room (id,name,number_of_chairs,has_projector,has_sound_equipment,has_disabled_access,has_wifi,has_ethernet) VALUES
+insert into room (id,name,number_of_chairs,has_projector,has_sound_equipment,has_disabled_access,has_wifi,has_ethernet) values
     (1,"espacio 1",10,1,0,1,0,1),
     (2,"espacio 2",10,0,1,0,1,0),
     (3,"espacio 3",10,1,1,0,1,1),
     (4,"espacio 4",10,0,0,1,0,0);
 
-CREATE TABLE event (
-    id INTEGER NOT NULL UNIQUE,
-    name TEXT NOT NULL,
-    description TEXT,
-    host TEXT NOT NULL,
-    attendance INTEGER NOT NULL CHECK(0 <= attendance AND attendance <= 100),
-    room_id INTEGER NOT NULL,
-    timestamp_begin INTEGER NOT NULL CHECK(timestamp_begin >= 0),
-    timestamp_end INTEGER NOT NULL CHECK(timestamp_end >= 0),
-    repeat INTEGER,
-    timestamp_repeat_begin INTEGER CHECK(timestamp_repeat_begin >= 0),
-    timestamp_repeat_end INTEGER CHECK(timestamp_repeat_end >= 0),
-    FOREIGN KEY(room_id) REFERENCES room(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY(id AUTOINCREMENT)
+create table event (
+    id integer not null unique,
+    name text not null,
+    description text,
+    host text not null,
+    attendance integer not null,
+    room_id integer not null,
+    day_of_week integer not null,
+    hours_begin integer not null,
+    minutes_begin integer not null,
+    hours_end integer not null,
+    minutes_end integer not null,
+    foreign key(room_id) references room(id) on update cascade on delete cascade,
+    primary key(id autoincrement)
 );
 
-INSERT INTO event (id,name,host,attendance,room_id,timestamp_begin,timestamp_end) VALUES
-    (1,"evento 1","host 1", 0,1,1652007600,1652011200),
-    (2,"evento 2","host 2",25,2,1652007600,1652014800),
-    (3,"evento 3","host 3",50,3,1652014800,1652022000),
-    (4,"evento 4","host 4",75,4,1652018400,1652022000);
+insert into event (id,name,host,attendance,room_id,day_of_week,hours_begin,minutes_begin,hours_end,minutes_end) values
+    (1,"evento 1","host 1", 0,1,0,8,0,9,0),
+    (2,"evento 2","host 2",25,2,0,9,0,11,0),
+    (3,"evento 3","host 3",50,3,0,13,0,14,0),
+    (4,"evento 4","host 4",75,4,0,16,0,17,0);
 
-CREATE TABLE announcement (
-	id INTEGER NOT NULL UNIQUE,
-	title TEXT NOT NULL,
-	message TEXT NOT NULL,
-	writer TEXT,
-	priority TEXT NOT NULL,
-	timestamp_begin INTEGER NOT NULL,
-	timestamp_end INTEGER NOT NULL,
-	timestamp_create INTEGER NOT NULL,
-	timestamp_update INTEGER,
-	PRIMARY KEY("id" AUTOINCREMENT)
+create view event_room as
+    select
+        e.id as event_id,
+        e.name as event_name,
+        e.description as event_description,
+        e.host as event_host,
+        e.attendance as event_attendance,
+        e.day_of_week as event_day_of_week,
+        e.hours_begin as event_hours_begin,
+        e.minutes_begin as event_minutes_begin,
+        e.hours_end as event_hours_end,
+        e.minutes_end as event_minutes_end,
+        r.id as room_id,
+        r.name as room_name,
+        r.number_of_chairs as room_number_of_chairs,
+        r.has_projector as room_has_projector,
+        r.has_sound_equipment as room_has_sound_equipment,
+        r.has_disabled_access as room_has_disabled_access,
+        r.has_wifi as room_has_wifi,
+        r.has_ethernet as room_has_ethernet
+    from event e
+    inner join room r on e.room_id = r.id
+    order by e.day_of_week, e.hours_begin, e.minutes_begin;
+
+create table announcement (
+	id integer not null unique,
+	title text not null,
+	message text not null,
+	writer text,
+	priority text not null,
+    photo text,
+	timestamp_begin integer not null,
+	timestamp_end integer not null,
+	timestamp_create integer not null,
+	timestamp_update integer,
+	primary key(id autoincrement)
 );
 
-INSERT INTO announcement (id,title,message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,timestamp_update) VALUES
-    (1,"titulo de anuncio 1","Primer anuncio","Autor 1","LOW",0,0,0,null),
-    (2,"titulo de anuncio 2","Segundo anuncio","Autor 2","MID",0,0,0,null),
-    (3,"titulo de anuncio 3","Tercer anuncio","Autor 3","HIGH",0,0,0,null);
-
-CREATE VIEW event_room AS
-    SELECT
-        e.id AS event_id,
-        e.name AS event_name,
-        e.description AS event_description,
-        e.host AS event_host,
-        e.attendance AS event_attendance,
-        e.timestamp_begin AS event_timestamp_begin,
-        e.timestamp_end AS event_timestamp_end,
-        e.repeat AS event_repeat,
-        e.timestamp_repeat_begin AS event_timestamp_repeat_begin,
-        e.timestamp_repeat_end AS event_timestamp_repeat_end,
-        r.id AS room_id,
-        r.name AS room_name,
-        r.number_of_chairs AS room_number_of_chairs,
-        r.has_projector AS room_has_projector,
-        r.has_sound_equipment AS room_has_sound_equipment,
-        r.has_disabled_access AS room_has_disabled_access,
-        r.has_wifi AS room_has_wifi,
-        r.has_ethernet AS room_has_ethernet
-    FROM EVENT e
-    INNER JOIN room r ON e.room_id = r.id;
+insert into announcement (id,title,message,writer,priority,timestamp_begin,timestamp_end,timestamp_create,photo) values
+    (1,"titulo de anuncio 1","primer anuncio","autor 1","NORMAL",0,0,0,"data:image/png;base64,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"),
+    (2,"titulo de anuncio 2","segundo anuncio","autor 2","NORMAL",0,0,0,"data:image/png;base64,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"),
+    (3,"titulo de anuncio 3","tercer anuncio","autor 3","EMERGENCY",0,0,0,"data:image/png;base64,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");
