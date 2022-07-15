@@ -8,6 +8,7 @@ import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
 const TIME_RANGE = 2;
+const MAX_ROW_COUNT = 3;
 
 class Visualization extends React.Component {
     constructor(props) {
@@ -15,7 +16,6 @@ class Visualization extends React.Component {
         this.state = {
             eventTable: null,
             carouselTableIndex: 0,
-            carouselActivated: true,
             rowsToShow: []
         };
     }
@@ -23,7 +23,7 @@ class Visualization extends React.Component {
     componentDidMount() {
         let now = new Date();
         let route =
-            "/backend/room-event?day_of_week=" + now.getDay() + "&range=" + TIME_RANGE + "&hours=" + now.getUTCHours();
+            "/backend/room-event?day_of_week=" + now.getDay() + "&range=" + TIME_RANGE + "&hours=" + now.getHours();
         fetch(route)
             .then((response) => response.json())
             .then((json) => {
@@ -33,20 +33,17 @@ class Visualization extends React.Component {
             })
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
 
-        this.interval = setInterval(() => this.tick(), 3000);
+        this.interval = setInterval(() => this.tick(), 10000);
     }
 
     tick() {
-        if (this.state.carouselActivated) {
-            this.setState((prevState) => ({
-                carouselTableIndex: prevState.carouselTableIndex + 1
-            }));
-        } else {
-            this.setState({
-                carouselTableIndex: 0
-            });
-        }
-        this.setRows();
+        this.setState((prevState) => ({
+            carouselTableIndex:
+                prevState.carouselTableIndex < prevState.eventTable.length - MAX_ROW_COUNT
+                    ? prevState.carouselTableIndex + 1
+                    : 0,
+            rowsToShow: this.setRows()
+        }));
     }
 
     componentWillUnmount() {
@@ -61,6 +58,7 @@ class Visualization extends React.Component {
     createEmptyRow(i) {
         return (
             <Row
+                key={i}
                 color={this.setColorToRow(i)}
                 eventHoursBegin={null}
                 eventMinutesBegin={null}
@@ -79,36 +77,22 @@ class Visualization extends React.Component {
         );
     }
 
-    updateAnimationState(newState) {
-        this.setState({ carouselActivated: newState });
-    }
-
     setColorToRow(index) {
-        let color = "color1";
-        index % 2 === 0 ? (color = "color1") : (color = "color2");
-        return color;
+        return index % 2 === 0 ? "color1" : "color2";
     }
 
     setRows() {
         if (this.state.eventTable == null) return null;
 
-        const maxRowCount = 9;
         let rowCount = 0;
-        let lastEventAlreadyDisplayed = false;
         let rows = [];
-        let totalEvents = this.state.eventTable.length;
 
-        for (let i = this.state.carouselTableIndex; i < this.state.eventTable.length && rowCount < maxRowCount; i++) {
+        for (let i = this.state.carouselTableIndex; i < this.state.eventTable.length && rowCount < MAX_ROW_COUNT; i++) {
             const element = this.state.eventTable[i];
-
             rowCount++;
-            if (element.event_id === this.state.eventTable[totalEvents - 1].event_id) {
-                lastEventAlreadyDisplayed = true;
-                console.log(element.event_name);
-            }
-
             rows.push(
                 <Row
+                    key={i}
                     color={this.setColorToRow(i)}
                     eventHoursBegin={element.event_hours_begin}
                     eventMinutesBegin={element.event_minutes_begin}
@@ -127,18 +111,11 @@ class Visualization extends React.Component {
             );
         }
 
-        for (let i = rowCount; i < maxRowCount; i++) {
+        for (let i = rowCount; i < MAX_ROW_COUNT; i++) {
             rows.push(this.createEmptyRow(i));
         }
 
-        if (totalEvents > maxRowCount) {
-            this.updateAnimationState(true);
-            if (lastEventAlreadyDisplayed) {
-                this.updateAnimationState(false);
-            }
-        } else this.updateAnimationState(false);
-
-        this.setState({ rowsToShow: rows });
+        return rows;
     }
 
     getRows() {
