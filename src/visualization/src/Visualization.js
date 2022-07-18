@@ -30,6 +30,7 @@ class Visualization extends React.Component {
                 this.setState({
                     eventTable: json
                 });
+                this.tick();
             })
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
 
@@ -37,6 +38,8 @@ class Visualization extends React.Component {
     }
 
     tick() {
+        if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
+
         this.setState((prevState) => ({
             carouselTableIndex:
                 prevState.carouselTableIndex < prevState.eventTable.length - MAX_ROW_COUNT

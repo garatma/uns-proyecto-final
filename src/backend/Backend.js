@@ -67,8 +67,6 @@ backend.get("/backend/room-event", (req, res) => {
             "<event_hours_end)";
     }
 
-    console.log(query);
-
     db.all(query, [], (err, rows) => {
         if (err) res.status(500).json({ error: err.message });
         else res.status(200).json(rows);
