@@ -24,6 +24,8 @@
     font-family: "Smooch";
     text-decoration: underline;
     color: rgb(5, 5, 5);
+    font-size: larger;
+
 }
 
 p.EMERGENCYMessage{
@@ -43,10 +45,16 @@ p.EMERGENCYWriter {
 .NORMALHeading {
     font-family: "Smooch";
     text-decoration: underline;
+    font-size: larger;
+}
+
+.format{
+    display: inline-block;
 }
 
 p.NORMALMessage {
     font-size: 24px;
+    padding: 50px;
 }
 
 p.NORMALWriter {
@@ -59,9 +67,6 @@ p.NORMALWriter {
 
 .photo {
     max-height: 90%;
-    max-width: 30%;
-    filter: invert(100%);
-    position: absolute;
-    left: 5px;
-    top: 10px;
+    max-width: 20%;
+    float:left;
 }
