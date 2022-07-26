@@ -126,6 +126,8 @@ class Form extends React.Component {
                 photo64: e.target.result
             });
         };
+
+        
     }
 
     handleSubmit(event) {
@@ -168,18 +170,29 @@ class Form extends React.Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
+                    <div className="leftBlock">
                     <label>Título:</label>
-                    <input
+                    <input className="title"
                         required
                         name="title"
                         type="text"
                         value={this.state.title}
                         onChange={this.handleTextChange}
                     />
-
                     <label>Anuncio:</label>
                     <textarea required name="body" value={this.state.body} onChange={this.handleTextChange}></textarea>
+                    <label className="authorLabel">Autor/a:</label>
+                    <input
+                        required
+                        className="authorInput"
+                        name="author"
+                        type="text"
+                        value={this.state.author}
+                        onChange={this.handleTextChange}
+                    />
+                    </div>
 
+                    <div className="rightBlock">
                     <label>Desde:</label>
                     <Timestamp
                         value={this.state.fromTimestamp}
@@ -194,28 +207,21 @@ class Form extends React.Component {
                         onChange={this.handleTimestampChange}
                     />
 
+                    <label>
+                        Foto:
+                        <input className="selectFile" type="file" onChange={this.handleFileChange} />  
+                                             
+                        <img src={this.state.photo64} className="photo" alt=""/>
+                    </label>
+
                     <label className="PriorityLabel">
                         Prioridad:
                         <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
                     </label>
 
-                    <label className="authorLabel">Autor/a:</label>
-                    <input
-                        required
-                        className="authorInput"
-                        name="author"
-                        type="text"
-                        value={this.state.author}
-                        onChange={this.handleTextChange}
-                    />
+                    </div>
 
-                    <label>
-                        Foto:
-                        <input type="file" onChange={this.handleFileChange} />
-                        <img src={this.state.photo64} className="photo" alt="" />
-                    </label>
-
-                    <button>Publicar</button>
+                    <button className="submitButton">Publicar</button>
                 </form>
             </div>
         );

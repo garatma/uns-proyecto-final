@@ -18,6 +18,18 @@
     color: rgb(15, 15, 15);
 }
 
+.leftBlock{
+    position: absolute;
+    top: 15%;
+    left: 10%;
+}
+
+.rightBlock{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+}
+
 label {
     text-align: left;
     display: block;
@@ -25,6 +37,8 @@ label {
     box-sizing: border-box;
     font-size: large;
     margin: 10px;
+    padding-top: 5%;
+    font-size: 75%;
 }
 
 .showHour input {
@@ -40,22 +54,20 @@ input {
     border: 1px solid rgb(26, 25, 25);
     box-sizing: border-box;
     border-radius: 4px;
-    display: block;
     resize: none;
+    font-size: large;
 }
 
 .authorLabel {
     width: 5px;
     height: 40px;
     display: inline-block;
-    padding-right: 20px;
 }
 
 .authorInput {
-    width: 240px;
+    width: 400px;
     height: 20px;
-    display: inline-block;
-    margin-left: 50px;
+    margin-left: 70px;
 }
 
 textarea {
@@ -68,6 +80,7 @@ textarea {
     border-radius: 4px;
     display: block;
     resize: none;
+    font-size: large;
 }
 
 button {
@@ -76,13 +89,20 @@ button {
     margin: 20px;
     border-radius: 4px;
     font-size: large;
-    display: block;
 }
 
 .menuAnnouncement {
+    display:inline-block;
     position: absolute;
-    left: 10px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 15%;
+    background-color: rgb(186, 201, 206);
+    text-align:center;
+
 }
+
 
 .hourAndMinutes {
     display: inline-block;
@@ -100,12 +120,21 @@ button {
     padding: 1px 0px;
 }
 
-.PriorityLabel {
-    display: inline-block;
-}
-
 .priority {
     margin-left: 10px;
+    font-size: large;
+}
+
+.submitButton{
+    position: absolute;
+    bottom: 5%;
+    left: 40%;
+}
+
+.goBacktoTable{
+    position: absolute;
+    bottom: 5%;
+    left: 20%;
 }
 
 .deleteGUI{
@@ -113,9 +142,10 @@ button {
 }
 
 .announcementTable {
+    width: 100%;
     position: absolute;
-    left: 300px;
-    top: 200px;
+    top: 100px;
+    left:0px;
 }
 
 .announcementTable,
@@ -146,16 +176,25 @@ th {
 .deleteButton {
     position: relative;
     top: 200px;
-    margin: 400px;
+}
+
+.selectFile{
+    border: 0px;
+    padding-left: 1%;
 }
 
 .photo {
-    max-height: 340px;
-    max-width: 510px;
-    position: relative;
-    left: 125px;
+    max-height: 350px;
+    max-width: 400px;
+    position:absolute;
+    left: 60%;
+    top:85%;
 }
 
+.removeImage{
+    position: absolute;
+    left:10px;
+}
 
 .deleteSelectionRow{
     background-color:rgb(176, 196, 204);
@@ -165,9 +204,8 @@ th {
 
 .deleteSelection{
     margin: 0px;
-    margin-left: 40%;
     border: 20px;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 .icon{

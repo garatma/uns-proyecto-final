@@ -84,7 +84,7 @@ class UpdateAnnouncement extends React.Component {
     }
 
     render() {
-        let goBackButton = this.state.showTable ? null : <button onClick={this.goBack}>Volver a la tabla</button>;
+        let goBackButton = this.state.showTable ? null : <button className="goBacktoTable" onClick={this.goBack}>Volver a la tabla</button>;
 
         return (
             <div>
