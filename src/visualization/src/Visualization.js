@@ -21,9 +21,7 @@ class Visualization extends React.Component {
     }
 
     componentDidMount() {
-        let now = new Date();
-        let route =
-            "/backend/room-event?day_of_week=" + now.getDay() + "&range=" + TIME_RANGE + "&hours=" + now.getHours();
+        let route = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
         fetch(route)
             .then((response) => response.json())
             .then((json) => {
