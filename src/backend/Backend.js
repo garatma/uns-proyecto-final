@@ -32,47 +32,49 @@ db.serialize();
 backend.get("/backend/room-event", (req, res) => {
     console.log("GET to " + req.url);
 
-    let query = "select * from event_room";
+    let timestamp = parseInt(req.query.timestamp);
+    let range = parseInt(req.query.range);
+    let dayOfWeek;
+    let currentTime;
+    let rangeBegin;
+    let rangeEnd;
 
-    let dayOfWeek = req.query.day_of_week;
-    let hours = req.query.hours;
-    let range = req.query.range;
+    let query = " select * from event_room ";
 
-    if (range !== undefined) {
-        if (dayOfWeek === undefined) {
-            res.status(400).send("day of week missing.");
-            return;
-        }
+    if (!isNaN(timestamp) && !isNaN(range)) {
+        let date = new Date(timestamp);
+        dayOfWeek = date.getDay();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
 
-        if (hours === undefined) {
-            res.status(400).send("current hours missing.");
-            return;
-        }
+        rangeBegin = hours;
+        rangeEnd = rangeBegin + range;
 
-        if (isNaN(parseInt(range)) || isNaN(parseInt(dayOfWeek)) || isNaN(parseInt(hours))) {
-            res.status(400).send("parameters must be integers.");
-            return;
-        }
-
-        let hoursBegin = parseInt(hours) - parseInt(range);
-        let hoursEnd = parseInt(hours) + parseInt(range);
+        currentTime = hours * 60 + minutes;
 
         query +=
-            " where event_day_of_week=" +
-            dayOfWeek +
-            " and (event_hours_begin<" +
-            hoursEnd +
-            " and " +
-            hoursBegin +
-            "<event_hours_end)";
+            " where event_day_of_week=$dayOfWeek and " +
+            " ( " +
+            " ( " +
+            " (event_hours_begin*60)+event_minutes_begin <= $currentTime and " +
+            " $currentTime <= (event_hours_end *60)+event_minutes_end " +
+            " ) " +
+            " or " +
+            " ( " +
+            " $rangeBegin <= event_hours_begin and " +
+            " event_hours_begin <= $rangeEnd " +
+            " ) " +
+            " ) ";
     }
 
-    console.log(query);
-
-    db.all(query, [], (err, rows) => {
-        if (err) res.status(500).json({ error: err.message });
-        else res.status(200).json(rows);
-    });
+    db.all(
+        query,
+        { $dayOfWeek: dayOfWeek, $currentTime: currentTime, $rangeBegin: rangeBegin, $rangeEnd: rangeEnd },
+        (err, rows) => {
+            if (err) res.status(500).json({ error: err.message });
+            else res.status(200).json(rows);
+        }
+    );
 });
 
 // --------------------------------------------------- announcement ----------------------------------------------------

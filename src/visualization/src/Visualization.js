@@ -21,15 +21,14 @@ class Visualization extends React.Component {
     }
 
     componentDidMount() {
-        let now = new Date();
-        let route =
-            "/backend/room-event?day_of_week=" + now.getDay() + "&range=" + TIME_RANGE + "&hours=" + now.getHours();
+        let route = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
         fetch(route)
             .then((response) => response.json())
             .then((json) => {
                 this.setState({
                     eventTable: json
                 });
+                this.tick();
             })
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
 
@@ -37,6 +36,8 @@ class Visualization extends React.Component {
     }
 
     tick() {
+        if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
+
         this.setState((prevState) => ({
             carouselTableIndex:
                 prevState.carouselTableIndex < prevState.eventTable.length - MAX_ROW_COUNT
@@ -100,7 +101,7 @@ class Visualization extends React.Component {
                     eventMinutesEnd={element.event_minutes_end}
                     eventName={element.event_name}
                     eventHost={element.event_host}
-                    eventAttendance={element.event_attendance + "%"}
+                    eventAttendance={element.event_attendance}
                     roomName={element.room_name}
                     hasProjector={element.room_has_projector}
                     hasSoundEquipment={element.room_has_sound_equipment}
