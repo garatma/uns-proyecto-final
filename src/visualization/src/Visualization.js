@@ -101,7 +101,7 @@ class Visualization extends React.Component {
                     eventMinutesEnd={element.event_minutes_end}
                     eventName={element.event_name}
                     eventHost={element.event_host}
-                    eventAttendance={element.event_attendance + "%"}
+                    eventAttendance={element.event_attendance}
                     roomName={element.room_name}
                     hasProjector={element.room_has_projector}
                     hasSoundEquipment={element.room_has_sound_equipment}

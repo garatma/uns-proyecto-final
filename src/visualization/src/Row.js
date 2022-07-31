@@ -3,6 +3,10 @@ import Resources from "./resources/Resources.js";
 
 import "./Visualization.css";
 
+const FINALIZADO = "Finalizado";
+const SIN_COMENZAR = "Sin comenzar";
+const EN_PROGRESO = "En progreso";
+
 function getEventState(hoursBegin, minutesBegin, hoursEnd, minutesEnd) {
     if (hoursBegin === null || minutesBegin === null || hoursEnd === null || minutesEnd === null) return null;
 
@@ -21,9 +25,9 @@ function getEventState(hoursBegin, minutesBegin, hoursEnd, minutesEnd) {
     timestampBegin.setMilliseconds(0);
 
     if (timestampBegin == null || timestampEnd == null) return null;
-    if (now > timestampEnd) return "Finalizado";
-    else if (now < timestampBegin) return "No Empezó";
-    else return "En Progreso";
+    if (now > timestampEnd) return FINALIZADO;
+    else if (now < timestampBegin) return SIN_COMENZAR;
+    else return EN_PROGRESO;
 }
 
 function setTimestamp(hoursBegin, minutesBegin) {
@@ -35,6 +39,19 @@ function setTimestamp(hoursBegin, minutesBegin) {
 }
 
 function Row(props) {
+    let eventState = getEventState(
+        props.eventHoursBegin,
+        props.eventMinutesBegin,
+        props.eventHoursEnd,
+        props.eventMinutesEnd
+    );
+
+    let attendance = eventState === EN_PROGRESO ? props.eventAttendance + "%" : "—";
+
+    if (eventState === EN_PROGRESO) attendance = props.eventAttendance + "%";
+    else if (props.eventName === null) attendance = "";
+    else attendance = "—";
+
     return (
         <tr className={props.color}>
             <td>{setTimestamp(props.eventHoursBegin, props.eventMinutesBegin)}</td>
@@ -42,15 +59,8 @@ function Row(props) {
             <td>{props.roomName}</td>
             <td>{setTimestamp(props.eventHoursEnd, props.eventMinutesEnd)}</td>
             <td className="hostCol">{props.eventHost}</td>
-            <td>{props.eventAttendance}</td>
-            <td>
-                {getEventState(
-                    props.eventHoursBegin,
-                    props.eventMinutesBegin,
-                    props.eventHoursEnd,
-                    props.eventMinutesEnd
-                )}
-            </td>
+            <td>{attendance}</td>
+            <td>{eventState}</td>
             <td>
                 <Resources
                     colorIcon={props.color === "color1" ? "whiteIcons" : "blackIcons"}
