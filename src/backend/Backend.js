@@ -44,7 +44,7 @@ backend.get("/backend/room-event", (req, res) => {
     if (!isNaN(timestamp) && !isNaN(range)) {
         let date = new Date(timestamp);
         dayOfWeek = date.getDay();
-        let hours = date.getHours();
+        let hours = date.getUTCHours() - 3;
         let minutes = date.getMinutes();
 
         rangeBegin = hours;
