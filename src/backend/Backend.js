@@ -16,7 +16,7 @@ backend.use("/", express.static(path.join(__dirname, "../visualization/build")))
 backend.use("/admin/*", express.static(path.join(__dirname, "../admin/build")));
 backend.use("/visualization/*", express.static(path.join(__dirname, "../visualization/build")));
 
-// replace next endpoint with actual backend code
+const TIMEZONE_OFFSET = 10800000;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------ database endpoints -------------------------------------------------
@@ -42,10 +42,10 @@ backend.get("/backend/room-event", (req, res) => {
     let query = " select * from event_room ";
 
     if (!isNaN(timestamp) && !isNaN(range)) {
-        let date = new Date(timestamp);
-        dayOfWeek = date.getDay();
-        let hours = date.getUTCHours() - 3;
-        let minutes = date.getMinutes();
+        let timestampAdjusted = new Date(timestamp - TIMEZONE_OFFSET);
+        dayOfWeek = timestampAdjusted.getUTCDay();
+        let hours = timestampAdjusted.getUTCHours();
+        let minutes = timestampAdjusted.getUTCMinutes();
 
         rangeBegin = hours;
         rangeEnd = rangeBegin + range;
