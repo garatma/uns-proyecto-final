@@ -35,10 +35,10 @@ class AnnouncementsToShow extends React.Component {
     printAnnouncement(element, priority, icon) {
         return <Carousel.Item key={element.id} className="carouselItem">
             <Alert className={priority} >
-                <Alert.Heading className={priority + "Heading"}>{element.title}</Alert.Heading>
                 <div className="format">
-                <img src={icon} className="announcementIcon" alt="icon" />
                 <img src={element.photo} className="photo" alt="" /> 
+                <img src={icon} className="announcementIcon" alt="icon" />
+                <p className={priority + "Heading"}>{element.title}</p>
                 <p className={priority + "Message"}>{element.message}</p>
                 <p className={priority + "Writer"}>{element.writer}</p>
                 </div>

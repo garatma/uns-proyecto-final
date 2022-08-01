@@ -3,13 +3,13 @@
 }
 
 .NORMAL {
-    min-height: 200px;
+    height: 250px;
 }
 
 .EMERGENCY{
     min-height: 200px;
     background-color: rgb(206, 157, 152);
-
+    height: 250px;
 }
 
 .announcementIcon{
@@ -25,12 +25,25 @@
     text-decoration: underline;
     color: rgb(5, 5, 5);
     font-size: larger;
+    text-align: center;
+}
 
+.NORMALHeading {
+    font-family: "Smooch";
+    text-decoration: underline;
+    font-size: larger;
+    text-align: center;
 }
 
 p.EMERGENCYMessage{
     font-size: 24px;
     color: rgb(5, 5, 5);
+    padding: 20px;
+}
+
+p.NORMALMessage {
+    font-size: 24px;
+    padding: 20px;
 }
 
 p.EMERGENCYWriter {
@@ -42,27 +55,16 @@ p.EMERGENCYWriter {
     color: rgb(5, 5, 5);
 }
 
-.NORMALHeading {
-    font-family: "Smooch";
-    text-decoration: underline;
-    font-size: larger;
-}
-
-.format{
-    display: inline-block;
-}
-
-p.NORMALMessage {
-    font-size: 24px;
-    padding: 50px;
-}
-
 p.NORMALWriter {
     text-decoration: underline;
     position: absolute;
     right: 200px;
     bottom: 0px;
     font-size: medium;
+}
+
+.format{
+    display: inline-block;
 }
 
 .photo {
