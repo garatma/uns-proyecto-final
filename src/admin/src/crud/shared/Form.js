@@ -61,6 +61,7 @@ class Form extends React.Component {
             author: this.props.author != null ? this.props.author : "",
             photo: "",
             photo64: this.props.photo != null ? this.props.photo : "",
+            photoPath: "",
             id: this.props.id != null ? this.props.id : ""
         };
 
@@ -68,6 +69,7 @@ class Form extends React.Component {
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handlePriorityChange = this.handlePriorityChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.handlePhotoDeletion = this.handlePhotoDeletion.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -113,7 +115,7 @@ class Form extends React.Component {
 
         this.setState({
             photo: file,
-            photo64: null
+            photoPath: event.target.value
         });
 
         // convert photo to base64
@@ -126,8 +128,14 @@ class Form extends React.Component {
                 photo64: e.target.result
             });
         };
+    }
 
-        
+    handlePhotoDeletion(event) {
+        this.setState({
+            photo: "",
+            photo64: "",
+            photoPath: ""
+        });
     }
 
     handleSubmit(event) {
@@ -171,58 +179,71 @@ class Form extends React.Component {
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="leftBlock">
-                    <label>Título:</label>
-                    <input className="title"
-                        required
-                        name="title"
-                        type="text"
-                        value={this.state.title}
-                        onChange={this.handleTextChange}
-                    />
-                    <label>Anuncio:</label>
-                    <textarea required name="body" value={this.state.body} onChange={this.handleTextChange}></textarea>
-                    <label className="authorLabel">Autor/a:</label>
-                    <input
-                        required
-                        className="authorInput"
-                        name="author"
-                        type="text"
-                        value={this.state.author}
-                        onChange={this.handleTextChange}
-                    />
+                        <label>Título:</label>
+                        <input
+                            className="title"
+                            required
+                            name="title"
+                            type="text"
+                            value={this.state.title}
+                            onChange={this.handleTextChange}
+                        />
+                        <label>Anuncio:</label>
+                        <textarea
+                            required
+                            name="body"
+                            value={this.state.body}
+                            onChange={this.handleTextChange}
+                        ></textarea>
+                        <label className="authorLabel">Autor/a:</label>
+                        <input
+                            required
+                            className="authorInput"
+                            name="author"
+                            type="text"
+                            value={this.state.author}
+                            onChange={this.handleTextChange}
+                        />
                     </div>
 
                     <div className="rightBlock">
-                    <label>Desde:</label>
-                    <Timestamp
-                        value={this.state.fromTimestamp}
-                        name="fromTimestamp"
-                        onChange={this.handleTimestampChange}
-                    />
+                        <label>Desde:</label>
+                        <Timestamp
+                            value={this.state.fromTimestamp}
+                            name="fromTimestamp"
+                            onChange={this.handleTimestampChange}
+                        />
 
-                    <label>Hasta:</label>
-                    <Timestamp
-                        value={this.state.toTimestamp}
-                        name="toTimestamp"
-                        onChange={this.handleTimestampChange}
-                    />
+                        <label>Hasta:</label>
+                        <Timestamp
+                            value={this.state.toTimestamp}
+                            name="toTimestamp"
+                            onChange={this.handleTimestampChange}
+                        />
 
-                    <label>
-                        Foto:
-                        <input className="selectFile" type="file" onChange={this.handleFileChange} />  
-                                             
-                        <img src={this.state.photo64} className="photo" alt=""/>
-                    </label>
+                        <label>
+                            Foto:
+                            <input
+                                className="selectFile"
+                                value={this.state.photoPath}
+                                accept="image/png, image/jpeg"
+                                type="file"
+                                onChange={this.handleFileChange}
+                            />
+                            <img src={this.state.photo64} className="photo" alt="" />
+                        </label>
 
-                    <label className="PriorityLabel">
-                        Prioridad:
-                        <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
-                    </label>
-
+                        <label className="PriorityLabel">
+                            Prioridad:
+                            <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                        </label>
                     </div>
 
-                    <button className="submitButton">Publicar</button>
+                    <button onClick={this.handleSubmit} className="submitButton">
+                        Publicar
+                    </button>
                 </form>
+                <button onClick={this.handlePhotoDeletion}>Borrar foto</button>
             </div>
         );
     }
