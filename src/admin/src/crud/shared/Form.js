@@ -1,5 +1,9 @@
 import React from "react";
 
+import trashIcon from "./trash.png";
+//<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
+const trash = <img src={trashIcon} className="deleteButton" alt="icon" />;
+
 class Timestamp extends React.Component {
     constructor(props) {
         super(props);
@@ -243,7 +247,8 @@ class Form extends React.Component {
                         Publicar
                     </button>
                 </form>
-                <button onClick={this.handlePhotoDeletion}>Borrar foto</button>
+                {this.state.photo64!=="" ? <button className="deletePhotoButton" onClick={this.handlePhotoDeletion}>{trash}</button> :null}
+                
             </div>
         );
     }

@@ -191,10 +191,17 @@ th {
     top:85%;
 }
 
-.removeImage{
+.deletePhotoButton{
     position: absolute;
-    left:10px;
+    height: 10px;
+    width: 10px;
+    left:51%;
+    top: 35%;
+    background-color: transparent;
+    margin: 0px;
+    border: 20px;
 }
+
 
 .deleteSelectionRow{
     background-color:rgb(176, 196, 204);
@@ -208,12 +215,16 @@ th {
     background-color: transparent;
 }
 
+.deleteButton{
+    height: 3vmin;
+}
+
 .icon{
     margin-bottom: 0px;
     height: 6vmin;
-
 }
 
 .icon:active {
     transform: rotate(10deg);
 }
+
