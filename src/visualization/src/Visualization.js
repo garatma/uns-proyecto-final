@@ -34,8 +34,7 @@ class Visualization extends React.Component {
     }
 
     tickToUpdateEvents() {
-        // let url = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
-        let url = "/backend/room-event";
+        let url = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
         fetch(url)
             .then((response) => response.json())
             .then((json) => {
