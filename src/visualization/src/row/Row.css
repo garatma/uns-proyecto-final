@@ -1,0 +1,56 @@
+.td_begin {
+    width: 5%;
+}
+
+.td_end {
+    width: 5%;
+}
+
+.td_event {
+    width: 28%;
+}
+
+.td_host {
+    width: 15%;
+}
+
+.td_room {
+    width: 10%;
+}
+
+.td_attendance {
+    width: 8%;
+}
+
+.td_state {
+    width: 8%;
+}
+
+.td_resources {
+    width: 13%;
+}
+
+.color1 {
+    color: black;
+    background-color: rgb(155, 199, 228);
+    height: 60px;
+}
+
+.color2 {
+    color: whitesmoke;
+    background-color: rgb(86, 143, 180);
+    height: 60px;
+}
+
+.blackIcons {
+    height: 3vmin;
+    pointer-events: none;
+    padding-right: 1vmin;
+    filter: invert(100%);
+}
+
+.whiteIcons {
+    height: 3vmin;
+    pointer-events: none;
+    padding-right: 1vmin;
+}

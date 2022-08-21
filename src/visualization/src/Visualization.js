@@ -2,13 +2,15 @@ import "./Visualization.css";
 import React from "react";
 import logo from "./icons/logo.png";
 import Clock from "./clock/Clock.js";
-import Row from "./Row.js";
+import Row from "./row/Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
 const TIME_RANGE = 2;
-const MAX_ROW_COUNT = 10;
+const MAX_ROW_COUNT = 12;
+
+let first = true;
 
 class Visualization extends React.Component {
     constructor(props) {
@@ -21,21 +23,38 @@ class Visualization extends React.Component {
     }
 
     componentDidMount() {
-        let route = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
-        fetch(route)
-            .then((response) => response.json())
-            .then((json) => {
-                this.setState({
-                    eventTable: json
-                });
-                this.tick();
-            })
-            .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
-
-        this.interval = setInterval(() => this.tick(), 10000);
+        this.tickToUpdateEvents();
+        this.intervalToUpdateEvents = setInterval(() => this.tickToUpdateEvents(), 60000);
+        this.intervalToCarouse = setInterval(() => this.tickToCarouse(), 10000);
     }
 
-    tick() {
+    componentWillUnmount() {
+        clearInterval(this.intervalToUpdateEvents);
+        clearInterval(this.intervalToCarouse);
+    }
+
+    tickToUpdateEvents() {
+        // let url = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
+        let url = "/backend/room-event";
+        fetch(url)
+            .then((response) => response.json())
+            .then((json) => {
+                this.setState(
+                    {
+                        eventTable: json
+                    },
+                    () => {
+                        if (first) {
+                            first = false;
+                            this.tickToCarouse();
+                        }
+                    }
+                );
+            })
+            .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
+    }
+
+    tickToCarouse() {
         if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
 
         this.setState((prevState) => ({
@@ -46,11 +65,6 @@ class Visualization extends React.Component {
             rowsToShow: this.setRows()
         }));
     }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
     fromNumberToHour(hourNumber) {
         if (hourNumber < 12) return hourNumber + ":00 AM";
         else return hourNumber + ":00 PM";
@@ -135,19 +149,19 @@ class Visualization extends React.Component {
                                 <th className="logo" colSpan="2">
                                     <img src={logo} className="blackIcons" alt="icon" />
                                 </th>
-                                <th colSpan="4" className="date">
+                                <th colSpan="5" className="date">
                                     <Clock type="date" />
                                 </th>
-                                <th colSpan="2" className="time">
+                                <th colSpan="1" className="time">
                                     <Clock type="time" />
                                 </th>
                             </tr>
                             <tr>
                                 <th>Inicio</th>
-                                <th>Evento</th>
-                                <th>Espacio</th>
                                 <th>Fin</th>
+                                <th>Evento</th>
                                 <th>Persona a cargo</th>
+                                <th>Espacio</th>
                                 <th>Ocupación</th>
                                 <th>Estado</th>
                                 <th>Recursos</th>

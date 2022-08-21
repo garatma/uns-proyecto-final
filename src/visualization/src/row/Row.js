@@ -1,7 +1,6 @@
 import React from "react";
-import Resources from "./resources/Resources.js";
-
-import "./Visualization.css";
+import Resources from "../resources/Resources.js";
+import "./Row.css";
 
 const FINALIZADO = "Finalizado";
 const SIN_COMENZAR = "Sin comenzar";
@@ -54,14 +53,14 @@ function Row(props) {
 
     return (
         <tr className={props.color}>
-            <td>{setTimestamp(props.eventHoursBegin, props.eventMinutesBegin)}</td>
-            <td className="eventCol">{props.eventName}</td>
-            <td>{props.roomName}</td>
-            <td>{setTimestamp(props.eventHoursEnd, props.eventMinutesEnd)}</td>
-            <td className="hostCol">{props.eventHost}</td>
-            <td>{attendance}</td>
-            <td>{eventState}</td>
-            <td>
+            <td className="td_begin">{setTimestamp(props.eventHoursBegin, props.eventMinutesBegin)}</td>
+            <td className="td_end">{setTimestamp(props.eventHoursEnd, props.eventMinutesEnd)}</td>
+            <td className="td_event">{props.eventName}</td>
+            <td className="td_host">{props.eventHost}</td>
+            <td className="td_room">{props.roomName}</td>
+            <td className="td_attendance">{attendance}</td>
+            <td className="td_state">{eventState}</td>
+            <td className="td_resources">
                 <Resources
                     colorIcon={props.color === "color1" ? "whiteIcons" : "blackIcons"}
                     projector={props.hasProjector}
