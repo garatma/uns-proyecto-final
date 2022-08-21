@@ -8,7 +8,7 @@ import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
 const TIME_RANGE = 2;
-const MAX_ROW_COUNT = 10;
+const MAX_ROW_COUNT = 12;
 
 class Visualization extends React.Component {
     constructor(props) {
