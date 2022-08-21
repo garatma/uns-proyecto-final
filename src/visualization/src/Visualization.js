@@ -2,7 +2,7 @@ import "./Visualization.css";
 import React from "react";
 import logo from "./icons/logo.png";
 import Clock from "./clock/Clock.js";
-import Row from "./Row.js";
+import Row from "./row/Row.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
@@ -22,13 +22,13 @@ class Visualization extends React.Component {
 
     componentDidMount() {
         this.getEventsFromDatabase();
-        this.intervalToUpdateEvents = setInterval(()=> this.tickToUpdateEvents(),60000);
+        this.intervalToUpdateEvents = setInterval(() => this.tickToUpdateEvents(), 60000);
         this.interval = setInterval(() => this.tick(), 10000);
     }
 
-    getEventsFromDatabase(){
-        let route = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
-        fetch(route)
+    getEventsFromDatabase() {
+        let url = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
+        fetch(url)
             .then((response) => response.json())
             .then((json) => {
                 this.setState({
@@ -38,10 +38,10 @@ class Visualization extends React.Component {
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
     }
 
-    tickToUpdateEvents(){
+    tickToUpdateEvents() {
         this.getEventsFromDatabase();
     }
-    
+
     tick() {
         if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
 
@@ -142,19 +142,19 @@ class Visualization extends React.Component {
                                 <th className="logo" colSpan="2">
                                     <img src={logo} className="blackIcons" alt="icon" />
                                 </th>
-                                <th colSpan="4" className="date">
+                                <th colSpan="5" className="date">
                                     <Clock type="date" />
                                 </th>
-                                <th colSpan="2" className="time">
+                                <th colSpan="1" className="time">
                                     <Clock type="time" />
                                 </th>
                             </tr>
                             <tr>
                                 <th>Inicio</th>
-                                <th>Evento</th>
-                                <th>Espacio</th>
                                 <th>Fin</th>
+                                <th>Evento</th>
                                 <th>Persona a cargo</th>
+                                <th>Espacio</th>
                                 <th>Ocupación</th>
                                 <th>Estado</th>
                                 <th>Recursos</th>
