@@ -21,6 +21,12 @@ class Visualization extends React.Component {
     }
 
     componentDidMount() {
+        this.getEventsFromDatabase();
+        this.intervalToUpdateEvents = setInterval(()=> this.tickToUpdateEvents(),60000);
+        this.interval = setInterval(() => this.tick(), 10000);
+    }
+
+    getEventsFromDatabase(){
         let route = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
         fetch(route)
             .then((response) => response.json())
@@ -28,13 +34,14 @@ class Visualization extends React.Component {
                 this.setState({
                     eventTable: json
                 });
-                this.tick();
             })
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
-
-        this.interval = setInterval(() => this.tick(), 10000);
     }
 
+    tickToUpdateEvents(){
+        this.getEventsFromDatabase();
+    }
+    
     tick() {
         if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
 
