@@ -23,23 +23,26 @@ class DeleteAnnouncement extends React.Component {
     }
 
     async deleteSelectedAnnouncement() {
-        const ids = {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(this.state.announcementsToDelete)
-        };
+        if(this.state.announcementsToDelete.length>0) {
+            const ids = {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(this.state.announcementsToDelete)
+            };
 
-        let response = await fetch("/backend/announcement", ids);
-        if (response.ok) {
-            if (this.state.announcementsToDelete.length === 1) alert("Anuncio eliminado!");
-            else alert("Anuncios eliminados!");
-            return;
-        }
+            let response = await fetch("/backend/announcement", ids);
+            if (response.ok) {
+                if (this.state.announcementsToDelete.length === 1) alert("Anuncio eliminado!");
+                else alert("Anuncios eliminados!");
+                this.setState({announcementsToDelete:[]})
+                return;
+            }
 
-        let json = await response.json();
-        alert("Se produjo un error al eliminar el anuncio: " + json.error);
+            let json = await response.json();
+            alert("Se produjo un error al eliminar el anuncio: " + json.error);
+        }   
     }
 
     render() {
