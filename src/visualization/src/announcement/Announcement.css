@@ -15,8 +15,9 @@
 .announcementIcon {
     position: absolute;
     right: 30px;
-    top: 15px;
+    top: 0px;
     height: 10vmin;
+    padding: 1%;
 }
 
 .EMERGENCYHeading {
@@ -69,7 +70,7 @@ p.NORMALWriter {
 .photo {
     /* max-height: 1%; */
     max-width: 20%;
-    height: 23vmin;
+    height: 20vmin;
     display: block;
     float: left;
 }

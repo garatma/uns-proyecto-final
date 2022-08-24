@@ -14,11 +14,6 @@
     color: white;
 }
 
-.new {
-    animation: bounceIn;
-    animation-duration: 2s;
-}
-
 .EventTable {
     background-color: rgb(216, 225, 231);
 }
