@@ -208,6 +208,10 @@ class Form extends React.Component {
                             value={this.state.author}
                             onChange={this.handleTextChange}
                         />
+                        <label className="PriorityLabel">
+                            Prioridad:
+                            <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                        </label>
                     </div>
 
                     <div className="rightBlock">
@@ -236,19 +240,17 @@ class Form extends React.Component {
                             />
                             <img src={this.state.photo64} className="photo" alt="" />
                         </label>
-
-                        <label className="PriorityLabel">
-                            Prioridad:
-                            <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
-                        </label>
                     </div>
 
                     <button onClick={this.handleSubmit} className="submitButton">
                         Publicar
                     </button>
                 </form>
-                {this.state.photo64!=="" ? <button className="deletePhotoButton" onClick={this.handlePhotoDeletion}>{trash}</button> :null}
-                
+                {this.state.photo64 !== "" ? (
+                    <button className="deletePhotoButton" onClick={this.handlePhotoDeletion}>
+                        {trash}
+                    </button>
+                ) : null}
             </div>
         );
     }
