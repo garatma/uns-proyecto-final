@@ -49,7 +49,7 @@ p.NORMALMessage {
 p.EMERGENCYWriter {
     text-decoration: underline;
     position: absolute;
-    right: 200px;
+    right: 10px;
     bottom: 0px;
     font-size: medium;
     color: rgb(5, 5, 5);
@@ -58,7 +58,7 @@ p.EMERGENCYWriter {
 p.NORMALWriter {
     text-decoration: underline;
     position: absolute;
-    right: 200px;
+    right: 10px;
     bottom: 0px;
     font-size: medium;
 }

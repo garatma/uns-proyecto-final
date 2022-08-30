@@ -228,3 +228,6 @@ th {
     transform: rotate(10deg);
 }
 
+.messageWidth{
+    text-align: justify;
+}
