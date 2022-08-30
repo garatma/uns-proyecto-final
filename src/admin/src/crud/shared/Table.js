@@ -3,7 +3,6 @@ import trashIcon from "./trash.png";
 //<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
 const trash = <img src={trashIcon} className="icon" alt="icon" />;
 
-
 class Table extends React.Component {
     constructor(props) {
         super(props);
@@ -84,7 +83,7 @@ class Table extends React.Component {
             return (
                 <tr key={row.id}>
                     <td>{row.title}</td>
-                    <td>{row.message}</td>
+                    <td  className="messageWidth">{row.message}</td>
                     <td>{this.getTimestamp(row.timestamp_begin)}</td>
                     <td>{this.getTimestamp(row.timestamp_end)}</td>
                     <td>{priority}</td>

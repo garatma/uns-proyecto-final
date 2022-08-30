@@ -189,6 +189,7 @@ class Form extends React.Component {
                             required
                             name="title"
                             type="text"
+                            maxLength={90}
                             value={this.state.title}
                             onChange={this.handleTextChange}
                         />
@@ -196,6 +197,7 @@ class Form extends React.Component {
                         <textarea
                             required
                             name="body"
+                            maxLength={360}
                             value={this.state.body}
                             onChange={this.handleTextChange}
                         ></textarea>
@@ -205,6 +207,7 @@ class Form extends React.Component {
                             className="authorInput"
                             name="author"
                             type="text"
+                            maxLength={80}
                             value={this.state.author}
                             onChange={this.handleTextChange}
                         />
