@@ -12,6 +12,7 @@
     },
     "main": "backend.js",
     "scripts": {
-        "start": "node Backend.js"
+        "start": "node Backend.js",
+        "build": ""
     }
 }
