@@ -1,15 +1,30 @@
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const backend = express();
-const cors = require("cors");
-var sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require("sqlite3").verbose();
+const rateLimit = require("express-rate-limit");
+
+// ---------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------- setup -------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+// set up rate limiter: maximum of five requests per minute
+
+const limiter = rateLimit({
+    windowMs: 60000, // 1 minute
+    max: 100 // Limit each IP to 100 requests per `window` (here, per 1 minute)
+});
+
+// apply rate limiter to all requests
+backend.use(limiter);
+backend.use(cors());
+backend.use(express.json({ limit: "5mb" }));
 
 // ---------------------------------------------------------------------------------------------------------------------
 // -------------------------------------------------- frontend routes --------------------------------------------------
 // ---------------------------------------------------------------------------------------------------------------------
 
-backend.use(cors());
-backend.use(express.json({ limit: "5mb" }));
 backend.use("/admin", express.static(path.join(__dirname, "../admin/build")));
 backend.use("/visualization", express.static(path.join(__dirname, "../visualization/build")));
 backend.use("/", express.static(path.join(__dirname, "../visualization/build")));
@@ -24,7 +39,7 @@ const TIMEZONE_OFFSET = 10800000;
 
 // ------------------------------------------------ database connection ------------------------------------------------
 
-var db = new sqlite3.Database("../../db/dcic-schedule.db");
+let db = new sqlite3.Database("../../db/dcic-schedule.db");
 db.serialize();
 
 // ---------------------------------------------------- room-event -----------------------------------------------------
