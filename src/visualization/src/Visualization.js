@@ -9,8 +9,19 @@ import AnnouncementsToShow from "./announcement/Announcement.js";
 
 const TIME_RANGE = 2;
 const MAX_ROW_COUNT = 12;
+let FIRST = true;
 
-let first = true;
+//This component creates an events table with data acquired from a request to an API. 
+//MAX_ROW_COUNT defines the max count of rows that can be displayed at a time, therefore limits the
+//max count of events that can be visualized.
+//If there are more events than the MAX_ROW_COUNT, the FIRST MAX_ROW_COUNT events are displayed, and after a 
+//period of time, the FIRST event is not displayed anymore and the MAX_ROW_COUNT+1 is. This goes on until the
+//last event is displayed, and then it restarts again. 
+//In case that there is less events than MAX_ROW_COUNT, all of them are displayed in addition to empty rows to 
+//fill the MAX_ROW_COUNT 
+//In case that there are no events, MAX_ROW_COUNT empty rows are displayed. 
+//TIME_RANGE defines the range of hours between the actual hour and the FIRST and last hour in which an event starts.
+//FIRST defines wheather the FIRST request has been made or not.
 
 class Visualization extends React.Component {
     constructor(props) {
@@ -43,8 +54,8 @@ class Visualization extends React.Component {
                         eventTable: json
                     },
                     () => {
-                        if (first) {
-                            first = false;
+                        if (FIRST) {
+                            FIRST = false;
                             this.tickToCarouse();
                         }
                     }

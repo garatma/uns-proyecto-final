@@ -1,6 +1,9 @@
 import "./Clock.css";
 import React from "react";
 
+//This component displays the actual day and hour with the following format:
+//[Day of week] [Day of month] [month] [hh:mm:ss]
+
 const dateFormat = {
     year: "numeric",
     month: "long",

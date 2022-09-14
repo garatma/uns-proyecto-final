@@ -6,6 +6,10 @@ const FINALIZADO = "Finalizado";
 const SIN_COMENZAR = "Sin comenzar";
 const EN_PROGRESO = "En progreso";
 
+//This component displays a row and its columns with values according to the properties received.
+//Si la hora actual es mayor a la hora de fin del evento, entonces en la columna de progreso se muestra
+//FINALIZADO, si es menor a la hora de fin pero mayor a la hora de inicio del evento, se muestra 
+//EN_PROGRESO, si es menor a la hora de inicio se muestra Sin comenzar.
 function getEventState(hoursBegin, minutesBegin, hoursEnd, minutesEnd) {
     if (hoursBegin === null || minutesBegin === null || hoursEnd === null || minutesEnd === null) return null;
 

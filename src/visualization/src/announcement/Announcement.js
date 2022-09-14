@@ -8,6 +8,7 @@ import informationIcon from "./icons/information.png";
 //Emergency Icon: <a href="https://www.flaticon.com/free-icons/alert" title="alert icons">Alert icons created by Freepik - Flaticon</a>
 //Information Icon: <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
 
+//This component creates a carousel to display announcements with data acquired from a request to an API. 
 class AnnouncementsToShow extends React.Component {
     constructor(props) {
         super(props);

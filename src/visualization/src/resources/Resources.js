@@ -5,6 +5,8 @@ import wifiIcon from "./icons/wifi.png";
 import ethernetIcon from "./icons/ethernet.png";
 //<a href="https://www.flaticon.com/free-icons/ethernet" title="ethernet icons">Ethernet icons created by Pixelmeetup - Flaticon</a>
 
+//This component displays the icons resources according to the properties received that 
+//determinate weather each icon has to be displayed or not.
 function Resources(props) {
     let projector = props.projector ? <img src={projectorIcon} className={props.colorIcon} alt="icon" /> : null;
     let sound = props.sound ? <img src={soundIcon} className={props.colorIcon} alt="icon" /> : null;
