@@ -47,6 +47,10 @@ class Priority extends React.Component {
     }
 }
 
+
+//This component displays a form to create or edit announcements
+//Allows to input a title, a message, the author's name, the dates between the announcement has to be displayed,
+//the priority and a photo.
 class Form extends React.Component {
     constructor(props) {
         super(props);

@@ -1,6 +1,7 @@
 import React from "react";
 import Form from "./shared/Form";
 
+//This component publish on the database the new announcement created throught the form  (See Form.js)
 class CreateAnnouncement extends React.Component {
     constructor(props) {
         super(props);

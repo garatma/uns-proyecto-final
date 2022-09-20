@@ -3,6 +3,12 @@ import trashIcon from "./trash.png";
 //<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
 const trash = <img src={trashIcon} className="icon" alt="icon" />;
 
+//This component displays a table with the announcement data that is acquired from the database
+//Throught the properties, it receives information about the goal of the table:
+//If the goal is to edit an announcement, the table has to include a column with buttons for earch row to select an annoucement and then edit it
+//IF the goal is to delete annoucements, the table has to include a column with checkbox buttons for each row to select the annoucements to delete
+//and a button to finally delete all the announcements selected to delete.
+//If the goal is to read the current announcements, the table has to displayed only the announcement data
 class Table extends React.Component {
     constructor(props) {
         super(props);

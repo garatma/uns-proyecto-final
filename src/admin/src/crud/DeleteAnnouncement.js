@@ -1,6 +1,9 @@
 import React from "react";
 import Table from "./shared/Table";
 
+//This component shows the current announcement throught the Table component (See Table.js) and 
+//creates a list to gathered all the announcements that are checked to delete
+//and deletes them from the database when the delete button is pressed
 class DeleteAnnouncement extends React.Component {
     constructor(props) {
         super(props);

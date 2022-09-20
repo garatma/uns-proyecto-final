@@ -2,6 +2,9 @@ import React from "react";
 import Table from "./shared/Table";
 import Form from "./shared/Form";
 
+//This component shows the current announcements to edit throught the Table component (See Table.js)
+//When an annoucement is selected to edit, displayes a form with the announcement data to the Form component (See Form.js)
+//When the announcement is edited, the new data is updated on the database.
 class UpdateAnnouncement extends React.Component {
     constructor(props) {
         super(props);

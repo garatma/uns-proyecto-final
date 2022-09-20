@@ -5,6 +5,9 @@ import ReadAnnouncement from "./crud/ReadAnnouncement";
 import UpdateAnnouncement from "./crud/UpdateAnnouncement";
 import DeleteAnnouncement from "./crud/DeleteAnnouncement.js";
 
+//This component displays the buttons to create, delete, edit and visualize announcements.
+//When one of this buttons are clicked, it redirects to the respective component to 
+//according to the button functionality
 class Admin extends React.Component {
     constructor(props) {
         super(props);
