@@ -1,5 +1,4 @@
 import React from "react";
-
 import trashIcon from "./trash.png";
 //<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
 const trash = <img src={trashIcon} className="deleteButton" alt="icon" />;
@@ -49,7 +48,7 @@ class Priority extends React.Component {
 
 
 //This component displays a form to create or edit announcements
-//Allows to input a title, a message, the author's name, the dates between the announcement has to be displayed,
+//It allows to input a title, a message, the author's name, the dates between the announcement has to be displayed,
 //the priority and a photo.
 class Form extends React.Component {
     constructor(props) {

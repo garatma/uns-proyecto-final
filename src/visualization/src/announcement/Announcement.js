@@ -8,7 +8,7 @@ import informationIcon from "./icons/information.png";
 //Emergency Icon: <a href="https://www.flaticon.com/free-icons/alert" title="alert icons">Alert icons created by Freepik - Flaticon</a>
 //Information Icon: <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
 
-//This component creates a carousel to display announcements with data acquired from a request to an API. 
+//This component creates a carousel to display announcements with data acquired from the backend
 class AnnouncementsToShow extends React.Component {
     constructor(props) {
         super(props);
@@ -17,6 +17,7 @@ class AnnouncementsToShow extends React.Component {
         };
     }
 
+    // Set a timer to call a function every three minutes to get the announcements data from the backend, starting from now
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 180000);
         this.tick();
@@ -26,6 +27,7 @@ class AnnouncementsToShow extends React.Component {
         clearInterval(this.timerID);
     }
 
+    // Get the announcements according to the actual date
     tick() {
         fetch("/backend/announcement/timestamp/" + Math.floor(Date.now() / 1000))
             .then((response) => response.json())
@@ -33,11 +35,12 @@ class AnnouncementsToShow extends React.Component {
             .catch((cause) => console.log("no se pudo hacer el request: " + cause));
     }
 
+    // Creates an announcement card to display the announcement nicely
     printAnnouncement(element, priority, icon) {
         return <Carousel.Item key={element.id} className="carouselItem">
             <Alert className={priority} >
                 <div className="format">
-                <img src={element.photo} className="photo" alt="" /> 
+                <img src={element.photo} className="photo" alt="" />
                 <img src={icon} className="announcementIcon" alt="icon" />
                 <p className={priority + "Heading"}>{element.title}</p>
                 <p className={priority + "Message"}>{element.message}</p>
@@ -48,6 +51,7 @@ class AnnouncementsToShow extends React.Component {
 
     }
 
+    //Creates and returns a list with all the announcements ready to be displayed with a format according to the priority
     setAnnouncements() {
         if (this.state.announcements == null) return null;
 
@@ -67,6 +71,7 @@ class AnnouncementsToShow extends React.Component {
         return announcementsList;
     }
 
+    // Render a carousel to display the announcements one by one
     render() {
         let announcements = this.setAnnouncements();
         return (

@@ -3,12 +3,12 @@ import trashIcon from "./trash.png";
 //<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
 const trash = <img src={trashIcon} className="icon" alt="icon" />;
 
-//This component displays a table with the announcement data that is acquired from the database
-//Throught the properties, it receives information about the goal of the table:
-//If the goal is to edit an announcement, the table has to include a column with buttons for earch row to select an annoucement and then edit it
-//IF the goal is to delete annoucements, the table has to include a column with checkbox buttons for each row to select the annoucements to delete
+//This component displays a table with the announcement data that is acquired from the backend
+//The table can be displayed according three different modes, that are received through the properties
+//1)edit mode: the table has to include a column with buttons for each row to select an announcement and then edit it
+//2)delete mode: the table has to include a column with checkbox buttons for each row to select the announcements to delete
 //and a button to finally delete all the announcements selected to delete.
-//If the goal is to read the current announcements, the table has to displayed only the announcement data
+//3)read mode: the table has to displayed only the announcement data
 class Table extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +22,7 @@ class Table extends React.Component {
         };
     }
 
+    //Set the table last header title according to the table mode
     getHeader() {
         if (this.props.action === "update") return <th>Editar</th>;
         else if (this.props.action === "delete") return <th>Eliminar</th>;
@@ -31,6 +32,7 @@ class Table extends React.Component {
         alert("You clicked!");
     }
 
+    //Set a timer to call a function every second to get the announcement data from the backend, starting from now
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
         this.tick();
@@ -40,6 +42,7 @@ class Table extends React.Component {
         clearInterval(this.timerID);
     }
 
+    //Get the announcements data from the backend
     async tick() {
         let response = await fetch("/backend/announcement");
         let json = await response.json();
@@ -58,6 +61,7 @@ class Table extends React.Component {
         return new Date(timestamp * 1000).toLocaleString("es-AR");
     }
 
+    // Creates the table according to the mode received through the properties
     getTable() {
         const rows = this.state.dbTable.map((row) => {
             let actionColumn = null;
@@ -101,6 +105,7 @@ class Table extends React.Component {
         return <tbody>{rows}</tbody>;
     }
 
+    // Render the table according to the mode received through the properties
     render() {
         const table = this.state.dbTable != null ? this.getTable() : null;
 

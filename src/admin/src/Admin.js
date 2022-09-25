@@ -5,9 +5,8 @@ import ReadAnnouncement from "./crud/ReadAnnouncement";
 import UpdateAnnouncement from "./crud/UpdateAnnouncement";
 import DeleteAnnouncement from "./crud/DeleteAnnouncement.js";
 
-//This component displays the buttons to create, delete, edit and visualize announcements.
-//When one of this buttons are clicked, it redirects to the respective component to 
-//according to the button functionality
+//This component displays buttons to create, delete, edit and visualize announcements.
+//When these are clicked, they redirect to the component that handles their functionality.
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -38,6 +37,7 @@ class Admin extends React.Component {
         this.setState({ gui: <DeleteAnnouncement /> });
     }
 
+    //Render four buttons, each one with their respective callback function.
     render() {
         return (
             <div className="Admin">

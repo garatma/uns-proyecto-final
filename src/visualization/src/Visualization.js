@@ -7,22 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import AnnouncementsToShow from "./announcement/Announcement.js";
 
-const TIME_RANGE = 2;
-const MAX_ROW_COUNT = 12;
-let FIRST = true;
+const TIME_RANGE = 2; //range of hours between the current hour and the first and last hour in which an event starts.
+const MAX_ROW_COUNT = 12; //max count of rows that can be displayed at a time
+let first = true; //defines if we are on the first iteration
 
-//This component creates an events table with data acquired from a request to an API. 
-//MAX_ROW_COUNT defines the max count of rows that can be displayed at a time, therefore limits the
-//max count of events that can be visualized.
-//If there are more events than the MAX_ROW_COUNT, the FIRST MAX_ROW_COUNT events are displayed, and after a 
-//period of time, the FIRST event is not displayed anymore and the MAX_ROW_COUNT+1 is. This goes on until the
-//last event is displayed, and then it restarts again. 
-//In case that there is less events than MAX_ROW_COUNT, all of them are displayed in addition to empty rows to 
-//fill the MAX_ROW_COUNT 
-//In case that there are no events, MAX_ROW_COUNT empty rows are displayed. 
-//TIME_RANGE defines the range of hours between the actual hour and the FIRST and last hour in which an event starts.
-//FIRST defines wheather the FIRST request has been made or not.
-
+//This component creates an events table with data acquired from the backend.
 class Visualization extends React.Component {
     constructor(props) {
         super(props);
@@ -32,6 +21,9 @@ class Visualization extends React.Component {
             rowsToShow: []
         };
     }
+
+    // Set a timer to call a function every minute to get the events data from the backend,
+    // and another timer to call a function every 10 seconds to animate the table
 
     componentDidMount() {
         this.tickToUpdateEvents();
@@ -44,6 +36,7 @@ class Visualization extends React.Component {
         clearInterval(this.intervalToCarouse);
     }
 
+    //Get the events data from the backend
     tickToUpdateEvents() {
         let url = "/backend/room-event?timestamp=" + Date.now() + "&range=" + TIME_RANGE;
         fetch(url)
@@ -54,8 +47,8 @@ class Visualization extends React.Component {
                         eventTable: json
                     },
                     () => {
-                        if (FIRST) {
-                            FIRST = false;
+                        if (first) {
+                            first = false;
                             this.tickToCarouse();
                         }
                     }
@@ -64,6 +57,7 @@ class Visualization extends React.Component {
             .catch((reason) => console.log("couldn't make request to get events and rooms: " + reason));
     }
 
+    //Set the index of the first event to display and the rows to display according to that index.
     tickToCarouse() {
         if (this.state.carouselTableIndex === null || this.state.eventTable === null) return;
 
@@ -75,6 +69,7 @@ class Visualization extends React.Component {
             rowsToShow: this.setRows()
         }));
     }
+
     fromNumberToHour(hourNumber) {
         if (hourNumber < 12) return hourNumber + ":00 AM";
         else return hourNumber + ":00 PM";
@@ -106,6 +101,8 @@ class Visualization extends React.Component {
         return index % 2 === 0 ? "color1" : "color2";
     }
 
+    // Creates a row per event from the list acquired from the database until the max row count is reached.
+    //If there are less events than the max row count, pad with empty rows
     setRows() {
         if (this.state.eventTable == null) return null;
 
@@ -147,6 +144,7 @@ class Visualization extends React.Component {
         return <tbody>{this.state.rowsToShow}</tbody>;
     }
 
+    // Render a table with events data and below it a carousel with announcements
     render() {
         let rows = this.getRows();
 

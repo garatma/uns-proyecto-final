@@ -1,18 +1,22 @@
 import React from "react";
 import Form from "./shared/Form";
 
-//This component publish on the database the new announcement created throught the form  (See Form.js)
+//This component writes to the database the new announcement created with the form (See Form.js)
 class CreateAnnouncement extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // Submit the form.
     async handleSubmit(data) {
+
         if (data.timestamp_end <= data.timestamp_begin) {
             alert("La fecha de inicio debe ser anterior a la de fin!");
             return;
         }
+
+        // POST the form to the backend.
 
         const options = {
             method: "POST",
@@ -23,6 +27,9 @@ class CreateAnnouncement extends React.Component {
         };
 
         let response = await fetch("/backend/announcement/", options);
+
+        // Check response.
+
         if (response.ok) {
             alert("Anuncio creado!");
             return;
@@ -40,6 +47,7 @@ class CreateAnnouncement extends React.Component {
         alert("Se produjo un error al crear el anuncio: " + json.error);
     }
 
+    //Render the Form, with a callback for when we have to submit the former.
     render() {
         return <Form onSubmit={this.handleSubmit} />;
     }
