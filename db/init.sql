@@ -150,4 +150,3 @@ create table announcement (
 	timestamp_update integer,
 	primary key(id autoincrement)
 );
-
