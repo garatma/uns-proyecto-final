@@ -305,7 +305,7 @@ backend.put("/backend/announcement", (req, res) => {
     );
 });
 
-backend.delete("/backend/announcement/", (req, res) => {
+backend.delete("/backend/announcement", (req, res) => {
     // #swagger.tags = ['Announcements']
 
     // #swagger.summary = 'Delete announcements'
