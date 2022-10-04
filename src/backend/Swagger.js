@@ -3,12 +3,15 @@ const swaggerAutogen = require("swagger-autogen")();
 const outputFile = "./swagger-output.json";
 const endpointsFiles = ["./Backend.js"];
 
+const port = process.env.PORT || 5000;
+const host = process.env.PROJECT_DOMAIN ? process.env.PROJECT_DOMAIN + ".glitch.me" : "localhost:" + port;
+
 const doc = {
     info: {
         version: "1.1.0",
         title: "Proyecto Final Backend API"
     },
-    host: "localhost:5000",
+    host: host,
     tags: [
         {
             name: "Events and rooms",
