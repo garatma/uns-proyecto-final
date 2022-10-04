@@ -1,17 +1,22 @@
 {
     "name": "backend",
-    "version": "0.1.0",
+    "version": "1.1.0",
     "private": true,
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.17.3",
-        "sqlite3": "^5.0.3"
+        "express-rate-limit": "^6.6.0",
+        "sqlite3": "^5.0.2",
+        "swagger-ui-express": "^4.5.0",
+        "swagger-autogen": "^2.22.0"
     },
     "engines": {
         "node": "16.x"
     },
     "main": "backend.js",
     "scripts": {
-        "start": "node backend.js"
+        "start": "node Swagger.js",
+        "build": "",
+        "swagger-autogen": "node ./Swagger.js"
     }
 }

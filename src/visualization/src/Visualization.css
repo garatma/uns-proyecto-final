@@ -1,0 +1,19 @@
+.Visualization {
+    text-align: center;
+}
+
+.logo {
+    text-align: left;
+}
+
+.Visualization-header {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    font-size: calc(13px + 1vmin);
+    color: white;
+}
+
+.EventTable {
+    background-color: rgb(216, 225, 231);
+}

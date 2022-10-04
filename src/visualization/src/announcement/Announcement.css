@@ -2,23 +2,74 @@
     width: 100%;
 }
 
-.alert {
-    min-height: 200px;
+.NORMAL {
+    height: 220px;
 }
 
-.heading {
+.EMERGENCY {
+    background-color: rgb(206, 157, 152);
+    height: 220px;
+}
+
+.announcementIcon {
+    position: absolute;
+    right: 30px;
+    top: 0px;
+    height: 10vmin;
+    padding: 1%;
+}
+
+.EMERGENCYHeading {
     font-family: "Smooch";
     text-decoration: underline;
+    color: rgb(5, 5, 5);
+    font-size: larger;
+    text-align: center;
 }
 
-p.message {
+.NORMALHeading {
+    font-family: "Smooch";
+    text-decoration: underline;
+    font-size: larger;
+    text-align: center;
+}
+
+p.EMERGENCYMessage {
     font-size: 24px;
+    color: rgb(5, 5, 5);
+    padding: 20px;
 }
 
-p.writer {
+p.NORMALMessage {
+    font-size: 24px;
+    padding: 20px;
+}
+
+p.EMERGENCYWriter {
     text-decoration: underline;
     position: absolute;
-    right: 200px;
+    right: 10px;
     bottom: 0px;
     font-size: medium;
+    color: rgb(5, 5, 5);
+}
+
+p.NORMALWriter {
+    text-decoration: underline;
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    font-size: medium;
+}
+
+.format {
+    display: inline-block;
+}
+
+.photo {
+    /* max-height: 1%; */
+    max-width: 20%;
+    height: 18vmin;
+    display: block;
+    float: left;
 }
