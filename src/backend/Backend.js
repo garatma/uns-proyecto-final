@@ -132,7 +132,7 @@ backend.get("/backend/announcement", (req, res) => {
 backend.get("/backend/announcement/id/:id", (req, res) => {
     // #swagger.tags = ['Announcements']
 
-    // #swagger.summary = 'Get a specific announcement, by the its ID in the database'
+    // #swagger.summary = 'Get a specific announcement, by its ID in the database'
 
     /* #swagger.parameters['id'] = {
         in: 'path',
