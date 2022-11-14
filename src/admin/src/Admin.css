@@ -2,20 +2,24 @@
     text-align: left;
 }
 
-.Admin-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
 .Admin-header {
-    background-color: rgb(169, 189, 197);
-    min-height: 100vh;
+    background-color: rgb(203, 209, 218);
+    min-height: 10vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    font-size: calc(5px + 2vmin);
     color: rgb(15, 15, 15);
+}
+
+.goBacktoTable{
+    position: absolute;
+    bottom: 0%;
+}
+
+.submitButton{
+    position: absolute;
+    left: 30%
 }
 
 .leftBlock {
@@ -39,6 +43,7 @@ label {
     margin: 10px;
     padding-top: 5%;
     font-size: 75%;
+    font-size: medium;
 }
 
 .showHour input {
@@ -55,19 +60,21 @@ input {
     box-sizing: border-box;
     border-radius: 4px;
     resize: none;
-    font-size: large;
+    font-size: medium;
 }
 
 .authorLabel {
     width: 5px;
     height: 40px;
     display: inline-block;
+    font-size: medium;
 }
 
 .authorInput {
     width: 400px;
     height: 20px;
     margin-left: 75px;
+    font-size: medium;
 }
 
 textarea {
@@ -120,20 +127,9 @@ button {
 
 .priority {
     margin-left: 10px;
-    font-size: large;
+    font-size: medium;
 }
 
-.submitButton {
-    position: absolute;
-    bottom: 5%;
-    left: 40%;
-}
-
-.goBacktoTable {
-    position: absolute;
-    bottom: 5%;
-    left: 20%;
-}
 
 .deleteGUI {
     display: block;
@@ -194,11 +190,13 @@ th {
     height: 10px;
     width: 10px;
     left: 51%;
-    top: 35%;
+    top: 50%;
     background-color: transparent;
     margin: 0px;
     border: 20px;
 }
+
+
 
 .deleteSelectionRow {
     background-color: rgb(176, 196, 204);

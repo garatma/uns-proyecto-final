@@ -46,7 +46,6 @@ class Priority extends React.Component {
     }
 }
 
-
 //This component displays a form to create or edit announcements
 //It allows to input a title, a message, the author's name, the dates between the announcement has to be displayed,
 //the priority and a photo.
@@ -82,7 +81,7 @@ class Form extends React.Component {
 
     getTimestamp(timestamp) {
         let year = timestamp.getFullYear();
-        let month = timestamp.getMonth() < 10 ? "0" + (timestamp.getMonth() + 1) : timestamp.getMonth() + 1;
+        let month = timestamp.getMonth() + 1 < 10 ? "0" + (timestamp.getMonth() + 1) : timestamp.getMonth() + 1;
         let day = timestamp.getDate() < 10 ? "0" + timestamp.getDate() : timestamp.getDate();
         let hours = timestamp.getHours() < 10 ? "0" + timestamp.getHours() : timestamp.getHours();
         let minutes = timestamp.getMinutes() < 10 ? "0" + timestamp.getMinutes() : timestamp.getMinutes();
@@ -188,8 +187,8 @@ class Form extends React.Component {
                     <div className="leftBlock">
                         <label>Título:</label>
                         <input
+                            required="true"
                             className="title"
-                            required
                             name="title"
                             type="text"
                             maxLength={90}
@@ -198,7 +197,7 @@ class Form extends React.Component {
                         />
                         <label>Anuncio:</label>
                         <textarea
-                            required
+                            required="true"
                             name="body"
                             maxLength={360}
                             value={this.state.body}
@@ -214,10 +213,12 @@ class Form extends React.Component {
                             value={this.state.author}
                             onChange={this.handleTextChange}
                         />
-                        <label className="PriorityLabel">
-                            Prioridad:
-                            <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
-                        </label>
+
+                        <div className="centerBlock">
+                            <button onSubmit={this.handleSubmit} className="submitButton">
+                                Publicar
+                            </button>
+                        </div>
                     </div>
 
                     <div className="rightBlock">
@@ -235,6 +236,11 @@ class Form extends React.Component {
                             onChange={this.handleTimestampChange}
                         />
 
+                        <label className="PriorityLabel">
+                            Prioridad:
+                            <Priority onChange={this.handlePriorityChange} value={this.state.priority} />
+                        </label>
+
                         <label>
                             Foto:
                             <input
@@ -247,10 +253,6 @@ class Form extends React.Component {
                             <img src={this.state.photo64} className="photo" alt="" />
                         </label>
                     </div>
-
-                    <button onClick={this.handleSubmit} className="submitButton">
-                        Publicar
-                    </button>
                 </form>
                 {this.state.photo64 !== "" ? (
                     <button className="deletePhotoButton" onClick={this.handlePhotoDeletion}>

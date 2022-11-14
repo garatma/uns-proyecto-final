@@ -24,7 +24,6 @@ class Admin extends React.Component {
         this.setState({ gui: <CreateAnnouncement /> });
     }
 
-
     handleReadAnnouncements() {
         this.setState({ gui: <ReadAnnouncement /> });
     }
@@ -48,8 +47,8 @@ class Admin extends React.Component {
                         <button onClick={this.handleUpdateAnnouncement}>Editar Anuncio</button>
                         <button onClick={this.handleDeleteAnnouncement}>Eliminar Anuncio</button>
                     </div>
-                    {this.state.gui}
                 </header>
+                <div>{this.state.gui}</div>
             </div>
         );
     }
