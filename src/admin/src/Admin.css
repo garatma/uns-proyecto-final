@@ -12,14 +12,14 @@
     color: rgb(15, 15, 15);
 }
 
-.goBacktoTable{
+.goBacktoTable {
     position: absolute;
     bottom: 0%;
 }
 
-.submitButton{
+.submitButton {
     position: absolute;
-    left: 30%
+    left: 30%;
 }
 
 .leftBlock {
@@ -130,7 +130,6 @@ button {
     font-size: medium;
 }
 
-
 .deleteGUI {
     display: block;
 }
@@ -195,8 +194,6 @@ th {
     margin: 0px;
     border: 20px;
 }
-
-
 
 .deleteSelectionRow {
     background-color: rgb(176, 196, 204);

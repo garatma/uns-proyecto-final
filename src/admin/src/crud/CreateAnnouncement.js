@@ -10,7 +10,6 @@ class CreateAnnouncement extends React.Component {
 
     // Submit the form.
     async handleSubmit(data) {
-
         if (data.timestamp_end <= data.timestamp_begin) {
             alert("La fecha de inicio debe ser anterior a la de fin!");
             return;

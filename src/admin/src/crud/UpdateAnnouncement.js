@@ -21,7 +21,6 @@ class UpdateAnnouncement extends React.Component {
         };
     }
 
-
     //Get the selected announcement data and change the gui state to displayed the edit form instead of the announcement table
     async handleUpdateSelection(event) {
         let response = await fetch("/backend/announcement/id/" + event.target.value);
@@ -49,7 +48,6 @@ class UpdateAnnouncement extends React.Component {
             showTable: false
         });
     }
-
 
     // Submit the form.
     async handleSubmit(data) {
@@ -97,13 +95,16 @@ class UpdateAnnouncement extends React.Component {
         });
     }
 
-
     // Render the gui according to the actual state:
     // As default, render the announcements table with the "update" mode, with a callback for when we have to delete the selected announcements.
     // When a Edit button is clicked, the gui state change and the edit form is displayed.
     // If the edit form is displayed, a Go Back button is displayed to return to the announcements table
     render() {
-        let goBackButton = this.state.showTable ? null : <button className="goBacktoTable" onClick={this.goBack}>Volver a la tabla</button>;
+        let goBackButton = this.state.showTable ? null : (
+            <button className="goBacktoTable" onClick={this.goBack}>
+                Volver a la tabla
+            </button>
+        );
 
         return (
             <div>

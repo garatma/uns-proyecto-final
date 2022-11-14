@@ -28,10 +28,6 @@ class Table extends React.Component {
         else if (this.props.action === "delete") return <th>Eliminar</th>;
     }
 
-    alertUser() {
-        alert("You clicked!");
-    }
-
     //Set a timer to call a function every second to get the announcement data from the backend, starting from now
     componentDidMount() {
         this.timerID = setInterval(() => this.tick(), 1000);
@@ -93,7 +89,7 @@ class Table extends React.Component {
             return (
                 <tr key={row.id}>
                     <td>{row.title}</td>
-                    <td  className="messageWidth">{row.message}</td>
+                    <td className="messageWidth">{row.message}</td>
                     <td>{this.getTimestamp(row.timestamp_begin)}</td>
                     <td>{this.getTimestamp(row.timestamp_end)}</td>
                     <td>{priority}</td>
@@ -125,9 +121,15 @@ class Table extends React.Component {
                     </thead>
                     {table}
                     <tbody>
-                        {this.props.action === "delete" ?
-                            <tr><td className="deleteSelectionRow" colSpan={7}><button className="deleteSelection" onClick={this.props.actionButton}>{trash}</button></td></tr> : null}
-
+                        {this.props.action === "delete" ? (
+                            <tr>
+                                <td className="deleteSelectionRow" colSpan={7}>
+                                    <button className="deleteSelection" onClick={this.props.actionButton}>
+                                        {trash}
+                                    </button>
+                                </td>
+                            </tr>
+                        ) : null}
                     </tbody>
                 </table>
             </div>

@@ -21,19 +21,20 @@ class DeleteAnnouncement extends React.Component {
     //list (to uncheck a checkbox, first it must be checked so that announcement is on the list)
     handleDeleteSelection(event) {
         if (event.target.checked)
-            this.setState((state) => ({ announcementsToDelete: state.announcementsToDelete.concat(event.target.value) }));
+            this.setState((state) => ({
+                announcementsToDelete: state.announcementsToDelete.concat(event.target.value)
+            }));
         else {
-            let indexId = this.state.announcementsToDelete.findIndex(id => id === event.target.value);
+            let indexId = this.state.announcementsToDelete.findIndex((id) => id === event.target.value);
             this.state.announcementsToDelete.splice(indexId, 1);
         }
     }
 
     //Deletes all the announcements on the announcement to delete list
     async deleteSelectedAnnouncement() {
-
         // Send the DELETE request to the backend to delete the selected announcements from the database
 
-        if(this.state.announcementsToDelete.length>0) {
+        if (this.state.announcementsToDelete.length > 0) {
             const ids = {
                 method: "DELETE",
                 headers: {
@@ -44,12 +45,12 @@ class DeleteAnnouncement extends React.Component {
 
             let response = await fetch("/backend/announcement", ids);
 
-        // Check response and empty the announcement to delete list
+            // Check response and empty the announcement to delete list
 
             if (response.ok) {
                 if (this.state.announcementsToDelete.length === 1) alert("Anuncio eliminado!");
                 else alert("Anuncios eliminados!");
-                this.setState({announcementsToDelete:[]})
+                this.setState({ announcementsToDelete: [] });
                 return;
             }
 
@@ -61,8 +62,11 @@ class DeleteAnnouncement extends React.Component {
     // Render the announcements table with the "delete" mode, with a callback for when we have to delete the selected announcements.
     render() {
         return (
-            <Table action="delete" handleDeleteSelection={this.handleDeleteSelection} actionButton={this.deleteSelectedAnnouncement} />
-
+            <Table
+                action="delete"
+                handleDeleteSelection={this.handleDeleteSelection}
+                actionButton={this.deleteSelectedAnnouncement}
+            />
         );
     }
 }
